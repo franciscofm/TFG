@@ -27,7 +27,7 @@ public class Shell : MonoBehaviour {
 	public bool focus;
 	public bool expanded;
 	public bool maximized;
-	public string user = "admin@ubuntu:~$";
+	[HideInInspector] string user = "admin@ubuntu:~$";
 	public List<string> allOutput;
 	public List<string> history;
 	public int outputFirstIndex;
