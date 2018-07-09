@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Shell : MonoBehaviour {
 
 	[Header("Configuration")]
-	public bool allowResize;
+	public bool allowResize = false;
 	public int outputMaxLines = 20;
 
 	[Header("References")]
@@ -19,7 +19,6 @@ public class Shell : MonoBehaviour {
 	public ButtonShell minimizeButton;
 	public ButtonShell maximizeButton;
 	public RectTransform bodyRectTransform;
-	//public RectTransform headerRectTransform;
 	public GameObject resizeGameObject;
 	[Space]
 	public Node nodeS;
@@ -28,7 +27,7 @@ public class Shell : MonoBehaviour {
 	public bool focus;
 	public bool expanded;
 	public bool maximized;
-	[HideInInspector] public string user = "admin@ubuntu:~$";
+	[HideInInspector] string user = "admin@ubuntu:~$";
 	public List<string> allOutput;
 	public List<string> history;
 	public int outputFirstIndex;
@@ -36,6 +35,39 @@ public class Shell : MonoBehaviour {
 	public int historyCommandIndex;
 
 	public static List<Shell> focusedShells = new List<Shell> ();
+
+	[Header("Theme")]
+	public Image topCornerLeft;
+	public Image topCornerRight;
+	public Image topCenter;
+	public Image borderTopLeft;
+	public Image borderLeft;
+	public Image borderTopRight;
+	public Image borderRight;
+	public Image borderBottom;
+	public Image background;
+	public Image input;
+
+	public void ChangeTheme(Aparence a) {
+		topCornerLeft.sprite = a.topCornerLeft;
+		topCornerRight.sprite = a.topCornerRight;
+		topCenter.sprite = a.topCenter;
+		borderTopLeft.sprite = a.border;
+		borderTopRight.sprite = a.border;
+
+		borderRight.color = a.borderColor;
+		borderLeft.color = a.borderColor;
+		borderBottom.color = a.borderColor;
+		background.color = a.backgroundColor;
+		input.color = a.backgroundColor;
+
+		headerText.color = a.textColor;
+		inputText.color = a.textColor;
+		outputText.color = a.textColor;
+		headerText.font = a.font;
+		inputText.font = a.font;
+		outputText.font = a.font;
+	}
 
 	void Start() {
 		expanded = true;
@@ -58,9 +90,6 @@ public class Shell : MonoBehaviour {
 	public void AddInput(string input) {
 		inputText.text += input;
 	}
-	/// <summary>
-	/// Called when presed Backspace (erase);
-	/// </summary>
 	public void RemoveInput(int index) {
 		string[] splited = inputText.text.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 		if (splited.Length > 1) {
@@ -69,9 +98,6 @@ public class Shell : MonoBehaviour {
 			inputText.text = user + " ";
 		}
 	}
-	/// <summary>
-	/// Called when presed Enter;
-	/// </summary>
 	public void ReadInput() {
 		string command = inputText.text;
 		string[] splited = command.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -81,6 +107,7 @@ public class Shell : MonoBehaviour {
 		string substring = "";
 		for (int i = 1; i < splited.Length; ++i) {
 			substring += splited [i];
+			//print (splited [i] +" "+ i);
 		}
 
 		PrintOutput (user + " " + substring + Console.jump);
@@ -91,7 +118,7 @@ public class Shell : MonoBehaviour {
 			history.Add (substring);
 		}
 		inputText.text = user + " ";
-		historyCommandIndex = history.Count;
+		historyCommandIndex = 0;
 	}
 	public void PrintOutput(string output) {
 		string[] splited = output.Split (new string[] { Console.jump }, StringSplitOptions.RemoveEmptyEntries);
@@ -99,6 +126,8 @@ public class Shell : MonoBehaviour {
 			allOutput.Add (splited[n] + Console.jump);
 			++outputShownLines;
 			if (outputShownLines > outputMaxLines) {
+//			int firstShownLength = allOutput [outputFirstIndex].Length;
+//			outputText.text = outputText.text.Remove (0, firstShownLength);
 				int dif = outputShownLines - outputMaxLines;
 				outputFirstIndex += dif;
 				outputText.text = "";
@@ -116,30 +145,22 @@ public class Shell : MonoBehaviour {
 			PrintOutput (s + Console.jump);
 	}
 	public void GetPreviousCommand() {
-		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
-		inputText.text = user + " " + history[historyCommandIndex];
+		historyCommandIndex = Math.Max (history.Count, historyCommandIndex + 1);
 	}
 	public void GetNextCommand() {
-		historyCommandIndex = Math.Min (history.Count - 1, historyCommandIndex + 1);
-		inputText.text = user + " " + history[historyCommandIndex];
+		historyCommandIndex = Math.Min (0, historyCommandIndex - 1);
 	}
 
-	/// <summary>
-	/// Closes the shell, if focused unfocus it and removed from list of focused shells.
-	/// </summary>
 	public void CallbackClose() {
 		UnfocusShell ();
 		Destroy (gameObject);
 	}
-	/// <summary>
-	/// Collapse/Extend the shell body, if focused unfocus it and removed from list of focused shells.
-	/// Otherwise it's focused and added to focused shells.
-	/// </summary>
 	public void CallbackMinimize() {
 		expanded = !expanded;
 		bodyRectTransform.gameObject.SetActive (expanded);
 		print ("TODO: CallbackMinimize animation");
-		UnfocusShell ();
+		if (!expanded)
+			UnfocusShell ();
 	}
 	public void CallbackMaximize() {
 		//FocusShell ();
@@ -168,11 +189,7 @@ public class Shell : MonoBehaviour {
 		}
 	}
 
-	Vector3 headerOffset;
-	public void DragHeaderStart() {
-		headerOffset = Input.mousePosition - bodyRectTransform.position;
-	}
 	public void DragHeader() {
-		transform.position = Input.mousePosition - headerOffset;
+		print ("TODO: DragHeader");
 	}
 }

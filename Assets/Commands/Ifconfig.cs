@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Ifconfig {
 
-	public static void Command(Shell shell) {
+	public static void Command(string[] command, Shell shell) {
 
 	}
 }
