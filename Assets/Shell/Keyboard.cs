@@ -18,9 +18,11 @@ public class Keyboard : MonoBehaviour {
 				foreach (Shell shell in focusedShells)
 					shell.RemoveInput (0);
 			else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-
+				foreach (Shell shell in focusedShells)
+					shell.GetPreviousCommand ();
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-
+				foreach (Shell shell in focusedShells)
+					shell.GetNextCommand ();
 			} else {
 				string input = Input.inputString;
 				if (input.Length > 0) {

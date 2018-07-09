@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowResize: 1
+  outputMaxLines: 20
   headerText: {fileID: 114822573730281156}
   inputText: {fileID: 114583012925303190}
   outputText: {fileID: 114301116923663054}
@@ -416,9 +417,12 @@ MonoBehaviour:
   focus: 0
   expanded: 0
   maximized: 0
-  user: '<color=#85BB40>admin@ubuntu</color>:<color=#456d95ff>~</color>$ '
+  user: 'admin@ubuntu:~$ '
   allOutput: []
   history: []
+  outputFirstIndex: 0
+  outputShownLines: 0
+  historyCommandIndex: 0
 --- !u!114 &114057865102256900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -878,6 +882,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 114053468168136442}
+          m_MethodName: DragHeaderStart
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   - eventID: 5
@@ -1301,10 +1316,10 @@ RectTransform:
   m_Father: {fileID: 224892823419314574}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 22, y: -17.5}
-  m_SizeDelta: {x: 0, y: 35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 35, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224207180479908322
 RectTransform:
@@ -1320,10 +1335,10 @@ RectTransform:
   m_Father: {fileID: 224892823419314574}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -17.5}
-  m_SizeDelta: {x: 0, y: 35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 35, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224273574658781770
 RectTransform:
@@ -1357,10 +1372,10 @@ RectTransform:
   m_Father: {fileID: 224892823419314574}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 57, y: -17.5}
-  m_SizeDelta: {x: 0, y: 35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 35, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224324724186904884
 RectTransform:
@@ -1452,10 +1467,10 @@ RectTransform:
   m_Father: {fileID: 224041208197786784}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.0050000004, y: 0}
+  m_AnchorMin: {x: 0.0050000004, y: 0.049000002}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000030517578, y: -0.005004883}
-  m_SizeDelta: {x: 0, y: -31.04}
+  m_SizeDelta: {x: 0, y: -0.79999924}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224706701456591206
 RectTransform:
@@ -1552,8 +1567,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -175.1, y: 52.4}
-  m_SizeDelta: {x: 765.9, y: 525.2}
+  m_AnchoredPosition: {x: -175.1, y: 47.7}
+  m_SizeDelta: {x: 765.9, y: 534.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224920146859937834
 RectTransform:
