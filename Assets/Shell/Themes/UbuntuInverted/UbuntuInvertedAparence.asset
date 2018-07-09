@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89be143e618660843bc62be7b258d131, type: 3}
+  m_Name: UbuntuInvertedAparence
+  m_EditorClassIdentifier: 
+  borderColor: {r: 0.32156864, g: 0.3372549, b: 0.3529412, a: 1}
+  backgroundColor: {r: 0.8117647, g: 0.9607843, b: 0.85882354, a: 1}
+  textColor: {r: 0, g: 0, b: 0, a: 1}
+  topCornerLeft: {fileID: 21300000, guid: 04f565e0e472bc448ae205f564255ffb, type: 3}
+  topCornerRight: {fileID: 21300000, guid: ea14d540598eb6f44b4596c74464d9cc, type: 3}
+  topCenter: {fileID: 21300000, guid: cec07ed642b3e28479f341cf9703c577, type: 3}
+  border: {fileID: 21300000, guid: d9fcf46a9cdf91b4b93b11524386eea4, type: 3}
+  font: {fileID: 12800000, guid: 98f0706818545b24193c5d7b50d7c539, type: 3}

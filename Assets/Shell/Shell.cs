@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Shell : MonoBehaviour {
 
 	[Header("Configuration")]
-	public bool allowResize;
+	public bool allowResize = false;
 	public int outputMaxLines = 20;
 
 	[Header("References")]
@@ -35,6 +35,39 @@ public class Shell : MonoBehaviour {
 	public int historyCommandIndex;
 
 	public static List<Shell> focusedShells = new List<Shell> ();
+
+	[Header("Theme")]
+	public Image topCornerLeft;
+	public Image topCornerRight;
+	public Image topCenter;
+	public Image borderTopLeft;
+	public Image borderLeft;
+	public Image borderTopRight;
+	public Image borderRight;
+	public Image borderBottom;
+	public Image background;
+	public Image input;
+
+	public void ChangeTheme(Aparence a) {
+		topCornerLeft.sprite = a.topCornerLeft;
+		topCornerRight.sprite = a.topCornerRight;
+		topCenter.sprite = a.topCenter;
+		borderTopLeft.sprite = a.border;
+		borderTopRight.sprite = a.border;
+
+		borderRight.color = a.borderColor;
+		borderLeft.color = a.borderColor;
+		borderBottom.color = a.borderColor;
+		background.color = a.backgroundColor;
+		input.color = a.backgroundColor;
+
+		headerText.color = a.textColor;
+		inputText.color = a.textColor;
+		outputText.color = a.textColor;
+		headerText.font = a.font;
+		inputText.font = a.font;
+		outputText.font = a.font;
+	}
 
 	void Start() {
 		expanded = true;
@@ -126,7 +159,8 @@ public class Shell : MonoBehaviour {
 		expanded = !expanded;
 		bodyRectTransform.gameObject.SetActive (expanded);
 		print ("TODO: CallbackMinimize animation");
-		UnfocusShell ();
+		if (!expanded)
+			UnfocusShell ();
 	}
 	public void CallbackMaximize() {
 		//FocusShell ();
