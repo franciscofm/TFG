@@ -184,7 +184,7 @@ public class Shell : MonoBehaviour {
 	public void FocusShell() { //Nos hacemos focus si no lo teniamos aun
 		if(expanded) {
 			focus = true;
-			StartCoroutine (routine = FocusRoutine ());
+			//StartCoroutine (routine = FocusRoutine ());
 			if(!focusedShells.Contains(this)) {
 				focusedShells.Add (this);
 			}
