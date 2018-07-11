@@ -13,8 +13,8 @@ public static class Console {
 	private static readonly Dictionary<string, Template> commands = new Dictionary<string, Template>() {
 		{"help", help },
 		{"ifconfig", ifconfig },
-		{"theme", theme }
-//		{"cmd", 	delegate { Debug.Log("Hello"); } }
+		{"theme", theme },
+		{"ping", ping }
 	};
 
 	static void help(string[] command, Shell shell) {
@@ -27,6 +27,12 @@ public static class Console {
 	}
 	static void theme(string[] command, Shell shell) {
 		Theme.Command (command, shell);
+	}
+	static void ping(string[] command, Shell shell) {
+
+	}
+	static void route(string[] command, Shell shell) {
+
 	}
 
 	public static bool ReadCommand(string[] command, Shell shell) {

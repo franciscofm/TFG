@@ -23,19 +23,6 @@ public class Shell : MonoBehaviour {
 	[Space]
 	public Node nodeS;
 
-	[Header("Behaviour")]
-	public bool focus;
-	public bool expanded;
-	public bool maximized;
-	[HideInInspector] string user = "admin@ubuntu:~$";
-	public List<string> allOutput;
-	public List<string> history;
-	public int outputFirstIndex;
-	public int outputShownLines;
-	public int historyCommandIndex;
-
-	public static List<Shell> focusedShells = new List<Shell> ();
-
 	[Header("Theme")]
 	public Image topCornerLeft;
 	public Image topCornerRight;
@@ -47,7 +34,6 @@ public class Shell : MonoBehaviour {
 	public Image borderBottom;
 	public Image background;
 	public Image input;
-
 	public void ChangeTheme(Aparence a) {
 		topCornerLeft.sprite = a.topCornerLeft;
 		topCornerRight.sprite = a.topCornerRight;
@@ -69,6 +55,24 @@ public class Shell : MonoBehaviour {
 		outputText.font = a.font;
 	}
 
+	[Header("Behaviour")]
+	public bool focus;
+	public bool expanded;
+	public bool maximized;
+	public bool pointed;
+	public bool routined;
+	public IEnumerator routine;
+	[HideInInspector] string user = "admin@ubuntu:~$";
+	public List<string> allOutput;
+	public List<string> history;
+	public int outputFirstIndex;
+	public int outputShownLines;
+	public int historyCommandIndex;
+	public Vector3 dragOffset;
+
+	public static List<Shell> focusedShells = new List<Shell> ();
+
+
 	void Start() {
 		expanded = true;
 		inputText.text = user + " ";
@@ -88,7 +92,10 @@ public class Shell : MonoBehaviour {
 		inputText.text = input;
 	}
 	public void AddInput(string input) {
-		inputText.text += input;
+		if (pointed)
+			inputText.text = inputText.text.Insert (inputText.text.Length - 1, input);
+		else
+			inputText.text += input;
 	}
 	public void RemoveInput(int index) {
 		string[] splited = inputText.text.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -106,7 +113,7 @@ public class Shell : MonoBehaviour {
 
 		string substring = "";
 		for (int i = 1; i < splited.Length; ++i) {
-			substring += splited [i];
+			substring += splited [i] + " ";
 			//print (splited [i] +" "+ i);
 		}
 
@@ -177,6 +184,7 @@ public class Shell : MonoBehaviour {
 	public void FocusShell() { //Nos hacemos focus si no lo teniamos aun
 		if(expanded) {
 			focus = true;
+			StartCoroutine (routine = FocusRoutine ());
 			if(!focusedShells.Contains(this)) {
 				focusedShells.Add (this);
 			}
@@ -184,12 +192,35 @@ public class Shell : MonoBehaviour {
 	}
 	public void UnfocusShell() {
 		focus = false;
+		if (routined) {
+			StopCoroutine (routine);
+			if (pointed) {
+				inputText.text = inputText.text.Remove (inputText.text.Length - 1);
+				pointed = false;
+			}
+			routined = false;
+		}
 		if(focusedShells.Contains(this)) {
 			focusedShells.Remove (this);
 		}
+  	}
+	IEnumerator FocusRoutine() {
+		pointed = false;
+		routined = true;
+		while (true) {
+			yield return new WaitForSecondsRealtime (1f);
+			pointed = true;
+			inputText.text += "_";
+			yield return new WaitForSecondsRealtime (1f);
+			pointed = false;
+			inputText.text = inputText.text.Remove (inputText.text.Length - 1);
+		}
 	}
 
+	public void DragHeaderStart() {
+		dragOffset = transform.position - Input.mousePosition;
+	}
 	public void DragHeader() {
-		print ("TODO: DragHeader");
+		transform.position = Input.mousePosition + dragOffset;
 	}
 }
