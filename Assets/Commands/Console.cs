@@ -13,27 +13,11 @@ public static class Console {
 	private static readonly Dictionary<string, Template> commands = new Dictionary<string, Template>() {
 		{"help", help },
 		{"ifconfig", ifconfig },
+		{"ifup", ifup },
+		{"ifdown", ifdown },
 		{"theme", theme },
 		{"ping", ping }
 	};
-
-	static void help(string[] command, Shell shell) {
-		shell.PrintOutput ("List of avaliable commands:"+jump);
-		foreach (string key in commands.Keys) 
-			shell.PrintOutput (key + jump);
-	}
-	static void ifconfig(string[] command, Shell shell) {
-		Ifconfig.Command (command, shell);
-	}
-	static void theme(string[] command, Shell shell) {
-		Theme.Command (command, shell);
-	}
-	static void ping(string[] command, Shell shell) {
-
-	}
-	static void route(string[] command, Shell shell) {
-
-	}
 
 	public static bool ReadCommand(string[] command, Shell shell) {
 		if (commands.ContainsKey (command [1])) {
@@ -44,9 +28,31 @@ public static class Console {
 		return true;
 	}
 
-	public static T[] SubArray<T>(this T[] data, int index, int length) {
-		T[] result = new T[length];
-		Array.Copy (data, index, result, 0, length);
-		return result;
+	static void help(string[] command, Shell shell) {
+		shell.PrintOutput ("List of avaliable commands:"+jump);
+		foreach (string key in commands.Keys) 
+			shell.PrintOutput (key + jump);
+	}
+
+	//ifcondig
+	static void ifconfig(string[] command, Shell shell) {
+		Ifconfig.Command (command, shell);
+	}
+	static void ifup(string[] command, Shell shell) {
+		Ifconfig.IfUp (command, shell);
+	}
+	static void ifdown(string[] command, Shell shell) {
+		Ifconfig.IfDown (command, shell);
+	}
+
+	static void ping(string[] command, Shell shell) {
+
+	}
+	static void route(string[] command, Shell shell) {
+
+	}
+	
+	static void theme(string[] command, Shell shell) {
+		Theme.Command (command, shell);
 	}
 }

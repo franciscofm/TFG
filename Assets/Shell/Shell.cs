@@ -21,7 +21,7 @@ public class Shell : MonoBehaviour {
 	public RectTransform bodyRectTransform;
 	public GameObject resizeGameObject;
 	[Space]
-	public Node nodeS;
+	public Node node;
 
 	[Header("Theme")]
 	public Image topCornerLeft;
@@ -125,7 +125,7 @@ public class Shell : MonoBehaviour {
 			history.Add (substring);
 		}
 		inputText.text = user + " ";
-		historyCommandIndex = 0;
+		historyCommandIndex = history.Count;
 	}
 	public void PrintOutput(string output) {
 		string[] splited = output.Split (new string[] { Console.jump }, StringSplitOptions.RemoveEmptyEntries);
@@ -152,10 +152,12 @@ public class Shell : MonoBehaviour {
 			PrintOutput (s + Console.jump);
 	}
 	public void GetPreviousCommand() {
-		historyCommandIndex = Math.Max (history.Count, historyCommandIndex + 1);
+		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
+		inputText.text = user + " " + history[historyCommandIndex];
 	}
 	public void GetNextCommand() {
-		historyCommandIndex = Math.Min (0, historyCommandIndex - 1);
+		historyCommandIndex = Math.Min (history.Count - 1, historyCommandIndex + 1);
+		inputText.text = user + " " + history[historyCommandIndex];
 	}
 
 	public void CallbackClose() {
