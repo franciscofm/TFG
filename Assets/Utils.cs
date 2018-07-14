@@ -28,13 +28,11 @@ public static class Utils {
 	}
 
 	public static int[] StringToInt4(this string[] array) {
-		array.PrintArray ();
 		int[] ret = new int[array.Length];
 		for (int i = 0; i < array.Length; ++i) {
 			if (!int.TryParse (array [i], out ret [i]))
 				return null;
 		}
-		ret.PrintArray ();
 		return ret;
 	}
 
@@ -42,6 +40,13 @@ public static class Utils {
 		string log = "";
 		foreach (T t in array)
 			log += t + ", ";
-		Debug.Log (log);
+	}
+	public static string PrintIp(this int[] array) {
+		if (array.Length < 1)
+			return "";
+		string ret = array[0]+"";
+		for (int i = 1; i < array.Length; ++i)
+			ret += "." + array [i];
+		return ret;
 	}
 }

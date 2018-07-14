@@ -18,18 +18,19 @@ public static class Ifconfig {
 	// ifconfig [-a]
 	// ifconfig interface up/down
 	// ifconfig interface @address netmask @mask broadcast @mask
+	// ifconfig eth0 192.168.60.1 netmask 255.255.255.0 broadcast 192.169.60.255
 	public static void Command(string[] command, Shell shell) {
 		switch (command.Length) {
 		case 0:
-			List (false); //List up
+			List (false, shell); //List up
 			break;
 		case 1:
 			switch (command [0]) {
 			case "-a":
-				List (true); //List all
+				List (true, shell); //List all
 				break;
 			default:
-				List (command [0]); //List family
+				List (command [0], shell); //List family
 				break;
 			}
 			break;
@@ -52,11 +53,23 @@ public static class Ifconfig {
 		}
 	}
 
-	static void List(bool a) {
-		Debug.Log ("List (" + a + ")");
+	static void List(bool a, Shell shell) {
+		foreach (Interface i in shell.node.Interfaces) 
+			if(a || i.isUp)
+				PrintInterface(i,shell);
 	}
-	static void List(string family) {
-		Debug.Log ("List (" + family + ")");
+	static void List(string family, Shell shell) {
+		foreach (Interface i in shell.node.Interfaces) 
+			if(i.address_family == family)
+				PrintInterface(i,shell);
+	}
+	static void PrintInterface(Interface i, Shell shell) {
+		shell.PrintOutput (
+			i.Name + ": " + i.address_family + " " + i.ip.PrintIp () +
+			" netmask " + i.netmask.PrintIp () +
+			" broadcast " + i.broadcast.PrintIp () +
+			Console.jump
+		);
 	}
 
 	static void Configure(string[] command, Shell shell) {
@@ -107,7 +120,13 @@ public static class Ifconfig {
 										return;
 									}
 								} else {
-									//TODO asumir cosas
+									int[] bc = new int[4];
+									for (int i = 0; i < bc.Length; ++i) {
+										bc [i] = intDir[i] & intNet [i];
+										int not = 255 - intNet [i];
+										bc [i] |= not;
+									}
+									_interface.SetBroadcast (bc);
 								}
 								_interface.SetNetmask(intNet);
 							} else {
@@ -123,7 +142,12 @@ public static class Ifconfig {
 						return;
 					}
 				} else {
-					//TODO asumir cosas
+					_interface.SetNetmask (new int[]{ 255, 255, 255, 0 });
+					int[] bc = new int[4];
+					bc [3] = 255;
+					for (int i = 0; i < 3; ++i)
+						bc [i] = intDir [i];
+					_interface.SetBroadcast (bc);
 				}
 				_interface.SetIp(intDir);
 				_interface.isUp = true;
@@ -145,7 +169,6 @@ public static class Ifconfig {
 				_interface.isUp = true;
 		}
 	}
-
 	public static void IfDown(string[] command, Shell shell) {
 		if (command.Length < 1) {
 			shell.PrintOutput ("Error: needed interface" + Console.jump);

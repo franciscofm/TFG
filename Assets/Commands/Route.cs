@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Route : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+public static class Route {
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public static void Command(string[] command, Shell shell) {
+
 	}
+
 }

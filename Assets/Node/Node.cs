@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class Node : MonoBehaviour {
 
 	public Interface[] Interfaces;
+	public RouteEntry[] RouteTable;
 
 	public GameObject RenderLine(Transform t1, Transform t2) {
 		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
@@ -80,5 +81,33 @@ public class Interface {
 	}
 	public void SetBroadcast(int[] broadcast) {
 		this.broadcast = broadcast;
+	}
+}
+
+[System.Serializable]
+public class RouteEntry {
+
+	public int[] source;
+	public int[] destination;
+	public int[] gateway;
+
+	public string iface;
+	public string flags; //?
+	public int metric;
+	public int refe;
+	public int use;
+
+	public RouteEntry(int[] source, int[] destination, int[] gateway) {
+		this.source = source;
+		this.destination = destination;
+		this.gateway = gateway;
+	}
+	public RouteEntry(int[] source, int[] destination, int[] gateway, string iface, string flags, int metric, int refe, int use)
+		: this(source, destination, gateway) {
+		this.iface = iface;
+		this.flags = flags;
+		this.metric = metric;
+		this.refe = refe;
+		this.use = use;
 	}
 }

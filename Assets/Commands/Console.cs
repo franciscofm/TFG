@@ -12,10 +12,15 @@ public static class Console {
 
 	private static readonly Dictionary<string, Template> commands = new Dictionary<string, Template>() {
 		{"help", help },
+
 		{"ifconfig", ifconfig },
 		{"ifup", ifup },
 		{"ifdown", ifdown },
+
 		{"theme", theme },
+
+		{"route", route },
+
 		{"ping", ping }
 	};
 
@@ -49,7 +54,7 @@ public static class Console {
 
 	}
 	static void route(string[] command, Shell shell) {
-
+		Route.Command (command, shell);
 	}
 	
 	static void theme(string[] command, Shell shell) {
