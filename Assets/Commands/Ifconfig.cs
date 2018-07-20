@@ -85,7 +85,7 @@ public static class Ifconfig {
 		}
 
 		else {
-			int[] intDir = command [1].Split (new string[]{ "." }, 0x0).StringToInt4 ();
+			int[] intDir = command [1].IPToInt4 ();	// Split (new string[]{ "." }, 0x0).StringToInt4 ();
 			if (intDir == null || intDir.Length != 4) {
 				shell.PrintOutput ("Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump);
 				return;
@@ -94,7 +94,7 @@ public static class Ifconfig {
 				if (command.Length > 2) {
 					if (command [2] == "netmask") {
 						if (command.Length > 3) {
-							int[] intNet = command [3].Split (new string[]{ "." }, 0x0).StringToInt4 ();
+							int[] intNet = command [3].IPToInt4 (); //.Split (new string[]{ "." }, 0x0).StringToInt4 ();
 							if (intNet == null || intDir.Length != 4) {
 								shell.PrintOutput ("Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump);
 								return;
@@ -103,7 +103,7 @@ public static class Ifconfig {
 								if (command.Length > 4) {
 									if (command [4] == "broadcast") {
 										if (command.Length > 5) {
-											int[] intBroad = command [5].Split (new string[]{ "." }, 0x0).StringToInt4 ();
+											int[] intBroad = command [5].IPToInt4 (); //Split (new string[]{ "." }, 0x0).StringToInt4 ();
 											if (intBroad == null || intDir.Length != 4) {
 												shell.PrintOutput ("Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump);
 												return;

@@ -11,6 +11,31 @@ public static class Utils {
 				return true;
 		return false;
 	}
+	public static bool ArrayUnderInt(this int[] array, int value) {
+		foreach (int i in array)
+			if (i < value)
+				return true;
+		return false;
+	}
+	public static bool ArrayBetweenInt(this int[] array, int min, int max) {
+		foreach (int i in array)
+			if (i < min || i > max)
+				return false;
+		return true;
+	}
+
+	public static bool ArrayAboveUInt(this uint[] array, int value) {
+		foreach (uint i in array)
+			if (i > value)
+				return true;
+		return false;
+	}
+	public static bool ArrayUnderUInt(this uint[] array, int value) {
+		foreach (uint i in array)
+			if (i < value)
+				return true;
+		return false;
+	}
 
 	public static T[] SubArray<T>(this T[] data, int index, int length) {
 		T[] result = new T[length];
@@ -27,10 +52,21 @@ public static class Utils {
 		return null;
 	}
 
+	public static int[] IPToInt4(this string ip) {
+		return ip.Split (new string[]{ "." }, 0x0).StringToInt4 ();
+	}
 	public static int[] StringToInt4(this string[] array) {
 		int[] ret = new int[array.Length];
 		for (int i = 0; i < array.Length; ++i) {
 			if (!int.TryParse (array [i], out ret [i]))
+				return null;
+		}
+		return ret;
+	}
+	public static uint[] StringToUInt(this string[] array) {
+		uint[] ret = new uint[array.Length];
+		for (int i = 0; i < array.Length; ++i) {
+			if (!UInt32.TryParse (array [i], out ret [i]))
 				return null;
 		}
 		return ret;

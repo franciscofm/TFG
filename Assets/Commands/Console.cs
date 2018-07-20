@@ -32,14 +32,13 @@ public static class Console {
 		}
 		return true;
 	}
-
 	static void help(string[] command, Shell shell) {
 		shell.PrintOutput ("List of avaliable commands:"+jump);
 		foreach (string key in commands.Keys) 
 			shell.PrintOutput (key + jump);
 	}
 
-	//ifcondig
+	//ifconfig
 	static void ifconfig(string[] command, Shell shell) {
 		Ifconfig.Command (command, shell);
 	}

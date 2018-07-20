@@ -5,8 +5,12 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
-	public Interface[] Interfaces;
-	public RouteEntry[] RouteTable;
+	public Interface[] Interfaces = new Interface[3];
+	public Connection[] LANs = new Connection[3];
+
+	public List<RouteEntry> RouteTable;
+	public List<ARPEntry> ARPTable;
+
 
 	public GameObject RenderLine(Transform t1, Transform t2) {
 		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
@@ -85,9 +89,8 @@ public class Interface {
 }
 
 [System.Serializable]
-public class RouteEntry {
-
-	public int[] source;
+public class RouteEntry {   
+	public int[] genmask;
 	public int[] destination;
 	public int[] gateway;
 
@@ -97,17 +100,54 @@ public class RouteEntry {
 	public int refe;
 	public int use;
 
-	public RouteEntry(int[] source, int[] destination, int[] gateway) {
-		this.source = source;
+	public RouteEntry(int[] destination, int[] gateway, int[] genmask) {
+		this.genmask = genmask;
 		this.destination = destination;
 		this.gateway = gateway;
 	}
-	public RouteEntry(int[] source, int[] destination, int[] gateway, string iface, string flags, int metric, int refe, int use)
-		: this(source, destination, gateway) {
+	public RouteEntry(int[] destination, int[] gateway, int[] genmask, string iface, string flags, int metric, int refe, int use)
+		: this(destination, gateway, genmask) {
 		this.iface = iface;
 		this.flags = flags;
 		this.metric = metric;
 		this.refe = refe;
 		this.use = use;
+	}
+}
+
+[System.Serializable]
+public class ARPEntry {
+	//	Address                  HWtype  HWaddress           Flags Mask            Iface                                                                                                               
+	//	gateway                  ether   02:42:0e:ff:79:bb   C                     eth0    
+	//	gateway (172.17.0.1) at 02:42:0e:ff:79:bb [ether] on eth0   
+
+	public string addressName;
+	public int[] addressIP;
+
+	public string hwType;
+	public int[] hwAddress;
+
+	public string flags;
+	public string mask;
+	public string iface;
+
+
+	public ARPEntry() {
+		
+	}
+	
+}
+
+[System.Serializable]
+public class Connection {
+
+	public Transform iface1, iface2;
+	public Node node1, node2;
+
+	public Connection(Transform i1, Transform i2, Node n1, Node n2) {
+		iface1 = i1;
+		iface2 = i2;
+		node1 = n1;
+		node2 = n1;
 	}
 }
