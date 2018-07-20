@@ -56,9 +56,9 @@ public static class Route {
 	static void PrintEntry(RouteEntry e, Shell shell, bool arp) {
 		if(!arp)
 			shell.PrintOutput (
-				"D:" + e.destination.PrintIp() + 
-				", GW:" + e.gateway.PrintIp() + 
-				", Gmask:" + e.genmask.PrintIp() + 
+				"D:" + e.destination + 
+				", GW:" + e.gateway + 
+				", Gmask:" + e.genmask + 
 				", F" + e.flags + 
 				", M" + e.metric + 
 				", R" + e.refe + 

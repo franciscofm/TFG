@@ -6,16 +6,16 @@ using UnityEngine;
 [System.Serializable]
 public class IP {
 
-	uint numeric;
-	uint[] array;
-	string word;
+	public uint numeric;
+	public uint[] array;
+	public string word;
 
 	public enum Class { A, B, C, D, E };
 	public Class class_;
 
 	public IP(uint[] array) {
-		if (!array.ArrayAboveUInt (255)) throw new Exception ("IP values out of range");
 		if (array.Length != 4) throw new Exception ("IP length not 4");
+		if (array.ArrayAboveUInt (255)) throw new Exception ("IP values out of range");
 
 		this.array = array;
 		word = ArrayToWord (array);

@@ -43,15 +43,6 @@ public static class Utils {
 		return result;
 	}
 
-	public static Interface HasInterface(this Node node, string interf) {
-		foreach (Interface i in node.Interfaces) {
-			if (interf == i.Name) {
-				return i;
-			}
-		}
-		return null;
-	}
-
 	public static int[] IPToInt4(this string ip) {
 		return ip.Split (new string[]{ "." }, 0x0).StringToInt4 ();
 	}
