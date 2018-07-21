@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
-	public Interface[] Interfaces = new Interface[3];
-	public Connection[] LANs = new Connection[3];
+	public Interface[] Interfaces = new Interface[] {
+		new Interface("192.168.60.1","255.255.255.255","192.168.60.1")
+	};
+	public Connection[] Connections;
 
 	public List<RouteEntry> RouteTable;
 	public List<ARPEntry> ARPTable;
@@ -45,9 +47,9 @@ public class Node : MonoBehaviour {
 [System.Serializable]
 public class Interface {
 	public GameObject representation;
+	public Node node;
 
 	public string Name = "eth0";
-	public string address = "";
 	public string address_family = "inet";
 	public string dest_address = "inet";
 
@@ -57,10 +59,16 @@ public class Interface {
 	public IP netmask;
 	public IP broadcast;
 
-	public Interface(string ip, string mask, string broadcast) {
+	public Interface(string ip, string mask, string broadcast, 
+			string name = "eth0", bool isUp = true, 
+			GameObject representation = null, Node node = null) {
 		this.ip = new IP (ip);
 		this.netmask = new IP (mask);
 		this.broadcast = new IP (broadcast);
+		this.Name = name;
+		this.isUp = isUp;
+		this.representation = representation;
+		this.node = node;
 	}
 	public Interface(uint[] ip, uint[] mask, uint[] broadcast) {
 		this.ip = new IP (ip);
@@ -143,13 +151,11 @@ public class ARPEntry {
 [System.Serializable]
 public class Connection {
 
-	public Transform iface1, iface2;
-	public Node node1, node2;
+	public Interface iface;
+	public Interface ifaceConnection;
 
-	public Connection(Transform i1, Transform i2, Node n1, Node n2) {
-		iface1 = i1;
-		iface2 = i2;
-		node1 = n1;
-		node2 = n1;
+	public Connection(Interface iface, Interface ifaceConnection) {
+		this.iface = iface;
+		this.ifaceConnection = ifaceConnection;
 	}
 }

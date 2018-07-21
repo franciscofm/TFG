@@ -146,6 +146,10 @@ public class Shell : MonoBehaviour {
 			}
 		}
 	}
+	public int ReturnError(string error) {
+		PrintOutput (error + Console.jump);
+		return 0;
+	}
 
 	public void History() {
 		foreach (string s in history)

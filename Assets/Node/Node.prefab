@@ -326,25 +326,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a3e33d3f11a4045bc122f06538ddcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ports:
-  - Name: Eth0
-    Port: {fileID: 1733658099077982}
-    IP:
-      ip: 
-      mask: 
-      broadcast: 
-  - Name: Eth1
-    Port: {fileID: 1381309220979126}
-    IP:
-      ip: 
-      mask: 
-      broadcast: 
-  - Name: Eth2
-    Port: {fileID: 1571822249081092}
-    IP:
-      ip: 
-      mask: 
-      broadcast: 
+  Interfaces:
+  - representation: {fileID: 0}
+    Name: eth0
+    address_family: inet
+    dest_address: inet
+    isUp: 1
+    ip:
+      numeric: 830401
+      array: c0000000a80000003c00000001000000
+      word: 192.168.60.1
+      class_: 2
+    netmask:
+      numeric: 1048575
+      array: ff000000ff000000ff000000ff000000
+      word: 255.255.255.255
+      class_: 4
+    broadcast:
+      numeric: 830401
+      array: c0000000a80000003c00000001000000
+      word: 192.168.60.1
+      class_: 2
+  LANs: []
+  RouteTable: []
+  ARPTable: []
 --- !u!135 &135154119674589288
 SphereCollider:
   m_ObjectHideFlags: 1

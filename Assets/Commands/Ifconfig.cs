@@ -138,8 +138,6 @@ public static class Ifconfig {
 			shell.PrintOutput ("Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump);
 			return;
 		}
-
-
 //		int[] intDir = command [1].IPToInt4 ();	// Split (new string[]{ "." }, 0x0).StringToInt4 ();
 //		if (intDir == null || intDir.Length != 4) {
 //			shell.PrintOutput ("Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump);

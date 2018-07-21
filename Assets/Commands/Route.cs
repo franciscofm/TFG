@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,13 +37,14 @@ public static class Route {
 				break;
 			}
 			break;
-		case 2:
-			break;
 		default:
+			Check (command, shell);
 			break;
 		}
 	}
 
+	// route
+	// route -n
 	static void List(bool arp, Shell shell) {
 		shell.PrintOutput ("Kernel IP routing table" + Console.jump);
 		Node n = shell.node;
@@ -68,10 +70,79 @@ public static class Route {
 			);
 	}
 
-	static void Add(string[] command, Shell shell) {
+	// add -net x.x.x.x
+	// add -net x.x.x.x netmask 255.255.255.0
+	// add -net x.x.x.x gw 192.168.60.2
+	// add -net x.x.x.x dev eth0
+	// add -net x.x.x.x gw 192.168.60.2 dev eth0
+	static int Check(string[] command, Shell shell) {
+		if (command.Length < 3 || command.Length > 9) return shell.ReturnError ("Error (0): route add|del -net|-host x.x.x.x [netmask x.x.x.x] [gw x.x.x.x] [dev iface]");
+		if ((command.Length % 2) == 0) return shell.ReturnError ("Error (1): route add|del -net|-host x.x.x.x [netmask x.x.x.x] [gw x.x.x.x] [dev iface]");
+		if ((command[0] != "add") && (command[0] != "del")) return shell.ReturnError ("Error (2): route add|del -net|-host x.x.x.x [netmask x.x.x.x] [gw x.x.x.x] [dev iface]");
+		if ((command[1] != "-net") && (command[1] != "-host")) return shell.ReturnError ("Error (3): route add|del -net|-host x.x.x.x [netmask x.x.x.x] [gw x.x.x.x] [dev iface]");
+
+		IP dest = null, netmask = null, gw = null;
+		bool net = command [1] == "-net";
+		string iface = "";
+
+		try {
+			dest = new IP(command[2]);
+		} catch {
+			return shell.ReturnError ("Error (4): Wrong IP");
+		}
+
+		for (int i = 3; i < command.Length; i += 2) {
+			switch (command [i]) {
+			case "netmask":
+				if(netmask != null) return shell.ReturnError ("Error (5): Repeated option");
+				try {
+					netmask = new IP(command[i+1]);
+				} catch {
+					return shell.ReturnError ("Error (6): Wrong IP");
+				}
+				break;
+			case "gw":
+				if(gw != null) return shell.ReturnError ("Error 7): Repeated option");
+				try {
+					gw = new IP(command[i+1]);
+				} catch {
+					return shell.ReturnError ("Error (8): Wrong IP");
+				}
+				break;
+			case "dev":
+				if (iface != "") return shell.ReturnError ("Error (9): Repeated option");
+				iface = command [i + 1];
+				break;
+			default:
+				return shell.ReturnError ("Error (10): Unknown option");
+			}
+		}
+
+		if (netmask == null)
+			netmask = new IP (new uint[]{ 255, 255, 255, 0 });
+		if (iface == "") {
+			if (gw == null) iface = DeductIface (dest, shell.node);
+			else iface = DeductIface (gw, shell.node);
+		}
+
+		if (command [0] == "add")
+			Add (dest, netmask, gw, net, iface, shell);
+		else
+			Remove (dest, netmask, gw, net, iface, shell);
+
+		return 1;
+	}
+	static string DeductIface(IP ip, Node n) {
+		foreach (Connection c in n.Connections)
+			if (c.ifaceConnection.ip.numeric == ip.numeric)
+				return c.iface.Name;
+		return "";
+	}
+
+	static void Add(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) {
 
 	}
-	static void Remove(string[] command, Shell shell) {
+	static void Remove(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) {
 
 	}
 }
