@@ -59,6 +59,8 @@ public class Interface {
 	public IP netmask;
 	public IP broadcast;
 
+	//TODO falta el mac
+
 	public Interface(string ip, string mask, string broadcast, 
 			string name = "eth0", bool isUp = true, 
 			GameObject representation = null, Node node = null) {
@@ -122,6 +124,19 @@ public class RouteEntry {
 		this.metric = metric;
 		this.refe = refe;
 		this.use = use;
+	}
+
+	public override bool Equals (object obj) {
+		RouteEntry comp = obj as RouteEntry;
+		return (
+			genmask == comp.genmask &&
+			destination == comp.destination &&
+			gateway == comp.gateway &&
+			iface == comp.iface
+		);
+	}
+	public override int GetHashCode () {
+		return base.GetHashCode ();
 	}
 }
 

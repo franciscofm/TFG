@@ -6,6 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class IP {
 
+	public static IP Empty = new IP ("0.0.0.0");
+
 	public uint numeric;
 	public uint[] array;
 	public string word;
@@ -57,5 +59,13 @@ public class IP {
 
 	public override string ToString () {
 		return word;
+	}
+
+	public override bool Equals (object obj) {
+		IP comp = obj as IP;
+		return (this.numeric == comp.numeric);
+	}
+	public override int GetHashCode () {
+		return numeric.GetHashCode ();
 	}
 }

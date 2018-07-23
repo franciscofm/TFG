@@ -33,7 +33,7 @@ public static class Route {
 		case 1:
 			switch (command[0]) {
 			case "-n":
-				List (true, shell); //List up
+				List (false, shell); //List up
 				break;
 			}
 			break;
@@ -52,20 +52,17 @@ public static class Route {
 			PrintEntry (re, shell, arp);
 		}
 	}
-	static void List(string[] command, Shell shell) {
-		
-	}
 	static void PrintEntry(RouteEntry e, Shell shell, bool arp) {
 		if(!arp)
 			shell.PrintOutput (
-				"D:" + e.destination + 
-				", GW:" + e.gateway + 
-				", Gmask:" + e.genmask + 
-				", F" + e.flags + 
-				", M" + e.metric + 
-				", R" + e.refe + 
-				", U" + e.use + 
-				", Iface" + e.iface + 
+				"Iface:" + e.iface + 
+				" (D)" + e.destination + 
+				" (GW)" + e.gateway + 
+				" (M)" + e.genmask + 
+				" (F)" + e.flags + 
+				" (M)" + e.metric + 
+				" (R)" + e.refe + 
+				" (U)" + e.use + 
 				Console.jump
 			);
 	}
@@ -124,6 +121,8 @@ public static class Route {
 			if (gw == null) iface = DeductIface (dest, shell.node);
 			else iface = DeductIface (gw, shell.node);
 		}
+		if (gw == null)
+			gw = IP.Empty;
 
 		if (command [0] == "add")
 			Add (dest, netmask, gw, net, iface, shell);
@@ -140,9 +139,25 @@ public static class Route {
 	}
 
 	static void Add(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) {
-
+		RouteEntry entry = null;
+		foreach (RouteEntry r in shell.node.RouteTable)
+			if (r.destination.numeric == dest.numeric)
+				entry = r;
+		if (entry == null) {
+			entry = new RouteEntry (dest, gw, netmask, iface, "U", 0, 0, 0);
+			shell.node.RouteTable.Add (entry);
+		} else {
+			entry.genmask = netmask;
+			entry.gateway = gw;
+			entry.iface = iface;
+			entry.flags = "U";
+		}
+		if(entry.destination.numeric == 0)
+			entry.flags += "G";
 	}
 	static void Remove(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) {
-
+		foreach (RouteEntry r in shell.node.RouteTable)
+			if (r.destination == dest)
+				shell.node.RouteTable.Remove (r);
 	}
 }
