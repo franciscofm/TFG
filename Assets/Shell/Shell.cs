@@ -88,7 +88,7 @@ public class Shell : MonoBehaviour {
 		FocusShell ();
 	}
 
-	public void WriteInput(string input) {
+	public void SetInput(string input) {
 		inputText.text = input;
 	}
 	public void AddInput(string input) {
@@ -109,20 +109,25 @@ public class Shell : MonoBehaviour {
 		string command = inputText.text;
 		string[] splited = command.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
+		//si solo esta el directorio
 		if (splited.Length < 2) return;
 
+		//coger el comando
 		string substring = "";
-		for (int i = 1; i < splited.Length; ++i) {
+		for (int i = 1; i < splited.Length; ++i) 
 			substring += splited [i] + " ";
-			//print (splited [i] +" "+ i);
-		}
 
+		//poner el comando en el output
 		PrintOutput (user + " " + substring + Console.jump);
+
+		//tratar comando
 		if (splited [1] == "history") { //espeshial history case
 			History ();
 			history.Add ("history");
-		} else if (Console.ReadCommand (splited, this)) {
+		} else {
+			CommandStructure commandReturn = Console.ReadCommand (splited, this);
 			history.Add (substring);
+			if (commandReturn.prompt) PrintOutput (commandReturn.value);
 		}
 		inputText.text = user + " ";
 		historyCommandIndex = history.Count;

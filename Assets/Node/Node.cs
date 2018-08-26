@@ -13,6 +13,7 @@ public class Node : MonoBehaviour {
 	public List<RouteEntry> RouteTable;
 	public List<ARPEntry> ARPTable;
 
+	public enum Type { Pc, Switch, HUB };
 
 	public GameObject RenderLine(Transform t1, Transform t2) {
 		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
@@ -59,7 +60,8 @@ public class Interface {
 	public IP netmask;
 	public IP broadcast;
 
-	//TODO falta el mac
+	//TODO falta el mac FF:FF:FF:FF:FF:FF 8bit
+	public ulong mac = 0xffffffffffff;
 
 	public Interface(string ip, string mask, string broadcast, 
 			string name = "eth0", bool isUp = true, 
@@ -71,22 +73,6 @@ public class Interface {
 		this.isUp = isUp;
 		this.representation = representation;
 		this.node = node;
-	}
-	public Interface(uint[] ip, uint[] mask, uint[] broadcast) {
-		this.ip = new IP (ip);
-		this.netmask = new IP (mask);
-		this.broadcast = new IP (broadcast);
-	}
-	public Interface(
-		uint i_a, uint i_b, uint i_c, uint i_d,
-		uint m_a, uint m_b, uint m_c, uint m_d,
-		uint b_a, uint b_b, uint b_c, uint b_d) : 
-		this(
-			new uint[]{ i_a, i_b, i_c, i_d }, 
-			new uint[]{ m_a, m_b, m_c, m_d }, 
-			new uint[]{ b_a, b_b, b_c, b_d })
-			{
-		//Returns Interface(int[],int],int[])
 	}
 
 	public void SetIp(IP ip) {
@@ -150,7 +136,7 @@ public class ARPEntry {
 	public IP addressIP;
 
 	public string hwType;
-	public IP hwAddress;
+	public ulong mac;
 
 	public string flags;
 	public string mask;

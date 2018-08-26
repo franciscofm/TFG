@@ -33,8 +33,4 @@ public class Keyboard : MonoBehaviour {
 		}
 	}
 
-	public static void History() {
-		foreach (Shell shell in Shell.focusedShells)
-			shell.History ();
-	}
 }

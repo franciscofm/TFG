@@ -8,7 +8,4 @@ public static class Arp {
 
 	}
 
-	public static string Check(int[] ip) {
-		return "";
-	}
 }
