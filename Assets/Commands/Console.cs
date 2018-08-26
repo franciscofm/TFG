@@ -51,7 +51,7 @@ public static class Console {
 	}
 
 	static void ping(string[] command, Shell shell, CommandStructure value) {
-
+		Ping.Command (command, shell);
 	}
 	static void route(string[] command, Shell shell, CommandStructure value) {
 		Route.Command (command, shell, value);
