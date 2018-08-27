@@ -95,10 +95,8 @@ public static class Route {
 		*/
 
 		if (
-			(command.Length < 3) || (command.Length > 9) ||
-			(command.Length % 2) == 0 ||
-			((command[0] != "add") && (command[0] != "del")) ||
-			((command[1] != "-net") && (command[1] != "-host"))
+			(command.Length < 3) || (command.Length > 9) || (command.Length % 2) == 0 ||
+			((command[0] != "add") && (command[0] != "del")) || ((command[1] != "-net") && (command[1] != "-host"))
 		) {
 			value.value = "Error (0): route add|del -net|-host x.x.x.x [netmask x.x.x.x] [gw x.x.x.x] [dev iface]";
 			return;

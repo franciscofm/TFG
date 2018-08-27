@@ -14,6 +14,7 @@ public static class Console {
 		{"help", help },
 
 		{"ifconfig", ifconfig },
+		{"ic", ifconfig },
 		{"ifup", ifup },
 		{"ifdown", ifdown },
 
@@ -51,7 +52,7 @@ public static class Console {
 	}
 
 	static void ping(string[] command, Shell shell, CommandStructure value) {
-		Ping.Command (command, shell);
+		Ping.Command (command, shell, value);
 	}
 	static void route(string[] command, Shell shell, CommandStructure value) {
 		Route.Command (command, shell, value);
