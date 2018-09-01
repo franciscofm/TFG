@@ -30,7 +30,7 @@ public class Folder : Inode {
 
 	public Folder GetFolder(string path) {
 		string[] splited = path.Split (new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
-		Folder current = self;
+		Folder current = (path.StartsWith("/")) ? root : self;
 		for (int i = 0; i < splited.Length; ++i) {
 			bool found = false;
 			for (int j = 0; j < current.folders.Count && !found; ++j) {
