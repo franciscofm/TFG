@@ -61,13 +61,19 @@ public class Shell : MonoBehaviour {
 	public bool maximized;
 	public bool pointed;
 	public bool routined;
+
 	public IEnumerator routine;
-	[HideInInspector] string user = "admin@ubuntu:~$";
+	//location
+	[HideInInspector] string user = "admin";
+	public Folder folder;
+	public string path;
+	//history
 	public List<string> allOutput;
 	public List<string> history;
 	public int outputFirstIndex;
 	public int outputShownLines;
 	public int historyCommandIndex;
+
 	public Vector3 dragOffset;
 
 	public static List<Shell> focusedShells = new List<Shell> ();

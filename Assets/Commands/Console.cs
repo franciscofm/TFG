@@ -12,17 +12,22 @@ public static class Console {
 
 	private static readonly Dictionary<string, Template> commands = new Dictionary<string, Template>() {
 		{"help", help },
+		{"man", man },
+		{"theme", theme },
 
 		{"ifconfig", ifconfig },
 		{"ic", ifconfig },
 		{"ifup", ifup },
 		{"ifdown", ifdown },
-
-		{"theme", theme },
-
 		{"route", route },
+		{"ping", ping },
 
-		{"ping", ping }
+
+		{"ls", ls },
+		{"mkdir", mkdir },
+		{"mkfile", mkfile },
+		{"cd", cd }
+
 	};
 
 	public static CommandStructure ReadCommand(string[] command, Shell shell) {
@@ -39,8 +44,14 @@ public static class Console {
 		value.correct = true;
 		value.prompt = true;
 	}
+	static void man(string[] command, Shell shell, CommandStructure value) {
+		//Ls.Command (command, shell, value);
+	}
+	static void theme(string[] command, Shell shell, CommandStructure value) {
+		Theme.Command (command, shell, value);
+	}
 
-	//ifconfig
+	//IT
 	static void ifconfig(string[] command, Shell shell, CommandStructure value) {
 		Ifconfig.Command (command, shell, value);
 	}
@@ -51,16 +62,29 @@ public static class Console {
 		Ifconfig.IfDown (command, shell, value);
 	}
 
-	static void ping(string[] command, Shell shell, CommandStructure value) {
-		Ping.Command (command, shell, value);
-	}
+
 	static void route(string[] command, Shell shell, CommandStructure value) {
 		Route.Command (command, shell, value);
 	}
-	
-	static void theme(string[] command, Shell shell, CommandStructure value) {
-		Theme.Command (command, shell, value);
+
+	static void ping(string[] command, Shell shell, CommandStructure value) {
+		Ping.Command (command, shell, value);
 	}
+
+	//File System
+	static void ls(string[] command, Shell shell, CommandStructure value) {
+		Ls.Command (command, shell, value);
+	}
+	static void mkdir(string[] command, Shell shell, CommandStructure value) {
+		//Ls.Command (command, shell, value);
+	}
+	static void mkfile(string[] command, Shell shell, CommandStructure value) {
+		//Ls.Command (command, shell, value);
+	}
+	static void cd(string[] command, Shell shell, CommandStructure value) {
+		//Ls.Command (command, shell, value);
+	}
+
 }
 
 public class CommandStructure { 

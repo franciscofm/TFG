@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class Utils {
 
+	public static bool[] PermissionDefault = new bool[] {true,true,true,true,true,true,true,true,true};
+
 	public static bool ArrayAboveInt(this int[] array, int value) {
 		foreach (int i in array)
 			if (i > value)
