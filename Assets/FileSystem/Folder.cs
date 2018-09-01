@@ -3,21 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Folder : Inode {
 
-	public static Folder root;
 	public Folder parent;
-	public Folder self;
+	public Folder self;		//no really needed
 
 	public List<Folder> folders;
 	public List<File> files;
 
 	public Folder(string name, Folder parent, string creator = "admin", string owner = "admin", bool[] permissions = null) {
 
-		this.parent = parent;
+		if (parent == null)
+			this.parent = this;
+		else
+			this.parent = parent;
+
 		self = this;
 
 		this.name = name;
+		
 		this.creator = creator;
 		this.owner = owner;
 
@@ -30,7 +35,7 @@ public class Folder : Inode {
 
 	public Folder GetFolder(string path) {
 		string[] splited = path.Split (new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
-		Folder current = (path.StartsWith("/")) ? root : self;
+		Folder current = (path.StartsWith("/")) ? GetRootFolder() : self;
 		for (int i = 0; i < splited.Length; ++i) {
 			bool found = false;
 			for (int j = 0; j < current.folders.Count && !found; ++j) {
@@ -45,7 +50,7 @@ public class Folder : Inode {
 	}
 	public File GetFile(string path) {
 		string[] splited = path.Split (new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
-		Folder current = self;
+		Folder current = (path.StartsWith("/")) ? GetRootFolder() : self;
 		for (int i = 0; i < splited.Length; ++i) {
 			if (i == splited.Length - 1) {
 				bool found = false;
@@ -68,6 +73,12 @@ public class Folder : Inode {
 			}
 		}
 		return null;
+	}
+	public Folder GetRootFolder() {
+		Folder current = self;
+		while (current != current.parent)
+			current = current.parent;
+		return current;
 	}
 
 	public string GetPathString() {

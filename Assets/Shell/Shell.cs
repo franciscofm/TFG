@@ -64,9 +64,12 @@ public class Shell : MonoBehaviour {
 
 	public IEnumerator routine;
 	//location
-	[HideInInspector] string user = "admin";
+	string user = "admin";
+	string pcName = "PC1";
 	public Folder folder;
 	public string path;
+	public string address;
+
 	//history
 	public List<string> allOutput;
 	public List<string> history;
@@ -81,7 +84,6 @@ public class Shell : MonoBehaviour {
 
 	void Start() {
 		expanded = true;
-		inputText.text = user + " ";
 		outputText.text = "";
 		outputFirstIndex = 0;
 		outputShownLines = 0;
@@ -90,6 +92,11 @@ public class Shell : MonoBehaviour {
 		history = new List<string> ();
 		allOutput = new List<string> ();
 		resizeGameObject.SetActive (allowResize);
+
+		folder = node.rootFolder;
+		path = folder.GetPathString ();
+		address = user + "@" + pcName + ":" + path + "$";
+		inputText.text = address + " ";
 
 		FocusShell ();
 	}
@@ -108,7 +115,7 @@ public class Shell : MonoBehaviour {
 		if (splited.Length > 1) {
 			inputText.text = inputText.text.Remove (inputText.text.Length - 1);
 		} else {
-			inputText.text = user + " ";
+			inputText.text = address + " ";
 		}
 	}
 	public void ReadInput() {
@@ -124,7 +131,7 @@ public class Shell : MonoBehaviour {
 			substring += splited [i] + " ";
 
 		//poner el comando en el output
-		PrintOutput (user + " " + substring + Console.jump);
+		PrintOutput (address + " " + substring + Console.jump);
 
 		//tratar comando
 		if (splited [1] == "history") { //espeshial history case
@@ -133,9 +140,10 @@ public class Shell : MonoBehaviour {
 		} else {
 			CommandStructure commandReturn = Console.ReadCommand (splited, this);
 			history.Add (substring);
+			print (commandReturn.value);
 			if (commandReturn.prompt) PrintOutput (commandReturn.value);
 		}
-		inputText.text = user + " ";
+		inputText.text = address + " ";
 		historyCommandIndex = history.Count;
 	}
 	public void PrintOutput(string output) {
@@ -144,8 +152,6 @@ public class Shell : MonoBehaviour {
 			allOutput.Add (splited[n] + Console.jump);
 			++outputShownLines;
 			if (outputShownLines > outputMaxLines) {
-//			int firstShownLength = allOutput [outputFirstIndex].Length;
-//			outputText.text = outputText.text.Remove (0, firstShownLength);
 				int dif = outputShownLines - outputMaxLines;
 				outputFirstIndex += dif;
 				outputText.text = "";
@@ -168,11 +174,11 @@ public class Shell : MonoBehaviour {
 	}
 	public void GetPreviousCommand() {
 		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
-		inputText.text = user + " " + history[historyCommandIndex];
+		inputText.text = address + " " + history[historyCommandIndex];
 	}
 	public void GetNextCommand() {
 		historyCommandIndex = Math.Min (history.Count - 1, historyCommandIndex + 1);
-		inputText.text = user + " " + history[historyCommandIndex];
+		inputText.text = address + " " + history[historyCommandIndex];
 	}
 
 	public void CallbackClose() {

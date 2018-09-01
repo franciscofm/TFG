@@ -7,7 +7,7 @@ using UnityEngine;
 /// Simple Inode representation, no weight and pages.
 /// </summary>
 public class Inode {
-	
+
 	public bool[] permissions;
 
 	public string owner;

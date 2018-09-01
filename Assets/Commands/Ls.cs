@@ -9,9 +9,11 @@ public static class Ls {
 
 		switch (command.Length) {
 		case 0:
+			Debug.Log ("Case 0");
 			ListAll (false, false, false, shell.folder, value);
 			break;
 		default:
+			Debug.Log ("Case default");
 			ReadOptions(command, shell, value);
 			break;
 		}
@@ -47,7 +49,9 @@ public static class Ls {
 
 	public static void ListAll(bool details, bool hiden, bool color, Folder folder, CommandStructure value) {
 		int c = 0;
+		//Debug.Log ("Folder name: " + folder.name);
 		foreach (Folder f in folder.folders) {
+			//Debug.Log ("Folder number: " + c);
 			if (hiden || !f.name.StartsWith (".")) {
 				ListInode (details, color, value, f, true);
 				++c;
@@ -57,6 +61,7 @@ public static class Ls {
 		}
 		c = 0;
 		foreach(File f in folder.files) {
+			//Debug.Log ("File number: " + c);
 			if(hiden || !f.name.StartsWith(".")){
 				ListInode(details, color, value, f, false);
 				++c;
@@ -65,6 +70,7 @@ public static class Ls {
 			}
 		}
 		if (!hiden && c % 4 != 0) value.value += Console.jump;
+		//Debug.Log (value.value);
 	}
 	public static void ListInode(bool details, bool color, CommandStructure value, Inode inode, bool folder) {
 		//folder or file
@@ -86,7 +92,7 @@ public static class Ls {
 			value.value += " ";
 		}
 
-		value.value += inode.name;
+		value.value += inode.name + " ";
 
 		if (details) value.value += Console.jump;
 	}
