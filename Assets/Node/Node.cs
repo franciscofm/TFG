@@ -46,6 +46,8 @@ public class Node : MonoBehaviour {
 	}
 
 	public bool CanReach(IP destination) {
+		//si esta conectado directamente
+		//si se puede llegar por route
 		return false;
 	}
 }
