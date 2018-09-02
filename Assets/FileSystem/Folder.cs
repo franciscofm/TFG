@@ -37,14 +37,21 @@ public class Folder : Inode {
 		string[] splited = path.Split (new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
 		Folder current = (path.StartsWith("/")) ? GetRootFolder() : self;
 		for (int i = 0; i < splited.Length; ++i) {
-			bool found = false;
-			for (int j = 0; j < current.folders.Count && !found; ++j) {
-				if (current.folders [j].name == splited [i]) {
-					found = true;
-					current = current.folders [j];
+			if (splited [i] == ".") {
+				//current = current;
+			} else if (splited [i] == "..") {
+				current = current.parent;
+			} else {
+				bool found = false;
+				for (int j = 0; j < current.folders.Count && !found; ++j) {
+					if (current.folders [j].name == splited [i]) {
+						found = true;
+						current = current.folders [j];
+					}
 				}
+				if (!found)
+					return null;
 			}
-			if (!found) return null;
 		}
 		return current;
 	}
@@ -62,14 +69,21 @@ public class Folder : Inode {
 				}
 				if (!found) return null;
 			} else {
-				bool found = false;
-				for (int j = 0; j < current.folders.Count && !found; ++j) {
-					if (current.folders [j].name == splited [i]) {
-						found = true;
-						current = current.folders [j];
+				if (splited [i] == ".") {
+					//current = current;
+				} else if (splited [i] == "..") {
+					current = current.parent;
+				} else {
+					bool found = false;
+					for (int j = 0; j < current.folders.Count && !found; ++j) {
+						if (current.folders [j].name == splited [i]) {
+							found = true;
+							current = current.folders [j];
+						}
 					}
+					if (!found)
+						return null;
 				}
-				if (!found) return null;
 			}
 		}
 		return null;
@@ -85,7 +99,8 @@ public class Folder : Inode {
 		string path = "";
 		Folder current = this;
 		while (current.parent != current.self) {
-			path.Insert (0, "/" + current.name);
+			path = path.Insert (0, "/" + current.name);
+			Debug.Log ("Current name: " + current.name);
 			current = current.parent;
 		}
 		return path;

@@ -82,7 +82,7 @@ public static class Console {
 		//Ls.Command (command, shell, value);
 	}
 	static void cd(string[] command, Shell shell, CommandStructure value) {
-		//Ls.Command (command, shell, value);
+		Cd.Command (command, shell, value);
 	}
 
 }

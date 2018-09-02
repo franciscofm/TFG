@@ -9,11 +9,9 @@ public static class Ls {
 
 		switch (command.Length) {
 		case 0:
-			Debug.Log ("Case 0");
 			ListAll (false, false, false, shell.folder, value);
 			break;
 		default:
-			Debug.Log ("Case default");
 			ReadOptions(command, shell, value);
 			break;
 		}
@@ -21,47 +19,54 @@ public static class Ls {
 
 	public static void ReadOptions(string[] command, Shell shell, CommandStructure value) {
 		bool hiden = false, details = false, color = false;
+		bool target = false, multiple = false;
 		List<string> paths = new List<string> ();
 		Folder root = shell.folder;
 
-		foreach (string word in command) {
-			if (word.StartsWith ("-")) {
+		//solo pilla -la y -c como --color
+		foreach (string word in command) { //cada parametro
+			if (word.StartsWith ("-")) { //si es opcion
 				hiden = word.Contains ("a");
 				details = word.Contains ("l");
 				color = word.Contains ("c");
-			} else {
+			} else { //si es directorio o fichero
+				if (target)
+					multiple = true;
+				target = true;
 				paths.Add (word);
 			}
 		}
 
-		foreach (string s in paths) {
-			Folder folder = root.GetFolder (s);
-			if (folder == null) {
-				File file = root.GetFile (s);
-				if(file != null)
-					ListInode (details, color, value, file, false);
-			} else {
-				value.value += folder.name + ":" + Console.jump;
-				ListAll (details, hiden, color, folder, value);
+		if (target) { //si tenemos directorio/fichero especificado
+			foreach (string s in paths) { //para cada uno
+				Folder folder = root.GetFolder (s);
+				if (folder == null) {
+					File file = root.GetFile (s);
+					if (file != null)
+						ListInode (details, color, value, file, false);
+				} else {
+					if(multiple)
+						value.value += folder.name + ":" + Console.jump;
+					ListAll (details, hiden, color, folder, value);
+				}
 			}
+		} else { //si no, carpeta actual
+			ListAll (details, hiden, color, shell.folder, value);
 		}
 	}
 
 	public static void ListAll(bool details, bool hiden, bool color, Folder folder, CommandStructure value) {
 		int c = 0;
-		//Debug.Log ("Folder name: " + folder.name);
 		foreach (Folder f in folder.folders) {
-			//Debug.Log ("Folder number: " + c);
-			if (hiden || !f.name.StartsWith (".")) {
+			if (hiden || !f.name.StartsWith (".")) { //Si enseñamos todos o no es oculto, lo mostramos
 				ListInode (details, color, value, f, true);
 				++c;
-				if (!hiden && c % 4 == 0)
+				if (!hiden && c % 4 == 0) //si no es lista, hacemos 4 columnas
 					value.value += Console.jump;
 			}
 		}
 		c = 0;
 		foreach(File f in folder.files) {
-			//Debug.Log ("File number: " + c);
 			if(hiden || !f.name.StartsWith(".")){
 				ListInode(details, color, value, f, false);
 				++c;
@@ -69,8 +74,7 @@ public static class Ls {
 					value.value += Console.jump;
 			}
 		}
-		if (!hiden && c % 4 != 0) value.value += Console.jump;
-		//Debug.Log (value.value);
+		if (!hiden && c % 4 != 0) value.value += Console.jump; //pading final si no es multiple de 4
 	}
 	public static void ListInode(bool details, bool color, CommandStructure value, Inode inode, bool folder) {
 		//folder or file
@@ -88,7 +92,7 @@ public static class Ls {
 
 			value.value += " " + inode.owner;
 			value.value += " " + inode.creator;
-			value.value += " " + inode.creation;
+			value.value += " " + inode.date;
 			value.value += " ";
 		}
 

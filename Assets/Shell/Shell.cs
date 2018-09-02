@@ -61,14 +61,19 @@ public class Shell : MonoBehaviour {
 	public bool maximized;
 	public bool pointed;
 	public bool routined;
-
 	public IEnumerator routine;
+
 	//location
 	string user = "admin";
 	string pcName = "PC1";
 	public Folder folder;
 	public string path;
 	public string address;
+	public void UpdateAddress(Folder folder) {
+		this.folder = folder;
+		path = folder.GetPathString ();
+		address = user + "@" + pcName + ":" + path + "$";
+	}
 
 	//history
 	public List<string> allOutput;
@@ -140,7 +145,6 @@ public class Shell : MonoBehaviour {
 		} else {
 			CommandStructure commandReturn = Console.ReadCommand (splited, this);
 			history.Add (substring);
-			print (commandReturn.value);
 			if (commandReturn.prompt) PrintOutput (commandReturn.value);
 		}
 		inputText.text = address + " ";
@@ -159,7 +163,7 @@ public class Shell : MonoBehaviour {
 					outputText.text += allOutput [i + outputFirstIndex];
 				outputShownLines = outputMaxLines;
 			} else {
-				outputText.text += output;
+				outputText.text += splited[n] + Console.jump;
 			}
 		}
 	}

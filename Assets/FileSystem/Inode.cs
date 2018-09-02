@@ -14,18 +14,18 @@ public class Inode {
 	public string creator;
 	public string name;
 
-	public DateTime creation;
+	public DateTime date;
 
 	public Inode() {
-
+		date = DateTime.Now;
 	}
 
-	public Inode(string name, string creator = "admin", string owner = "admin", bool[] permissions = null) {
-		this.name = name;
-		this.creator = creator;
-		this.owner = owner;
-
-		if (permissions == null) this.permissions = Utils.PermissionDefault;
-		else this.permissions = permissions;
-	}
+//	public Inode(string name, string creator = "admin", string owner = "admin", bool[] permissions = null) {
+//		this.name = name;
+//		this.creator = creator;
+//		this.owner = owner;
+//
+//		if (permissions == null) this.permissions = Utils.PermissionDefault;
+//		else this.permissions = permissions;
+//	}
 }
