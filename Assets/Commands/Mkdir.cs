@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mkdir : MonoBehaviour {
+public static class Mkdir {
 
-	// Use this for initialization
-	void Start () {
+	public static void Command(string[] command, Shell shell, CommandStructure value) {
+		switch (command.Length) {
+		case 1:
+			CreateFolder (command [0], shell, value);
+			break;
+		default:
+			break;
+		}
+	}
+
+	static void Action(string path, Shell shell, CommandStructure value) {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	static void CreateFolder(string path, Shell shell, CommandStructure value) {
+		Folder folder = shell.folder.GetFolder (path);
+
 	}
 }

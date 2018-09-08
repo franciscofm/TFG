@@ -15,11 +15,9 @@ public static class Cd {
 		}
 	}
 
-	public static void Move(string path, Shell shell, CommandStructure value) {
-		Debug.Log (path);
+	static void Move(string path, Shell shell, CommandStructure value) {
 		Folder newFolder = shell.folder.GetFolder (path);
 		if (newFolder != null) {
-			Debug.Log (newFolder.name);
 			shell.UpdateAddress (newFolder);
 		}
 	}
