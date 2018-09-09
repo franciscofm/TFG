@@ -113,8 +113,29 @@ public class Node : MonoBehaviour {
 	}
 
 	public bool CanReach(IP destination) {
+		//si es una direccion de las interficies propias
+		foreach (Interface i in Interfaces)
+			if (i.isUp && i.ip == destination)
+				return true;
+		
 		//si esta conectado directamente
+		foreach (Connection c in Connections)
+			if (Interfaces[c.ownIfaceId].isUp && 
+				c.otherNode.Interfaces[c.otherIfaceId].isUp && 
+				c.otherNode.Interfaces[c.otherIfaceId].ip == destination)
+				return true;
+
 		//si se puede llegar por route
+//		foreach (RouteEntry re in RouteTable) {
+//			foreach (Interface i in Interfaces) {
+//				if (i.isUp && re.gateway == i.ip) {
+//					foreach (Connection c in Connections) {
+//						if(Interfaces[c.ownIfaceId] == i.ip
+//					}	
+//				}
+//			}
+//		}
+
 		return false;
 	}
 }
