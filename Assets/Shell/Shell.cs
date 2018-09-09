@@ -7,6 +7,26 @@ using UnityEngine.UI;
 
 public class Shell : MonoBehaviour {
 
+	public delegate void ShellEvent(Shell sender);
+	public delegate void ShellEventFull(Shell sender, string value);
+	public event ShellEvent OnFocus;
+	public event ShellEvent OnUnfocus;
+	public event ShellEvent OnCreate;
+	public event ShellEvent OnClose;
+	public event ShellEvent OnMinimize;
+	public event ShellEvent OnMaximize;
+
+	public event ShellEventFull OnUpdateAddress;
+	public event ShellEventFull OnChangeTheme;
+	public event ShellEventFull OnOutput;
+
+	void RaiseEvent(ShellEvent e) {
+		if (e != null) e (this);
+	}
+	void RaiseEventFull(ShellEventFull e, string value) {
+		if (e != null) e (this, value);
+	}
+
 	[Header("Configuration")]
 	public bool allowResize = false;
 	public int outputMaxLines = 20;
@@ -53,15 +73,14 @@ public class Shell : MonoBehaviour {
 		headerText.font = a.font;
 		inputText.font = a.font;
 		outputText.font = a.font;
+
+		RaiseEventFull (OnChangeTheme, a.name);
 	}
 
 	[Header("Behaviour")]
 	public bool focus;
 	public bool expanded;
 	public bool maximized;
-	public bool pointed;
-	public bool routined;
-	public IEnumerator routine;
 
 	//location
 	string user = "admin";
@@ -73,6 +92,8 @@ public class Shell : MonoBehaviour {
 		this.folder = folder;
 		path = folder.GetPathString ();
 		address = user + "@" + pcName + ":" + path + "$";
+
+		RaiseEventFull (OnUpdateAddress, folder.name);
 	}
 
 	//history
@@ -104,16 +125,15 @@ public class Shell : MonoBehaviour {
 		inputText.text = address + " ";
 
 		FocusShell ();
+
+		RaiseEvent (OnCreate);
 	}
 
 	public void SetInput(string input) {
 		inputText.text = input;
 	}
 	public void AddInput(string input) {
-		if (pointed)
-			inputText.text = inputText.text.Insert (inputText.text.Length - 1, input);
-		else
-			inputText.text += input;
+		inputText.text += input;
 	}
 	public void RemoveInput(int index) {
 		string[] splited = inputText.text.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -136,7 +156,9 @@ public class Shell : MonoBehaviour {
 			substring += splited [i] + " ";
 
 		//poner el comando en el output
-		PrintOutput (address + " " + substring + Console.jump);
+		string output = address + " " + substring + Console.jump;
+		PrintOutput (output);
+		RaiseEventFull (OnOutput, output);
 
 		//tratar comando
 		if (splited [1] == "history") { //espeshial history case
@@ -186,6 +208,8 @@ public class Shell : MonoBehaviour {
 	}
 
 	public void CallbackClose() {
+		RaiseEvent (OnClose);
+
 		UnfocusShell ();
 		Destroy (gameObject);
 	}
@@ -193,12 +217,14 @@ public class Shell : MonoBehaviour {
 		expanded = !expanded;
 		bodyRectTransform.gameObject.SetActive (expanded);
 		print ("TODO: CallbackMinimize animation");
+		RaiseEvent (OnMinimize);
 		if (!expanded)
 			UnfocusShell ();
 	}
 	public void CallbackMaximize() {
 		//FocusShell ();
 		print ("TODO: CallbackMaximize");
+		RaiseEvent (OnMaximize);
 	}
 
 	public void CallbackResizeVertical() {
@@ -210,8 +236,8 @@ public class Shell : MonoBehaviour {
 
 	public void FocusShell() { //Nos hacemos focus si no lo teniamos aun
 		if(expanded) {
+			RaiseEvent (OnFocus);
 			focus = true;
-			//StartCoroutine (routine = FocusRoutine ());
 			if(!focusedShells.Contains(this)) {
 				focusedShells.Add (this);
 			}
@@ -219,30 +245,11 @@ public class Shell : MonoBehaviour {
 	}
 	public void UnfocusShell() {
 		focus = false;
-		if (routined) {
-			StopCoroutine (routine);
-			if (pointed) {
-				inputText.text = inputText.text.Remove (inputText.text.Length - 1);
-				pointed = false;
-			}
-			routined = false;
-		}
+		RaiseEvent (OnUnfocus);
 		if(focusedShells.Contains(this)) {
 			focusedShells.Remove (this);
 		}
   	}
-	IEnumerator FocusRoutine() {
-		pointed = false;
-		routined = true;
-		while (true) {
-			yield return new WaitForSecondsRealtime (1f);
-			pointed = true;
-			inputText.text += "_";
-			yield return new WaitForSecondsRealtime (1f);
-			pointed = false;
-			inputText.text = inputText.text.Remove (inputText.text.Length - 1);
-		}
-	}
 
 	public void DragHeaderStart() {
 		dragOffset = transform.position - Input.mousePosition;

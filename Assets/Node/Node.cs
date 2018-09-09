@@ -95,7 +95,17 @@ public class Node : MonoBehaviour {
 	}
 
 	public delegate void NodeEvent(Node sender);
+	public delegate void NodeEventFull(Node sender, string value, bool correct);
+
 	public event NodeEvent OnClick;
+	public event NodeEventFull OnPing;
+
+	void RaiseEvent(NodeEvent e) {
+		if (e != null) e (this);
+	}
+	void RaiseEventFull(NodeEventFull e, string value, bool correct) {
+		if (e != null) e (this, value, correct);
+	}
 
 	void OnMouseUp() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
@@ -115,15 +125,20 @@ public class Node : MonoBehaviour {
 	public bool CanReach(IP destination) {
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces)
-			if (i.isUp && i.ip == destination)
+			if (i.isUp && i.ip == destination) {
+				RaiseEventFull (OnPing, destination.word, true);
 				return true;
+			}
 		
 		//si esta conectado directamente
 		foreach (Connection c in Connections)
 			if (Interfaces[c.ownIfaceId].isUp && 
 				c.otherNode.Interfaces[c.otherIfaceId].isUp && 
-				c.otherNode.Interfaces[c.otherIfaceId].ip == destination)
+				c.otherNode.Interfaces[c.otherIfaceId].ip == destination) {
+
+				RaiseEventFull (OnPing, destination.word, true);
 				return true;
+			}
 
 		//si se puede llegar por route
 //		foreach (RouteEntry re in RouteTable) {
@@ -136,6 +151,7 @@ public class Node : MonoBehaviour {
 //			}
 //		}
 
+		RaiseEventFull (OnPing, destination.word, false);
 		return false;
 	}
 }

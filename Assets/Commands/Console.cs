@@ -76,10 +76,10 @@ public static class Console {
 		Ls.Command (command, shell, value);
 	}
 	static void mkdir(string[] command, Shell shell, CommandStructure value) {
-		//Ls.Command (command, shell, value);
+		Mkdir.Command (command, shell, value);
 	}
 	static void mkfile(string[] command, Shell shell, CommandStructure value) {
-		//Ls.Command (command, shell, value);
+		//Mkfile.Command (command, shell, value);
 	}
 	static void cd(string[] command, Shell shell, CommandStructure value) {
 		Cd.Command (command, shell, value);
