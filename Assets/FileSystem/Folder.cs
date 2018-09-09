@@ -114,4 +114,22 @@ public class Folder : Inode {
 		}
 		return folders;
 	}
+
+	public File ExistsFile(string filename) {
+		foreach (File f in files)
+			if (f.name == filename)
+				return f;
+		return null;
+	}
+	public Folder ExistsFolder(string filename) {
+		foreach (Folder f in folders)
+			if (f.name == filename)
+				return f;
+		return null;
+	}
+	public Inode ExistsInode(string filename) {
+		Inode i = ExistsFile (filename);
+		if (i != null) return i;
+		else return ExistsFolder (filename);
+	}
 }
