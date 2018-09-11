@@ -98,6 +98,8 @@ public class Node : MonoBehaviour {
 	public delegate void NodeEventFull(Node sender, string value, bool correct);
 
 	public event NodeEvent OnClick;
+	public event NodeEvent OnClickUp;
+	public event NodeEvent OnClickDown;
 	public event NodeEventFull OnPing;
 
 	void RaiseEvent(NodeEvent e) {
@@ -107,8 +109,17 @@ public class Node : MonoBehaviour {
 		if (e != null) e (this, value, correct);
 	}
 
+	void OnMouseDown() {
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+		if(OnClickDown != null)
+			OnClickDown (this);
+	}
 	void OnMouseUp() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
+		if(OnClickUp != null)
+			OnClickUp (this);
+	}
+	void OnMouse() {
 		if(OnClick != null)
 			OnClick (this);
 	}
