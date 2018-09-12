@@ -83,10 +83,10 @@ public class Node : MonoBehaviour {
 	public delegate void NodeEvent(Node sender);
 	public delegate void NodeEventFull(Node sender, string value, bool correct);
 
-	public event NodeEvent OnClick;
-	public event NodeEvent OnClickUp;
-	public event NodeEvent OnClickDown;
-	public event NodeEventFull OnPing;
+	public static event NodeEvent OnClick;
+	public static event NodeEvent OnClickUp;
+	public static event NodeEvent OnClickDown;
+	public static event NodeEventFull OnPing;
 
 	void RaiseEvent(NodeEvent e) {
 		if (e != null) e (this);

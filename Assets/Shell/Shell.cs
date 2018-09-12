@@ -124,6 +124,9 @@ public class Shell : MonoBehaviour {
 		address = user + "@" + pcName + ":" + path + "$";
 		inputText.text = address + " ";
 
+		//TODO fix
+		transform.position += new Vector3 (bodyRectTransform.rect.width, -bodyRectTransform.rect.height, 0f) * .5f;
+
 		FocusShell ();
 
 		RaiseEvent (OnCreate);
@@ -242,6 +245,7 @@ public class Shell : MonoBehaviour {
 				focusedShells.Add (this);
 			}
 		}
+		transform.SetAsLastSibling ();
 	}
 	public void UnfocusShell() {
 		focus = false;

@@ -1,18 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
-public class Interface : MonoBehaviour{
+public class Interface : MonoBehaviour {
 
 	public GameObject connectionRepresentation;
 	public Interface connectedTo;
 	public static Interface lastDown;
 
 	void OnMouseDown() {
-		//print ("Down 1");
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		print ("Down "+transform.parent.name+"/"+gameObject.name);
 		lastDown = this;
