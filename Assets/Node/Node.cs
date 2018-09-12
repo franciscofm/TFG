@@ -9,10 +9,7 @@ public class Node : MonoBehaviour {
 	public Folder rootFolder;
 
 	//Puertos LAN
-	public Interface[] Interfaces = new Interface[] {
-		new Interface("192.168.60.1","255.255.255.255","192.168.60.1")
-	};
-	public Connection[] Connections;
+	public Interface[] Interfaces;
 
 	//Routing
 	public List<RouteEntry> RouteTable;
@@ -83,17 +80,6 @@ public class Node : MonoBehaviour {
 		rootFolder.folders.Add (new Folder ("dev", rootFolder));
 	}
 
-	public GameObject RenderLine(Transform t1, Transform t2) {
-		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
-		go.transform.parent = t1;
-		LineRenderer line = go.AddComponent<LineRenderer> ();
-		line.positionCount = 2;
-		line.SetPosition (0, t1.position);
-		line.SetPosition (1, t2.position);
-		line.widthMultiplier = 0.1f;
-		return go;
-	}
-
 	public delegate void NodeEvent(Node sender);
 	public delegate void NodeEventFull(Node sender, string value, bool correct);
 
@@ -132,6 +118,12 @@ public class Node : MonoBehaviour {
 		}
 		return null;
 	}
+	public bool HasInterface(Interface iface) {
+		foreach (Interface i in Interfaces)
+			if (i == iface)
+				return true;
+		return false;
+	}
 
 	public bool CanReach(IP destination) {
 		//si es una direccion de las interficies propias
@@ -142,11 +134,8 @@ public class Node : MonoBehaviour {
 			}
 		
 		//si esta conectado directamente
-		foreach (Connection c in Connections)
-			if (Interfaces[c.ownIfaceId].isUp && 
-				c.otherNode.Interfaces[c.otherIfaceId].isUp && 
-				c.otherNode.Interfaces[c.otherIfaceId].ip == destination) {
-
+		foreach (Interface i in Interfaces)
+			if (i.isUp && i.connectedTo != null && i.connectedTo.isUp && i.connectedTo.ip == destination) {
 				RaiseEventFull (OnPing, destination.word, true);
 				return true;
 			}

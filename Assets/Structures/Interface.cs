@@ -1,8 +1,55 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+
+using UnityEngine.EventSystems;
+using UnityEngine;
 
 [System.Serializable]
-public class Interface {
-	public GameObject representation;
+public class Interface : MonoBehaviour{
+
+	public GameObject connectionRepresentation;
+	public Interface connectedTo;
+	public static Interface lastDown;
+
+	void OnMouseDown() {
+		//print ("Down 1");
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+		print ("Down "+transform.parent.name+"/"+gameObject.name);
+		lastDown = this;
+	}
+
+	void OnMouseUp() {
+		print ("Up "+transform.parent.name+"/"+gameObject.name);
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+		if (lastDown == null) return;
+		if (lastDown.node == node) return;
+
+		if (connectedTo != null) {
+			connectedTo.connectionRepresentation = null;
+			connectedTo.connectedTo = null;
+			Destroy (connectionRepresentation);
+		}
+
+		connectedTo = lastDown;
+		connectionRepresentation = RenderLine (transform, connectedTo.transform);
+
+		connectedTo.connectedTo = this;
+		connectedTo.connectionRepresentation = connectionRepresentation;
+
+		lastDown = null;
+	}
+
+	public GameObject RenderLine(Transform t1, Transform t2) {
+		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
+		go.transform.parent = t1;
+		LineRenderer line = go.AddComponent<LineRenderer> ();
+		line.positionCount = 2;
+		line.SetPosition (0, t1.position);
+		line.SetPosition (1, t2.position);
+		line.widthMultiplier = 0.1f;
+		return go;
+	}
+
 	public Node node;
 
 	public string Name = "eth0";
@@ -15,20 +62,8 @@ public class Interface {
 	public IP netmask;
 	public IP broadcast;
 
-	//TODO falta el mac FF:FF:FF:FF:FF:FF 8bit
+	//mac FF:FF:FF:FF:FF:FF 8bit
 	public ulong mac = 0xffffffffffff;
-
-	public Interface(string ip, string mask, string broadcast, 
-		string name = "eth0", bool isUp = true, 
-		GameObject representation = null, Node node = null) {
-		this.ip = new IP (ip);
-		this.netmask = new IP (mask);
-		this.broadcast = new IP (broadcast);
-		this.Name = name;
-		this.isUp = isUp;
-		this.representation = representation;
-		this.node = node;
-	}
 
 	public void SetIp(IP ip) {
 		this.ip = ip;

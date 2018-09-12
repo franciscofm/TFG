@@ -161,9 +161,9 @@ public static class Route {
 		value.prompt = false;
 	}
 	static string DeductIface(IP ip, Node n) {
-		foreach (Connection c in n.Connections)
-			if (c.otherNode.Interfaces[c.otherIfaceId].ip.numeric == ip.numeric)
-				return c.otherNode.Interfaces[c.otherIfaceId].Name;
+		foreach (Interface i in n.Interfaces)
+			if (i.connectedTo.ip.numeric == ip.numeric)
+				return i.connectedTo.Name;
 		return "";
 	}
 
