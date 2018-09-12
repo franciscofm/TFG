@@ -9,33 +9,58 @@ public class Interface : MonoBehaviour {
 
 	public GameObject connectionRepresentation;
 	public Interface connectedTo;
-	public static Interface lastDown;
-
-	void OnMouseDown() {
-		if(EventSystem.current.IsPointerOverGameObject()) return;
-		print ("Down "+transform.parent.name+"/"+gameObject.name);
-		lastDown = this;
-	}
+	public MeshRenderer mesh;
 
 	void OnMouseUp() {
 		print ("Up "+transform.parent.name+"/"+gameObject.name);
 		if(EventSystem.current.IsPointerOverGameObject()) return;
-		if (lastDown == null) return;
-		if (lastDown.node == node) return;
 
-		if (connectedTo != null) {
-			connectedTo.connectionRepresentation = null;
-			connectedTo.connectedTo = null;
-			Destroy (connectionRepresentation);
+		if (selected) Unselect ();
+		else Select ();
+	}
+
+	public static Interface lastDown;
+	public bool selected;
+
+	public void Select() {
+		
+		if (lastDown != null) {
+
+			if (lastDown.node == node) { //Not 2 interfaces of the same node
+				lastDown.selected = false;
+				selected = true;
+
+				lastDown.mesh.material.color = Color.white;
+				mesh.material.color = Color.red;
+
+				lastDown = this;
+			} else {
+
+				if (connectedTo != null) {
+					connectedTo.connectionRepresentation = null;
+					connectedTo.connectedTo = null;
+					Destroy (connectionRepresentation);
+				}
+
+				connectedTo = lastDown;
+				connectionRepresentation = RenderLine (transform, connectedTo.transform);
+
+				connectedTo.connectedTo = this;
+				connectedTo.connectionRepresentation = connectionRepresentation;
+
+				lastDown.Unselect ();
+				lastDown = null;
+			}
+		} else {
+			selected = true;
+			lastDown = this;
+			mesh.material.color = Color.red;
 		}
-
-		connectedTo = lastDown;
-		connectionRepresentation = RenderLine (transform, connectedTo.transform);
-
-		connectedTo.connectedTo = this;
-		connectedTo.connectionRepresentation = connectionRepresentation;
-
+	}
+	public void Unselect() {
 		lastDown = null;
+		selected = false;
+		mesh.material.color = Color.white;
 	}
 
 	public GameObject RenderLine(Transform t1, Transform t2) {
