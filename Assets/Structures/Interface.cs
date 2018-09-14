@@ -12,7 +12,6 @@ public class Interface : MonoBehaviour {
 	public MeshRenderer mesh;
 
 	void OnMouseUp() {
-		print ("Up "+transform.parent.name+"/"+gameObject.name);
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 
 		if (selected) Unselect ();
@@ -49,7 +48,6 @@ public class Interface : MonoBehaviour {
 				connectedTo.connectionRepresentation = connectionRepresentation;
 
 				lastDown.Unselect ();
-				lastDown = null;
 			}
 		} else {
 			selected = true;

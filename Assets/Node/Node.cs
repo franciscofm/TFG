@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
+	public new string name = "PC1";
+
 	//FileSystem
 	public Folder rootFolder;
 
@@ -129,14 +131,14 @@ public class Node : MonoBehaviour {
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces)
 			if (i.isUp && i.ip == destination) {
-				RaiseEventFull (OnPing, destination.word, true);
+				RaiseEventFull (OnPing, name, true);
 				return true;
 			}
 		
 		//si esta conectado directamente
 		foreach (Interface i in Interfaces)
 			if (i.isUp && i.connectedTo != null && i.connectedTo.isUp && i.connectedTo.ip == destination) {
-				RaiseEventFull (OnPing, destination.word, true);
+				RaiseEventFull (OnPing, i.connectedTo.node.name, true);
 				return true;
 			}
 
@@ -151,7 +153,7 @@ public class Node : MonoBehaviour {
 //			}
 //		}
 
-		RaiseEventFull (OnPing, destination.word, false);
+		RaiseEventFull (OnPing, "-", false);
 		return false;
 	}
 }

@@ -622,15 +622,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectionRepresentation: {fileID: 0}
   connectedTo: {fileID: 0}
+  mesh: {fileID: 23031609304876580}
+  selected: 0
   node: {fileID: 114778665236102962}
   Name: eth1
   address_family: inet
   dest_address: inet
-  isUp: 1
+  isUp: 0
   ip:
     numeric: 0
     array: 
-    word: 
+    word: 192.168.0.2
     class_: 0
   netmask:
     numeric: 0
@@ -656,6 +658,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectionRepresentation: {fileID: 0}
   connectedTo: {fileID: 0}
+  mesh: {fileID: 23010231338292566}
+  selected: 0
   node: {fileID: 114778665236102962}
   Name: eth0
   address_family: inet
@@ -664,7 +668,7 @@ MonoBehaviour:
   ip:
     numeric: 0
     array: 
-    word: 
+    word: 192.168.0.1
     class_: 0
   netmask:
     numeric: 0
@@ -690,15 +694,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectionRepresentation: {fileID: 0}
   connectedTo: {fileID: 0}
+  mesh: {fileID: 23819511218228484}
+  selected: 0
   node: {fileID: 114778665236102962}
   Name: eth2
   address_family: inet
   dest_address: inet
-  isUp: 1
+  isUp: 0
   ip:
     numeric: 0
     array: 
-    word: 
+    word: 192.168.0.3
     class_: 0
   netmask:
     numeric: 0
@@ -722,6 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a3e33d3f11a4045bc122f06538ddcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: PC1
   Interfaces:
   - {fileID: 114580174970659582}
   - {fileID: 114020344381605110}
