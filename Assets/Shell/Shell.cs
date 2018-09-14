@@ -238,14 +238,16 @@ public class Shell : MonoBehaviour {
 	}
 
 	public void FocusShell() { //Nos hacemos focus si no lo teniamos aun
-		print("Focused shells size: "+focusedShells.Count);
 		if(expanded) {
-			print("Focused shells size: "+focusedShells.Count);
 			RaiseEvent (OnFocus);
 			focus = true;
 			if(!focusedShells.Contains(this)) {
 				focusedShells.Add (this);
-				print("Focused shells size: "+focusedShells.Count);
+			}
+			if (!Keyboard.Ctrl) {
+				foreach (Shell s in focusedShells)
+					if (s != this)
+						s.UnfocusShell ();
 			}
 		}
 		transform.SetAsLastSibling ();

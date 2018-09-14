@@ -135,7 +135,7 @@ public class Node : MonoBehaviour {
 				return true;
 			}
 		
-		//si esta conectado directamente
+		//si esta conectado directamente TODO mirar firewall (iptable)
 		foreach (Interface i in Interfaces)
 			if (i.isUp && i.connectedTo != null && i.connectedTo.isUp && i.connectedTo.ip == destination) {
 				RaiseEventFull (OnPing, i.connectedTo.node.name, true);

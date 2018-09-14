@@ -5,6 +5,8 @@ using UnityEngine;
 public class Keyboard : MonoBehaviour {
 
 	List<Shell> focusedShells;
+	public static bool Ctrl;
+
 	void Start() {
 		focusedShells = Shell.focusedShells;
 	}
@@ -30,6 +32,7 @@ public class Keyboard : MonoBehaviour {
 						shell.AddInput (input);
 				}
 			}
+			Ctrl = Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl);
 		}
 	}
 

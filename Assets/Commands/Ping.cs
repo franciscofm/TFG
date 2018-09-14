@@ -33,7 +33,7 @@ public static class Ping {
 			IP address = new IP(command[0]);
 			bool reached = shell.node.CanReach(address);
 			value.value = "Address " + command[0] + " " + (reached ? "reached" : "UNreachable") + ".";
-			value.correct = false;
+			value.correct = reached;
 		} catch {
 			value.value = "Error (1): Invalid IP address";
 		}
