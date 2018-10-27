@@ -127,7 +127,8 @@ public class Shell : MonoBehaviour {
 		//TODO fix
 		transform.position += new Vector3 (bodyRectTransform.rect.width, -bodyRectTransform.rect.height, 0f) * .5f;
 
-		FocusShell ();
+		focus = true;
+		focusedShells.Add (this);
 
 		RaiseEvent (OnCreate);
 	}
@@ -245,9 +246,11 @@ public class Shell : MonoBehaviour {
 				focusedShells.Add (this);
 			}
 			if (!Keyboard.Ctrl) {
-				foreach (Shell s in focusedShells)
-					if (s != this)
-						s.UnfocusShell ();
+				int i = 0;
+				while (focusedShells.Count > i) {
+					if (focusedShells [i] != this) focusedShells [i].UnfocusShell ();
+					else ++i;
+				}
 			}
 		}
 		transform.SetAsLastSibling ();
@@ -259,6 +262,10 @@ public class Shell : MonoBehaviour {
 			focusedShells.Remove (this);
 		}
   	}
+	public static void UnfocusAll() {
+		while (focusedShells.Count > 0)
+			focusedShells [0].UnfocusShell ();
+	}
 
 	public void DragHeaderStart() {
 		dragOffset = transform.position - Input.mousePosition;

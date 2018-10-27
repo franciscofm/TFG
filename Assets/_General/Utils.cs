@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class Utils {
 
-	public static bool[] PermissionDefault = new bool[] {true,true,true,true,true,true,true,true,true};
+	public static bool[] PermissionDefault = new bool[] { true, true, true, true, true, true, true, true, true };
 
 	public static bool ArrayAboveInt(this int[] array, int value) {
 		foreach (int i in array)
@@ -77,5 +77,12 @@ public static class Utils {
 		for (int i = 1; i < array.Length; ++i)
 			ret += "." + array [i];
 		return ret;
+	}
+}
+
+public static class Routines {
+	public static IEnumerator WaitFor(float f, Action a) {
+		yield return new WaitForSeconds (f);
+		a ();
 	}
 }
