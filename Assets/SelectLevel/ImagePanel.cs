@@ -11,18 +11,30 @@ public class ImagePanel : MonoBehaviour {
 	public float outDuration = 0.5f;
 	public string inName = "In";
 
-	[HideInInspector] public LevelEntry currentLevelEntry;
+	public LevelEntry currentLevelEntry;
+	bool enabled = false;
 
 	public void SetLevel(LevelEntry entry) {
 		currentLevelEntry = entry;
-		animator.Play (outName);
-		Routines.WaitFor (outDuration, delegate {
-			this.image.sprite = entry.levelImage.sprite;
-			animator.Play (inName);
-		});
+		if (enabled) {
+			animator.Play (outName);
+			enabled = false;
+			StartCoroutine (Routines.WaitFor (outDuration, delegate {
+				image.sprite = entry.levelImage.sprite;
+				animator.Play (inName);
+				enabled = true;
+			}));
+		} else {
+			StartCoroutine (Routines.WaitFor (outDuration, delegate {
+				image.sprite = entry.levelImage.sprite;
+				animator.Play (inName);
+				enabled = true;
+			}));
+		}
 	}
 
 	public void CallbackPlay() {
-		UnityEngine.SceneManagement.SceneManager.LoadScene (currentLevelEntry.scene);
+		if(enabled)
+			UnityEngine.SceneManagement.SceneManager.LoadScene (currentLevelEntry.scene);
 	}
 }

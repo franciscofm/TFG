@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224122440770322162}
   - component: {fileID: 114712113503549652}
+  - component: {fileID: 225919222818197998}
   m_Layer: 5
   m_Name: LevelEntryPanel (LevelEntry)
   m_TagString: Untagged
@@ -141,10 +142,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc16566c1c1351f44b166895dc56be56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 225919222818197998}
   levelText: {fileID: 114876526515874470}
   levelImage: {fileID: 114999595795302060}
   conceptsText: {fileID: 114580640613478490}
   objectiveText: {fileID: 114756592502795914}
+  id: 0
+  scene: 
 --- !u!114 &114756592502795914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,9 +234,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300002, guid: 6a98ac622698a6a4b85d364e4aab0d69, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -356,3 +360,14 @@ RectTransform:
   m_AnchoredPosition: {x: 161.43, y: -20.800003}
   m_SizeDelta: {x: 323.15, y: 41.800003}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225919222818197998
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1271502886097068}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
