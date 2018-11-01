@@ -65,10 +65,11 @@ public static class Utils {
 		return ret;
 	}
 
-	public static void PrintArray<T>(this T[] array) {
+	public static string PrintArray<T>(this T[] array) {
 		string log = "";
 		foreach (T t in array)
 			log += t + ", ";
+		return log;
 	}
 	public static string PrintIp(this int[] array) {
 		if (array.Length < 1)

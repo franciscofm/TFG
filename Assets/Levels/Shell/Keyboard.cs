@@ -18,7 +18,7 @@ public class Keyboard : MonoBehaviour {
 					shell.ReadInput ();
 			else if (Input.GetKeyDown (KeyCode.Backspace))
 				foreach (Shell shell in focusedShells)
-					shell.RemoveInput (0);
+					shell.RemoveInput ();
 			else if (Input.GetKeyDown (KeyCode.UpArrow)) {
 				foreach (Shell shell in focusedShells)
 					shell.GetPreviousCommand ();

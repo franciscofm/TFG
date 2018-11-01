@@ -29,16 +29,14 @@ public class Shell : MonoBehaviour {
 
 	[Header("Configuration")]
 	public bool allowResize = false;
-	public int outputMaxLines = 20;
+	public Aparence currentTheme;
 
 	[Header("References")]
 	public Text headerText;
-	public Text inputText;
-	public Text outputText;
-	public ButtonShell closeButton;
-	public ButtonShell minimizeButton;
-	public ButtonShell maximizeButton;
+	public Text bodyText;
+	public RectTransform shellRectTransform;
 	public RectTransform bodyRectTransform;
+	public RectTransform maskRectTransform;
 	public GameObject resizeGameObject;
 	[Space]
 	public Node node;
@@ -52,8 +50,7 @@ public class Shell : MonoBehaviour {
 	public Image borderTopRight;
 	public Image borderRight;
 	public Image borderBottom;
-	public Image background;
-	public Image input;
+	public Image backgroundBody;
 	public void ChangeTheme(Aparence a) {
 		topCornerLeft.sprite = a.topCornerLeft;
 		topCornerRight.sprite = a.topCornerRight;
@@ -64,15 +61,12 @@ public class Shell : MonoBehaviour {
 		borderRight.color = a.borderColor;
 		borderLeft.color = a.borderColor;
 		borderBottom.color = a.borderColor;
-		background.color = a.backgroundColor;
-		input.color = a.backgroundColor;
+		backgroundBody.color = a.backgroundColor;
 
 		headerText.color = a.textColor;
-		inputText.color = a.textColor;
-		outputText.color = a.textColor;
+		bodyText.color = a.textColor;
 		headerText.font = a.font;
-		inputText.font = a.font;
-		outputText.font = a.font;
+		bodyText.font = a.font;
 
 		RaiseEventFull (OnChangeTheme, name);
 	}
@@ -81,6 +75,7 @@ public class Shell : MonoBehaviour {
 	public bool focus;
 	public bool expanded;
 	public bool maximized;
+	public static List<Shell> focusedShells = new List<Shell> ();
 
 	//location
 	string user = "admin";
@@ -88,127 +83,118 @@ public class Shell : MonoBehaviour {
 	public Folder folder;
 	public string path;
 	public string address;
-	public void UpdateAddress(Folder folder) {
-		this.folder = folder;
-		path = folder.GetPathString ();
-		address = user + "@" + pcName + ":" + path + "$";
 
-		RaiseEventFull (OnUpdateAddress, folder.name);
-	}
-
-	//history
-	public List<string> allOutput;
-	public List<string> history;
-	public int outputFirstIndex;
-	public int outputShownLines;
+	[Header("Text management")]
+	public string currentOutputText; //text has already been written
+	public string currentInputText; //text the user is writing
+	public List<string> history; //commands the user has entered
 	public int historyCommandIndex;
 
 	public Vector3 dragOffset;
 
-	public static List<Shell> focusedShells = new List<Shell> ();
-
-
 	void Start() {
-		expanded = true;
-		outputText.text = "";
-		outputFirstIndex = 0;
-		outputShownLines = 0;
-		historyCommandIndex = 0;
-
-		history = new List<string> ();
-		allOutput = new List<string> ();
-		resizeGameObject.SetActive (allowResize);
-
-		folder = node.rootFolder;
-		path = folder.GetPathString ();
-		address = user + "@" + pcName + ":" + path + "$";
-		inputText.text = address + " ";
-
-		//TODO fix
-		transform.position += new Vector3 (bodyRectTransform.rect.width, -bodyRectTransform.rect.height, 0f) * .5f;
-
-		focus = true;
-		focusedShells.Add (this);
-
+		Init ();
 		RaiseEvent (OnCreate);
 	}
 
+	public void Init() {
+		expanded = true;
+
+		historyCommandIndex = 0;
+		history = new List<string> ();
+		
+		resizeGameObject.SetActive (allowResize);
+
+		UpdateAddress(node.rootFolder);
+		currentOutputText = address;
+		SetInput ("");
+
+		FocusShell ();
+	}
+
+	public void UpdateAddress(Folder folder) {
+		this.folder = folder;
+		path = folder.GetPathString ();
+		address = user + "@" + pcName + ":" + path + "$ ";
+
+		RaiseEventFull (OnUpdateAddress, folder.name);
+	}
+
+	public void AddInput(string input) { //adds characters by Keyboard.cs
+		currentInputText += input;
+		bodyText.text = currentOutputText + currentInputText;
+		UpdateTextMask ();
+	}
 	public void SetInput(string input) {
-		inputText.text = input;
+		currentInputText = input;
+		bodyText.text = currentOutputText + currentInputText;
+		UpdateTextMask ();
 	}
-	public void AddInput(string input) {
-		inputText.text += input;
-	}
-	public void RemoveInput(int index) {
-		string[] splited = inputText.text.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-		if (splited.Length > 1) {
-			inputText.text = inputText.text.Remove (inputText.text.Length - 1);
-		} else {
-			inputText.text = address + " ";
-		}
+	public void RemoveInput() { //press Back key by Keyboard.cs
+		if (currentInputText.Length > 0) {
+			currentInputText = currentInputText.Remove (currentInputText.Length - 1);
+			bodyText.text = currentOutputText + currentInputText;
+			UpdateTextMask ();
+		} 
 	}
 	public void ReadInput() {
-		string command = inputText.text;
-		string[] splited = command.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+		if (currentInputText.Length == 0) return; //nothing written
+		string[] splited = currentInputText.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-		//si solo esta el directorio
-		if (splited.Length < 2) return;
-
-		//coger el comando
-		string substring = "";
-		for (int i = 1; i < splited.Length; ++i) 
-			substring += splited [i] + " ";
-
-		//poner el comando en el output
-		string output = address + " " + substring + Console.jump;
-		PrintOutput (output);
-		RaiseEventFull (OnOutput, output);
+		PrintOutputNoAddress (currentInputText + Console.jump);
+		RaiseEventFull (OnOutput, currentInputText);
 
 		//tratar comando
-		if (splited [1] == "history") { //espeshial history case
+		if (splited [0] == "history") { //espeshial history case
 			History ();
 			history.Add ("history");
 		} else {
 			CommandStructure commandReturn = Console.ReadCommand (splited, this);
-			history.Add (substring);
-			if (commandReturn.prompt) PrintOutput (commandReturn.value);
+			history.Add (currentInputText);
+			if (commandReturn.prompt) PrintOutputNoAddress (commandReturn.value);
 		}
-		inputText.text = address + " ";
 		historyCommandIndex = history.Count;
+		currentInputText = "";
+		PrintAddress ();
 	}
 	public void PrintOutput(string output) {
-		string[] splited = output.Split (new string[] { Console.jump }, StringSplitOptions.RemoveEmptyEntries);
-		for (int n = 0; n < splited.Length; ++n) {
-			allOutput.Add (splited[n] + Console.jump);
-			++outputShownLines;
-			if (outputShownLines > outputMaxLines) {
-				int dif = outputShownLines - outputMaxLines;
-				outputFirstIndex += dif;
-				outputText.text = "";
-				for (int i = 0; i < outputMaxLines; ++i)
-					outputText.text += allOutput [i + outputFirstIndex];
-				outputShownLines = outputMaxLines;
-			} else {
-				outputText.text += splited[n] + Console.jump;
-			}
-		}
+		currentOutputText += output;
+		currentOutputText += address;
+		bodyText.text = currentOutputText;
+		UpdateTextMask ();
 	}
-	public int ReturnError(string error) {
-		PrintOutput (error + Console.jump);
-		return 0;
+	public void PrintAddress() {
+		currentOutputText += Console.jump + address;
+		bodyText.text = currentOutputText;
+		UpdateTextMask ();
+	}
+	public void PrintOutputNoAddress(string output) {
+		currentOutputText += output;
+		bodyText.text = currentOutputText;
+		UpdateTextMask ();
+	}
+	public void UpdateTextMask() {
+		Canvas.ForceUpdateCanvases ();
+		float f = bodyText.preferredHeight;
+		bodyRectTransform.anchoredPosition = Vector2.zero;
+		if (f > maskRectTransform.rect.height) {
+			bodyRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, f);
+		} else {
+			bodyRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, maskRectTransform.rect.height);
+		}
 	}
 
 	public void History() {
 		foreach (string s in history)
-			PrintOutput (s + Console.jump);
+			PrintOutputNoAddress (s + Console.jump);
 	}
 	public void GetPreviousCommand() {
 		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
-		inputText.text = address + " " + history[historyCommandIndex];
+		SetInput (history [historyCommandIndex]);
 	}
 	public void GetNextCommand() {
 		historyCommandIndex = Math.Min (history.Count - 1, historyCommandIndex + 1);
-		inputText.text = address + " " + history[historyCommandIndex];
+		SetInput (history [historyCommandIndex]);
 	}
 
 	public void CallbackClose() {
@@ -220,7 +206,6 @@ public class Shell : MonoBehaviour {
 	public void CallbackMinimize() {
 		expanded = !expanded;
 		bodyRectTransform.gameObject.SetActive (expanded);
-		print ("TODO: CallbackMinimize animation");
 		RaiseEvent (OnMinimize);
 		if (!expanded)
 			UnfocusShell ();
@@ -231,26 +216,37 @@ public class Shell : MonoBehaviour {
 		RaiseEvent (OnMaximize);
 	}
 
+	float resizeStart;
+	public void CallbackResizeVerticalStart() {
+		resizeStart = -shellRectTransform.anchoredPosition.y;
+	}
 	public void CallbackResizeVertical() {
-
+		float height = (1080f-Input.mousePosition.y) - resizeStart;
+		if (height < 100f)
+			return;
+		shellRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, height);
+	}
+	public void CallbackResizeHorizontalStart() {
+		resizeStart = shellRectTransform.anchoredPosition.x;
 	}
 	public void CallbackResizeHorizontal() {
-
+		float width = Input.mousePosition.x - resizeStart;
+		if (width < 200f)
+			return;
+		shellRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, width);
+	}
+	public void CallbackResizeEnd() {
+		UpdateTextMask ();
 	}
 
-	public void FocusShell() { //Nos hacemos focus si no lo teniamos aun
+	public void FocusShell() {
 		if(expanded) {
 			RaiseEvent (OnFocus);
+			if (!Keyboard.Ctrl) 
+				UnfocusAll();
 			focus = true;
 			if(!focusedShells.Contains(this)) {
 				focusedShells.Add (this);
-			}
-			if (!Keyboard.Ctrl) {
-				int i = 0;
-				while (focusedShells.Count > i) {
-					if (focusedShells [i] != this) focusedShells [i].UnfocusShell ();
-					else ++i;
-				}
 			}
 		}
 		transform.SetAsLastSibling ();

@@ -39,7 +39,6 @@ public class SelectLevel : MonoBehaviour {
 		SetLevelInfo(0, firstEntry.GetComponent<LevelEntry>());
 		float levelWidth = firstEntry.rect.width;
 		int window = (int)(maskRect.rect.width / levelWidth);
-		print (window);
 		levelMax = levels.Length - window;
 			
 		for (int i = 1; i < levels.Length; ++i) {

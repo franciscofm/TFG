@@ -32,8 +32,8 @@ public static class Console {
 
 	public static CommandStructure ReadCommand(string[] command, Shell shell) {
 		CommandStructure commandReturn = new CommandStructure();
-		if (commands.ContainsKey (command [1])) {
-			commands [command [1]] (command.SubArray (2, command.Length - 2), shell, commandReturn);
+		if (commands.ContainsKey (command [0])) {
+			commands [command [0]] (command.SubArray (1, command.Length - 1), shell, commandReturn);
 		}
 		return commandReturn;
 	}

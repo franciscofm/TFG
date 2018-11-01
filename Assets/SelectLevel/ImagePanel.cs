@@ -12,7 +12,7 @@ public class ImagePanel : MonoBehaviour {
 	public string inName = "In";
 
 	public LevelEntry currentLevelEntry;
-	bool enabled = false;
+	new bool enabled = false;
 
 	public void SetLevel(LevelEntry entry) {
 		currentLevelEntry = entry;
