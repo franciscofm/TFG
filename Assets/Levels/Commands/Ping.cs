@@ -12,11 +12,7 @@ public static class Ping {
 			Help (shell, value);
 			break;
 		case 1:
-			switch (command[0]) {
-			case "-n":
-				Action (command, shell, value); //List up
-				break;
-			}
+			Action (command, shell, value);
 			break;
 		default:
 			Help (shell, value);
@@ -25,7 +21,7 @@ public static class Ping {
 	}
 
 	static void Help(Shell shell, CommandStructure value) {
-		value.value = "Structure: ping x.x.x.x" + Console.jump;
+		value.value = "Structure: ping x.x.x.x";
 	}
 
 	static void Action(string[] command, Shell shell, CommandStructure value) {
@@ -33,7 +29,7 @@ public static class Ping {
 			IP address = new IP(command[0]);
 			bool reached = shell.node.CanReach(address);
 			value.value = "Address " + command[0] + " " + (reached ? "reached" : "UNreachable") + ".";
-			value.correct = reached;
+			value.correct = true;
 		} catch {
 			value.value = "Error (1): Invalid IP address";
 		}

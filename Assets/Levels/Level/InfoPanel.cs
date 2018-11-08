@@ -20,6 +20,9 @@ namespace Menu {
 		public void Init(Node node) {
 			this.node = node;
 			header.text = "Node: " + node.name;
+			UpdateValues ();
+		}
+		public void UpdateValues() {
 			for (int i = 0; i < 3; ++i) {
 				Interface iface = node.Interfaces[i];
 				ifacesName [i].text = iface.Name;
@@ -28,6 +31,7 @@ namespace Menu {
 			}
 		}
 
+		//Buttons
 		public void CallbackShell() {
 			GameObject shell = Instantiate (shellPrefab, transform.parent);
 			shell.transform.position = transform.position;
@@ -36,7 +40,6 @@ namespace Menu {
 			s.node = this.node;
 			menu.shells.Add (s);
 		}
-
 		public void CallbackClose() {
 			menu.ClosePanel (node);
 			Destroy (gameObject);

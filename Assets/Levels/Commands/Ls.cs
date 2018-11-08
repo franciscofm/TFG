@@ -9,6 +9,7 @@ public static class Ls {
 
 		switch (command.Length) {
 		case 0:
+			value.correct = true;
 			ListAll (false, false, false, shell.folder, value);
 			break;
 		default:

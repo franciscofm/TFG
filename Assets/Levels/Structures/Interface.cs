@@ -7,13 +7,49 @@ using UnityEngine.EventSystems;
 [System.Serializable]
 public class Interface : MonoBehaviour {
 
-	public GameObject connectionRepresentation;
-	public Interface connectedTo;
+	public delegate void InterfaceEvent(Interface sender);
+	public static event InterfaceEvent OnClickUp;
+	public static event InterfaceEvent OnClickDown;
+
+	public Node node;
 	public MeshRenderer mesh;
 
+	public string Name = "eth0";
+	public string address_family = "inet";
+	public string dest_address = "inet";
+
+	public IP ip;
+	public IP netmask;
+	public IP broadcast;
+
+	//mac FF:FF:FF:FF:FF:FF 8bit
+	public ulong mac = 0xffffffffffff;
+
+	public void SetIp(IP ip) {
+		this.ip = ip;
+	}
+	public void SetNetmask(IP netmask) {
+		this.netmask = netmask;
+	}
+	public void SetBroadcast(IP broadcast) {
+		this.broadcast = broadcast;
+	}
+
+	[Header("Debug")]
+	public bool isUp = true;
+	public GameObject connectionRepresentation;
+	public Interface connectedTo;
+
+	void OnMouseDown() {
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+		if(OnClickDown != null)
+			OnClickDown (this);
+	}
 	void OnMouseUp() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
-
+		if(OnClickUp != null)
+			OnClickUp (this);
+		
 		if (selected) Unselect ();
 		else Select ();
 	}
@@ -70,30 +106,5 @@ public class Interface : MonoBehaviour {
 		line.SetPosition (1, t2.position);
 		line.widthMultiplier = 0.1f;
 		return go;
-	}
-
-	public Node node;
-
-	public string Name = "eth0";
-	public string address_family = "inet";
-	public string dest_address = "inet";
-
-	public bool isUp = true;
-
-	public IP ip;
-	public IP netmask;
-	public IP broadcast;
-
-	//mac FF:FF:FF:FF:FF:FF 8bit
-	public ulong mac = 0xffffffffffff;
-
-	public void SetIp(IP ip) {
-		this.ip = ip;
-	}
-	public void SetNetmask(IP netmask) {
-		this.netmask = netmask;
-	}
-	public void SetBroadcast(IP broadcast) {
-		this.broadcast = broadcast;
 	}
 }

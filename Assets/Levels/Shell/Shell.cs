@@ -238,6 +238,12 @@ public class Shell : MonoBehaviour {
 	public void CallbackResizeEnd() {
 		UpdateTextMask ();
 	}
+	public void HoverResizeEnter() {
+		print ("Hover resize Enter");
+	}
+	public void HoverResizeExit() {
+		print ("Hover resize Exit");
+	}
 
 	public void FocusShell() {
 		if(expanded) {

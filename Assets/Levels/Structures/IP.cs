@@ -11,6 +11,7 @@ public class IP {
 	public uint numeric;
 	public uint[] array;
 	public string word;
+	public uint mask; //TODO
 
 	public enum Class { A, B, C, D, E };
 	public Class class_;
