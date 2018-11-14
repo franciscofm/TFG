@@ -6,18 +6,13 @@ namespace Menu {
 
 	public class MenuShell : MonoBehaviour {
 
-		public List<Node> nodes;
-		public List<Shell> shells;
-
 		public GameObject infoPrefab;
 
 		Dictionary<Node, InfoPanel> openedPanels;
 
 		void Awake () {
 			//Structure init
-			this.nodes = new List<Node> ();
-			this.shells = new List<Shell> ();
-			this.openedPanels = new Dictionary<Node, InfoPanel>();
+			openedPanels = new Dictionary<Node, InfoPanel>();
 
 			Node.OnClickUp += ShowInfoNode;
 			InfoPanel.menu = this;
@@ -40,22 +35,20 @@ namespace Menu {
 		}
 
 		public void CloseAllShells() {
-			while (shells.Count > 0) {
-				shells [0].CallbackClose ();
-				shells.RemoveAt (0);
-			}
+			while (Shell.existingShells.Count > 0)
+				Shell.existingShells[0].CallbackClose ();
 		}
 		public void MinimizeAllShells() {
 			bool minimize = false;
-			for(int i=0; i<shells.Count && !minimize;++i) {
-				if (shells[i].expanded) {
+			for(int i=0; i<Shell.existingShells.Count && !minimize;++i) {
+				if (Shell.existingShells[i].expanded) {
 					minimize = true;
-					for(int j=i; j<shells.Count; ++j)
-						if (shells[j].expanded) shells[j].CallbackMinimize ();
+					for(int j=i; j<Shell.existingShells.Count; ++j)
+						if (Shell.existingShells[j].expanded) Shell.existingShells[j].CallbackMinimize ();
 				}
 			}
 			if (!minimize) {
-				foreach (Shell s2 in shells) {
+				foreach (Shell s2 in Shell.existingShells) {
 					if (!s2.expanded) s2.CallbackMinimize ();
 				}
 			}

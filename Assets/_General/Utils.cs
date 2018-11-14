@@ -74,7 +74,7 @@ public static class Utils {
 	public static string PrintIp(this int[] array) {
 		if (array.Length < 1)
 			return "";
-		string ret = array[0]+"";
+		string ret = array [0] + "";
 		for (int i = 1; i < array.Length; ++i)
 			ret += "." + array [i];
 		return ret;
@@ -85,5 +85,14 @@ public static class Routines {
 	public static IEnumerator WaitFor(float f, Action a) {
 		yield return new WaitForSeconds (f);
 		a ();
+	}
+	public delegate void FloatMethod(float f);
+	public static IEnumerator DoWhile(float f, FloatMethod a) {
+		float t = 0f;
+		while (t < f) {
+			yield return null;
+			t -= Time.deltaTime;
+			a (t);
+		}
 	}
 }

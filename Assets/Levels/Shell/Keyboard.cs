@@ -5,34 +5,32 @@ using UnityEngine;
 public class Keyboard : MonoBehaviour {
 
 	List<Shell> focusedShells;
+	List<Shell> existingShells;
 	public static bool Ctrl;
 
 	void Start() {
 		focusedShells = Shell.focusedShells;
+		existingShells = Shell.existingShells;
 	}
-	// Update is called once per frame
+
 	void Update () {
 		if (focusedShells.Count > 0) {
-			if (Input.GetKeyDown (KeyCode.Return))
-				foreach (Shell shell in focusedShells)
-					shell.ReadInput ();
-			else if (Input.GetKeyDown (KeyCode.Backspace))
-				foreach (Shell shell in focusedShells)
-					shell.RemoveInput ();
-			else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				foreach (Shell shell in focusedShells)
-					shell.GetPreviousCommand ();
-			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-				foreach (Shell shell in focusedShells)
-					shell.GetNextCommand ();
-			} else {
-				string input = Input.inputString;
-				if (input.Length > 0) {
-					foreach (Shell shell in focusedShells)
-						shell.AddInput (input);
+			Ctrl = Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl); //No shell click
+			if (!Ctrl && Input.GetMouseButton(0)) {
+				bool found = false;
+				for (int i = 0; i < existingShells.Count; ++i) {
+					if (found = existingShells [i].IsMouseOver (Input.mousePosition))
+						i = existingShells.Count;
 				}
+				if (!found)
+					Shell.UnfocusAll ();
 			}
-			Ctrl = Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl);
+
+			if (Input.GetKeyDown (KeyCode.Return)) foreach (Shell shell in focusedShells) shell.ReadInput (); //Enter
+			else if (Input.GetKeyDown (KeyCode.Backspace)) foreach (Shell shell in focusedShells) shell.RemoveInput (); //Borrar
+			else if (Input.GetKeyDown (KeyCode.UpArrow)) foreach (Shell shell in focusedShells) shell.GetPreviousCommand (); //Arriba
+			else if (Input.GetKeyDown (KeyCode.DownArrow))  foreach (Shell shell in focusedShells) shell.GetNextCommand (); //Abajo
+			else if (Input.inputString.Length > 0) foreach (Shell shell in focusedShells) shell.AddInput (Input.inputString); //Escribir normy
 		}
 	}
 

@@ -22,7 +22,7 @@ namespace Menu {
 			header.text = "Node: " + node.name;
 			UpdateValues ();
 		}
-		public void UpdateValues() {
+		public void UpdateValues() { //todo update when node evaluates commands
 			for (int i = 0; i < 3; ++i) {
 				Interface iface = node.Interfaces[i];
 				ifacesName [i].text = iface.Name;
@@ -38,7 +38,6 @@ namespace Menu {
 
 			Shell s = shell.GetComponent<Shell> ();
 			s.node = this.node;
-			menu.shells.Add (s);
 		}
 		public void CallbackClose() {
 			menu.ClosePanel (node);

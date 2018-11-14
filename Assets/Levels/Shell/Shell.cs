@@ -75,7 +75,8 @@ public class Shell : MonoBehaviour {
 	public bool focus;
 	public bool expanded;
 	public bool maximized;
-	public static List<Shell> focusedShells = new List<Shell> ();
+	public static List<Shell> focusedShells = new List<Shell>();
+	public static List<Shell> existingShells = new List<Shell>();
 
 	//location
 	string user = "admin";
@@ -93,11 +94,12 @@ public class Shell : MonoBehaviour {
 	public Vector3 dragOffset;
 
 	void Start() {
-		Init ();
+		Init (); //should be called by others
 		RaiseEvent (OnCreate);
 	}
 
 	public void Init() {
+		existingShells.Add (this);
 		expanded = true;
 
 		historyCommandIndex = 0;
@@ -148,10 +150,12 @@ public class Shell : MonoBehaviour {
 		if (splited [0] == "history") { //espeshial history case
 			History ();
 			history.Add ("history");
+			node.RaiseOnShellCommand ("history", true);
 		} else {
 			CommandStructure commandReturn = Console.ReadCommand (splited, this);
 			history.Add (currentInputText);
 			if (commandReturn.prompt) PrintOutputNoAddress (commandReturn.value);
+			node.RaiseOnShellCommand (splited [0], commandReturn.correct);
 		}
 		historyCommandIndex = history.Count;
 		currentInputText = "";
@@ -199,7 +203,7 @@ public class Shell : MonoBehaviour {
 
 	public void CallbackClose() {
 		RaiseEvent (OnClose);
-
+		existingShells.Remove (this);
 		UnfocusShell ();
 		Destroy (gameObject);
 	}
@@ -245,6 +249,9 @@ public class Shell : MonoBehaviour {
 		print ("Hover resize Exit");
 	}
 
+	public bool IsMouseOver(Vector2 mousePos) {
+		return (RectTransformUtility.RectangleContainsScreenPoint(shellRectTransform, mousePos));
+	}
 	public void FocusShell() {
 		if(expanded) {
 			RaiseEvent (OnFocus);

@@ -89,6 +89,7 @@ public class Node : MonoBehaviour {
 	public static event NodeEvent OnClickUp;
 	public static event NodeEvent OnClickDown;
 	public static event NodeEventFull OnPing;
+	public static event NodeEventFull OnShellCommand;
 
 	void RaiseEvent(NodeEvent e) {
 		if (e != null) e (this);
@@ -110,6 +111,10 @@ public class Node : MonoBehaviour {
 	void OnMouse() {
 		if(OnClick != null)
 			OnClick (this);
+	}
+
+	public void RaiseOnShellCommand(string value, bool correct) {
+		RaiseEventFull (OnShellCommand, value, correct);
 	}
 
 	public Interface GetInterface(string interf) {
@@ -156,4 +161,5 @@ public class Node : MonoBehaviour {
 		RaiseEventFull (OnPing, "-", false);
 		return false;
 	}
+
 }
