@@ -150,12 +150,12 @@ public class Shell : MonoBehaviour {
 		if (splited [0] == "history") { //espeshial history case
 			History ();
 			history.Add ("history");
-			node.RaiseOnShellCommand ("history", true);
+			node.RaiseOnShellCommand ("history");
 		} else {
 			CommandStructure commandReturn = Console.ReadCommand (splited, this);
 			history.Add (currentInputText);
 			if (commandReturn.prompt) PrintOutputNoAddress (commandReturn.value);
-			node.RaiseOnShellCommand (splited [0], commandReturn.correct);
+			node.RaiseOnShellCommand (splited [0]);
 		}
 		historyCommandIndex = history.Count;
 		currentInputText = "";

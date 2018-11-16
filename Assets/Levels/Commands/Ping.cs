@@ -27,8 +27,8 @@ public static class Ping {
 	static void Action(string[] command, Shell shell, CommandStructure value) {
 		try {
 			IP address = new IP(command[0]);
-			bool reached = shell.node.CanReach(address);
-			value.value = "Address " + command[0] + " " + (reached ? "reached" : "UNreachable") + ".";
+			PingInfo reached = shell.node.CanReach(address);
+			value.value = "Address " + command[0] + " " + (reached.reached ? "reached" : "UNreachable") + ".";
 			value.correct = true;
 		} catch {
 			value.value = "Error (1): Invalid IP address";

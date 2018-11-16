@@ -83,7 +83,7 @@ public class Node : MonoBehaviour {
 	}
 
 	public delegate void NodeEvent(Node sender);
-	public delegate void NodeEventFull(Node sender, string value, bool correct);
+	public delegate void NodeEventFull(Node sender, object obj);
 
 	public static event NodeEvent OnClick;
 	public static event NodeEvent OnClickUp;
@@ -94,8 +94,8 @@ public class Node : MonoBehaviour {
 	void RaiseEvent(NodeEvent e) {
 		if (e != null) e (this);
 	}
-	void RaiseEventFull(NodeEventFull e, string value, bool correct) {
-		if (e != null) e (this, value, correct);
+	void RaiseEventFull(NodeEventFull e, object obj) {
+		if (e != null) e (this, obj);
 	}
 
 	void OnMouseDown() {
@@ -113,8 +113,8 @@ public class Node : MonoBehaviour {
 			OnClick (this);
 	}
 
-	public void RaiseOnShellCommand(string value, bool correct) {
-		RaiseEventFull (OnShellCommand, value, correct);
+	public void RaiseOnShellCommand(object obj) {
+		RaiseEventFull (OnShellCommand, obj);
 	}
 
 	public Interface GetInterface(string interf) {
@@ -132,34 +132,53 @@ public class Node : MonoBehaviour {
 		return false;
 	}
 
-	public bool CanReach(IP destination) {
+	public PingInfo CanReach(IP destination) {
+		PingInfo pingInfo = new PingInfo ();
+		pingInfo.origin = this;
+
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces)
 			if (i.isUp && i.ip == destination) {
-				RaiseEventFull (OnPing, name, true);
-				return true;
+				pingInfo.destiny = this;
+				pingInfo.reached = true;
+				RaiseEventFull (OnPing, pingInfo);
+				return pingInfo;
 			}
 		
 		//si esta conectado directamente TODO mirar firewall (iptable)
 		foreach (Interface i in Interfaces)
 			if (i.isUp && i.connectedTo != null && i.connectedTo.isUp && i.connectedTo.ip == destination) {
-				RaiseEventFull (OnPing, i.connectedTo.node.name, true);
-				return true;
+				pingInfo.destiny = i.connectedTo.node;
+				pingInfo.reached = true;
+				RaiseEventFull (OnPing, pingInfo);
+				return pingInfo;
 			}
 
 		//si se puede llegar por route
-//		foreach (RouteEntry re in RouteTable) {
-//			foreach (Interface i in Interfaces) {
-//				if (i.isUp && re.gateway == i.ip) {
-//					foreach (Connection c in Connections) {
-//						if(Interfaces[c.ownIfaceId] == i.ip
-//					}	
-//				}
-//			}
-//		}
+		foreach(RouteEntry re in RouteTable) {
+			if(destination.IsSubnet(re.destination, re.genmask.mask)) {
+				Interface iface = GetInterface (re.iface);
+				if (iface != null) {
+					PingInfo routePingInfo = iface.connectedTo.node.CanReach (destination);
+					if (routePingInfo.reached) {
+						pingInfo.destiny = routePingInfo.destiny;
+						RaiseEventFull (OnPing, pingInfo);
+						return pingInfo;
+					}
+				}
+			}
+		}
 
-		RaiseEventFull (OnPing, "-", false);
-		return false;
+		pingInfo.reached = false;
+		pingInfo.destiny = null;
+		RaiseEventFull (OnPing, pingInfo);
+		return pingInfo;
 	}
 
+}
+
+public class PingInfo {
+	public bool reached;
+	public Node destiny;
+	public Node origin;
 }
