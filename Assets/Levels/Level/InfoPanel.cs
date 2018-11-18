@@ -37,7 +37,7 @@ namespace Menu {
 			shell.transform.position = transform.position;
 
 			Shell s = shell.GetComponent<Shell> ();
-			s.node = this.node;
+			s.Init (node);
 		}
 		public void CallbackClose() {
 			menu.ClosePanel (node);

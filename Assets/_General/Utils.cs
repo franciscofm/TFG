@@ -96,3 +96,8 @@ public static class Routines {
 		}
 	}
 }
+
+public static class Events {
+	public delegate void Void();
+	public delegate void Obj(object o);
+}

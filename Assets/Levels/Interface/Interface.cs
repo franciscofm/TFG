@@ -8,8 +8,10 @@ using UnityEngine.EventSystems;
 public class Interface : MonoBehaviour {
 
 	public delegate void InterfaceEvent(Interface sender);
-	public static event InterfaceEvent OnClickUp;
-	public static event InterfaceEvent OnClickDown;
+	public event InterfaceEvent OnSelect;
+	public event InterfaceEvent OnUnselect;
+	public event InterfaceEvent OnConnect;
+	public event InterfaceEvent OnDisconnect;
 
 	public Node node;
 	public MeshRenderer mesh;
@@ -39,62 +41,64 @@ public class Interface : MonoBehaviour {
 	public bool isUp = true;
 	public GameObject connectionRepresentation;
 	public Interface connectedTo;
-
-	void OnMouseDown() {
-		if(EventSystem.current.IsPointerOverGameObject()) return;
-		if(OnClickDown != null)
-			OnClickDown (this);
-	}
-	void OnMouseUp() {
-		if(EventSystem.current.IsPointerOverGameObject()) return;
-		if(OnClickUp != null)
-			OnClickUp (this);
-		
-		if (selected) Unselect ();
-		else Select ();
-	}
-
 	public static Interface lastDown;
 	public bool selected;
 
-	public void Select() {
+	void OnMouseUp() {
+		if(EventSystem.current.IsPointerOverGameObject()) return;
 		
-		if (lastDown != null) {
+		if (selected) Unselect ();
+		else CheckSelect ();
+	}
 
-			if (lastDown.node == node) { //Not 2 interfaces of the same node
+
+	public void CheckSelect() {
+		if (lastDown != null) { //Selecting second Iface
+
+			if (lastDown.node == node) { //Selecting second Iface of same Node
 				lastDown.selected = false;
-				selected = true;
 
-				lastDown.mesh.material.color = Color.white;
-				mesh.material.color = Color.red;
+				Select ();
+			} else { //Selecting second Iface of other Node
 
-				lastDown = this;
-			} else {
+				if (connectedTo != null)  //Changing Iface this one is connected to
+					Disconnect ();
 
-				if (connectedTo != null) {
-					connectedTo.connectionRepresentation = null;
-					connectedTo.connectedTo = null;
-					Destroy (connectionRepresentation);
-				}
-
-				connectedTo = lastDown;
-				connectionRepresentation = RenderLine (transform, connectedTo.transform);
-
-				connectedTo.connectedTo = this;
-				connectedTo.connectionRepresentation = connectionRepresentation;
-
+				Connect ();
 				lastDown.Unselect ();
 			}
-		} else {
-			selected = true;
-			lastDown = this;
-			mesh.material.color = Color.red;
+		} else { //Selecting first Iface
+			Select ();
 		}
+	}
+
+	public void Select() {
+		selected = true;
+		lastDown = this;
+
+		if (OnSelect != null) OnSelect (this);
 	}
 	public void Unselect() {
 		lastDown = null;
 		selected = false;
-		mesh.material.color = Color.white;
+
+		if (OnUnselect != null) OnUnselect (this);
+	}
+	public void Connect() {
+		connectedTo = lastDown;
+		connectionRepresentation = RenderLine (transform, connectedTo.transform);
+
+		connectedTo.connectedTo = this;
+		connectedTo.connectionRepresentation = connectionRepresentation;
+
+		if (OnConnect != null) OnConnect (this);
+	}
+	public void Disconnect() {
+		connectedTo.connectionRepresentation = null;
+		connectedTo.connectedTo = null;
+		Destroy (connectionRepresentation);
+
+		if (OnDisconnect != null) OnDisconnect (this);
 	}
 
 	public GameObject RenderLine(Transform t1, Transform t2) {

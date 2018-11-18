@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 23684024558303754}
   - component: {fileID: 114778665236102962}
   m_Layer: 0
-  m_Name: Node
+  m_Name: Node v0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -620,31 +620,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionRepresentation: {fileID: 0}
-  connectedTo: {fileID: 0}
-  mesh: {fileID: 23031609304876580}
-  selected: 0
   node: {fileID: 114778665236102962}
+  mesh: {fileID: 23031609304876580}
   Name: eth1
   address_family: inet
   dest_address: inet
-  isUp: 0
   ip:
     numeric: 0
     array: 
     word: 192.168.0.2
+    mask: 0
     class_: 0
   netmask:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   broadcast:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   mac: 281474976710655
+  isUp: 0
+  connectionRepresentation: {fileID: 0}
+  connectedTo: {fileID: 0}
+  selected: 0
 --- !u!114 &114580174970659582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -656,31 +659,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionRepresentation: {fileID: 0}
-  connectedTo: {fileID: 0}
-  mesh: {fileID: 23010231338292566}
-  selected: 0
   node: {fileID: 114778665236102962}
+  mesh: {fileID: 23010231338292566}
   Name: eth0
   address_family: inet
   dest_address: inet
-  isUp: 1
   ip:
     numeric: 0
     array: 
     word: 192.168.0.1
+    mask: 0
     class_: 0
   netmask:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   broadcast:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   mac: 281474976710655
+  isUp: 1
+  connectionRepresentation: {fileID: 0}
+  connectedTo: {fileID: 0}
+  selected: 0
 --- !u!114 &114652785466228924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -692,31 +698,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionRepresentation: {fileID: 0}
-  connectedTo: {fileID: 0}
-  mesh: {fileID: 23819511218228484}
-  selected: 0
   node: {fileID: 114778665236102962}
+  mesh: {fileID: 23819511218228484}
   Name: eth2
   address_family: inet
   dest_address: inet
-  isUp: 0
   ip:
     numeric: 0
     array: 
     word: 192.168.0.3
+    mask: 0
     class_: 0
   netmask:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   broadcast:
     numeric: 0
     array: 
     word: 
+    mask: 0
     class_: 0
   mac: 281474976710655
+  isUp: 0
+  connectionRepresentation: {fileID: 0}
+  connectedTo: {fileID: 0}
+  selected: 0
 --- !u!114 &114778665236102962
 MonoBehaviour:
   m_ObjectHideFlags: 1

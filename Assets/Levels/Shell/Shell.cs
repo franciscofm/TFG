@@ -94,11 +94,10 @@ public class Shell : MonoBehaviour {
 	public Vector3 dragOffset;
 
 	void Start() {
-		Init (); //should be called by others
 		RaiseEvent (OnCreate);
 	}
 
-	public void Init() {
+	public void Init(Node node) {
 		existingShells.Add (this);
 		expanded = true;
 
@@ -107,6 +106,7 @@ public class Shell : MonoBehaviour {
 		
 		resizeGameObject.SetActive (allowResize);
 
+		this.node = node;
 		UpdateAddress(node.rootFolder);
 		currentOutputText = address;
 		SetInput ("");
