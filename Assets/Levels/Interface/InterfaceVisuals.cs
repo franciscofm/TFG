@@ -10,6 +10,31 @@ public class InterfaceVisuals : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		if (animator == null) animator = GetComponent<Animator> ();
+		Interface iface = GetComponent<Interface> ();
+		iface.OnSelect += OnSelect;
+		iface.OnUnselect += OnUnselect;
+		iface.OnConnect += OnConnect;
+		iface.OnDisconnect += OnDisconnect;
 	}
 
+	public AnimationInfo OnSelectAnimation;
+	protected virtual void OnSelect(Interface iface) {
+		if (!string.IsNullOrEmpty (OnSelectAnimation.state))
+			animator.Play (OnSelectAnimation.state, OnSelectAnimation.layer);
+	}
+	public AnimationInfo OnUnselectAnimation;
+	protected virtual void OnUnselect(Interface iface) {
+		if (!string.IsNullOrEmpty (OnUnselectAnimation.state))
+			animator.Play (OnUnselectAnimation.state, OnUnselectAnimation.layer);
+	}
+	public AnimationInfo OnConnectAnimation;
+	protected virtual void OnConnect(Interface iface) {
+		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
+			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
+	}
+	public AnimationInfo OnDisconnectAnimation;
+	protected virtual void OnDisconnect(Interface iface) {
+		if (!string.IsNullOrEmpty (OnDisconnectAnimation.state))
+			animator.Play (OnDisconnectAnimation.state, OnDisconnectAnimation.layer);
+	}
 }

@@ -101,3 +101,9 @@ public static class Events {
 	public delegate void Void();
 	public delegate void Obj(object o);
 }
+
+[System.Serializable]
+public class AnimationInfo {
+	public int layer = 0;
+	public string state = "";
+}

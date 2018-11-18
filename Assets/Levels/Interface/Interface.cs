@@ -14,7 +14,6 @@ public class Interface : MonoBehaviour {
 	public event InterfaceEvent OnDisconnect;
 
 	public Node node;
-	public MeshRenderer mesh;
 
 	public string Name = "eth0";
 	public string address_family = "inet";

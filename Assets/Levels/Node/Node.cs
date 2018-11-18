@@ -85,9 +85,10 @@ public class Node : MonoBehaviour {
 	public delegate void NodeEvent(Node sender);
 	public delegate void NodeEventFull(Node sender, object obj);
 
-	public static event NodeEvent OnClick;
-	public static event NodeEvent OnClickUp;
-	public static event NodeEvent OnClickDown;
+	public event NodeEvent OnClickUp;
+	public event NodeEvent OnClickDown;
+
+	public static event NodeEvent OnClickUpStatic;
 	public static event NodeEventFull OnPing;
 	public static event NodeEventFull OnShellCommand;
 
@@ -100,17 +101,12 @@ public class Node : MonoBehaviour {
 
 	void OnMouseDown() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
-		if(OnClickDown != null)
-			OnClickDown (this);
+		if(OnClickDown != null) OnClickDown (this);
 	}
 	void OnMouseUp() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
-		if(OnClickUp != null)
-			OnClickUp (this);
-	}
-	void OnMouse() {
-		if(OnClick != null)
-			OnClick (this);
+		if(OnClickUpStatic != null) OnClickUpStatic (this);
+		if(OnClickUp != null) OnClickUp (this);
 	}
 
 	public void RaiseOnShellCommand(object obj) {

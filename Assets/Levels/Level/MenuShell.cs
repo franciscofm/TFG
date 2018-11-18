@@ -14,7 +14,7 @@ namespace Menu {
 			//Structure init
 			openedPanels = new Dictionary<Node, InfoPanel>();
 
-			Node.OnClickUp += ShowInfoNode;
+			Node.OnClickUpStatic += ShowInfoNode;
 			InfoPanel.menu = this;
 		}
 
@@ -30,6 +30,7 @@ namespace Menu {
 				openedPanels.Add (node, p);
 			}
 		}
+
 		public void ClosePanel(Node node) {
 			openedPanels.Remove (node);
 		}
