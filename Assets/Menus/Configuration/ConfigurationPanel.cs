@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Manager;
+
 public class ConfigurationPanel : MonoBehaviour {
 
 	public Slider sliderMaster;
@@ -16,21 +18,19 @@ public class ConfigurationPanel : MonoBehaviour {
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Main");
 	}
 	public void CallbackSave() {
-		Configuration.ChangeVolumeMaster (sliderMaster.value);
-		Configuration.ChangeVolumeMusic (sliderMusic.value);
-		Configuration.ChangeVolumeEffects (sliderEffects.value);
-		Configuration.ChangeVolumeVoice (sliderVoice.value);
+		User.ChangeVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
+		Sound.SetAllVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
 
 		switch (dropdownLenguage.value) {
-		case 0:
-			Configuration.ChangeLenguage(Configuration.Lenguage.English);
-			break;
-		case 1:
-			Configuration.ChangeLenguage(Configuration.Lenguage.Spanish);
-			break;
-		case 2:
-			Configuration.ChangeLenguage(Configuration.Lenguage.Catalan);
-			break;
+			case 0:
+				User.ChangeLenguage(User.Lenguage.English);
+				break;
+			case 1:
+				User.ChangeLenguage(User.Lenguage.Spanish);
+				break;
+			case 2:
+				User.ChangeLenguage(User.Lenguage.Catalan);
+				break;
 		}
 	}
 }
