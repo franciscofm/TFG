@@ -184,6 +184,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4667323729129738, guid: b598fb17b8868a744ae0e4462a7a5c56,
     type: 2}
   m_PrefabInternal: {fileID: 166642807}
+--- !u!114 &205501530 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 1409375375}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
 --- !u!1001 &212267883
 Prefab:
   m_ObjectHideFlags: 0
@@ -388,7 +394,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: PC1
-  Interfaces: []
+  Interfaces:
+  - {fileID: 205501530}
+  - {fileID: 1067502376}
+  - {fileID: 1264470160}
   RouteTable: []
   ARPTable: []
   type: 0
@@ -593,6 +602,18 @@ Transform:
   m_Father: {fileID: 653873111}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1067502376 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 224896655}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
+--- !u!114 &1142211441 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 1309837155}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
 --- !u!1 &1190449955
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +643,12 @@ Transform:
   m_Father: {fileID: 1990596799}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 112.205, z: 0}
+--- !u!114 &1264470160 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 166642807}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
 --- !u!1001 &1309837155
 Prefab:
   m_ObjectHideFlags: 0
@@ -826,6 +853,12 @@ Transform:
   m_Father: {fileID: 653873111}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 58.108, z: 0}
+--- !u!114 &1821677667 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 212267883}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
 --- !u!1 &1918344201
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,10 +988,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: PC1
-  Interfaces: []
+  Interfaces:
+  - {fileID: 1142211441}
+  - {fileID: 2020820052}
+  - {fileID: 1821677667}
   RouteTable: []
   ARPTable: []
   type: 0
+--- !u!114 &2020820052 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+    type: 2}
+  m_PrefabInternal: {fileID: 2085375349}
+  m_Script: {fileID: 11500000, guid: 5fbd158006256eb4a9e240c744513d41, type: 3}
 --- !u!1001 &2085375349
 Prefab:
   m_ObjectHideFlags: 0
