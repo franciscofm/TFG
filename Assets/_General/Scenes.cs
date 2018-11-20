@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Manager { 
 
-	public static class ManagerScenes {
+	public static class Scenes {
 
 		public static string activeScene;
 		public static Scene activeSceneObject;

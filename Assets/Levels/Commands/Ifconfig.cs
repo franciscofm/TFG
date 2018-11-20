@@ -60,7 +60,7 @@ public static class Ifconfig {
 		value.prompt = true;
 		value.correct = true;
 		foreach (Interface i in shell.node.Interfaces)
-			if (a || i.isUp)
+			if (a || i.IsUp())
 				PrintInterface (i, value);
 	}
 	static void List(string family, Shell shell, CommandStructure value) {
@@ -138,7 +138,7 @@ public static class Ifconfig {
 				_interface.SetBroadcast (new IP(broadcast));
 			}
 			_interface.SetIp(direction);
-			_interface.isUp = true;
+			_interface.SetStatus(true);
 		} catch {
 			//Debug.Log(e.Message);
 			value.value = "Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump;
@@ -159,7 +159,7 @@ public static class Ifconfig {
 				value.prompt = true;
 				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
 			} else {
-				_interface.isUp = true;
+				_interface.SetStatus(true);
 				value.correct = true;
 			}
 		}
@@ -174,7 +174,7 @@ public static class Ifconfig {
 				value.prompt = true;
 				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
 			} else {
-				_interface.isUp = false;
+				_interface.SetStatus(false);
 				value.correct = true;
 			}
 		}

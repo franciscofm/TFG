@@ -15,7 +15,7 @@ public class ConfigurationPanel : MonoBehaviour {
 	public Dropdown dropdownLenguage;
 
 	public void CallbackExit() {
-		UnityEngine.SceneManagement.SceneManager.LoadScene ("Main");
+		Scenes.LoadScene ("Main");
 	}
 	public void CallbackSave() {
 		User.ChangeVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);

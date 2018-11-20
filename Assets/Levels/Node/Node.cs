@@ -134,7 +134,7 @@ public class Node : MonoBehaviour {
 
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces)
-			if (i.isUp && i.ip == destination) {
+			if (i.IsUp() && i.ip == destination) {
 				pingInfo.destiny = this;
 				pingInfo.reached = true;
 				RaiseEventFull (OnPing, pingInfo);
@@ -143,7 +143,7 @@ public class Node : MonoBehaviour {
 		
 		//si esta conectado directamente TODO mirar firewall (iptable)
 		foreach (Interface i in Interfaces)
-			if (i.isUp && i.connectedTo != null && i.connectedTo.isUp && i.connectedTo.ip == destination) {
+			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp() && i.connectedTo.ip == destination) {
 				pingInfo.destiny = i.connectedTo.node;
 				pingInfo.reached = true;
 				RaiseEventFull (OnPing, pingInfo);

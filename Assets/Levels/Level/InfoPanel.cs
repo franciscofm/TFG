@@ -27,7 +27,7 @@ namespace Menu {
 				Interface iface = node.Interfaces[i];
 				ifacesName [i].text = iface.Name;
 				ifacesIP [i].text = iface.ip.word;
-				ifacesUp [i].color = iface.isUp ? Color.green : Color.red;
+				ifacesUp [i].color = iface.IsUp() ? Color.green : Color.red;
 			}
 		}
 

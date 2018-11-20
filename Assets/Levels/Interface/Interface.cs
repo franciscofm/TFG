@@ -12,6 +12,8 @@ public class Interface : MonoBehaviour {
 	public event InterfaceEvent OnUnselect;
 	public event InterfaceEvent OnConnect;
 	public event InterfaceEvent OnDisconnect;
+	public event InterfaceEvent OnGetUp;
+	public event InterfaceEvent OnGetDown;
 
 	public Node node;
 
@@ -36,14 +38,24 @@ public class Interface : MonoBehaviour {
 		this.broadcast = broadcast;
 	}
 
+	public bool IsUp() { return isUp; }
+	public void SetStatus(bool up) {
+		if(isUp != up)
+			if (up)
+				if (OnGetUp != null) OnGetUp (this);
+			else
+				if (OnGetDown != null) OnGetDown (this);
+		isUp = up;
+	}
+
 	[Header("Debug")]
-	public bool isUp = true;
 	public GameObject connectionRepresentation;
 	public Interface connectedTo;
 	public static Interface lastDown;
+	public bool isUp = true;
 	public bool selected;
 
-	void OnMouseUp() {
+	public void OnMouseUpCallback() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		
 		if (selected) Unselect ();
@@ -55,8 +67,7 @@ public class Interface : MonoBehaviour {
 		if (lastDown != null) { //Selecting second Iface
 
 			if (lastDown.node == node) { //Selecting second Iface of same Node
-				lastDown.selected = false;
-
+				lastDown.Unselect ();
 				Select ();
 			} else { //Selecting second Iface of other Node
 
@@ -83,6 +94,7 @@ public class Interface : MonoBehaviour {
 
 		if (OnUnselect != null) OnUnselect (this);
 	}
+
 	public void Connect() {
 		connectedTo = lastDown;
 		connectionRepresentation = RenderLine (transform, connectedTo.transform);
@@ -91,13 +103,16 @@ public class Interface : MonoBehaviour {
 		connectedTo.connectionRepresentation = connectionRepresentation;
 
 		if (OnConnect != null) OnConnect (this);
+		if (connectedTo.OnConnect != null) connectedTo.OnConnect (this);
 	}
 	public void Disconnect() {
+		if (OnDisconnect != null) OnDisconnect (this);
+		if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
+
 		connectedTo.connectionRepresentation = null;
 		connectedTo.connectedTo = null;
+		connectedTo = null;
 		Destroy (connectionRepresentation);
-
-		if (OnDisconnect != null) OnDisconnect (this);
 	}
 
 	public GameObject RenderLine(Transform t1, Transform t2) {

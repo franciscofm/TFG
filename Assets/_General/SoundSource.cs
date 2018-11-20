@@ -41,7 +41,7 @@ public class SoundSource : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Stops the sound source. If duration stated sound fades.
+	/// Stops the sound source. If duration stated sound fades before destroying.
 	/// </summary>
 	public void Stop (float duration = 0f) {
 		if (duration > 0f) {

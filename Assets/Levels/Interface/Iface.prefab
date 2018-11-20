@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4953540199884514}
   - component: {fileID: 136821546560759372}
+  - component: {fileID: 114058968816822750}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -88,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4182124950580102}
   m_Layer: 0
-  m_Name: Torus
+  m_Name: PivotAuxiliar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 1868988797856322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4468025487460246}
   m_Father: {fileID: 4667323729129738}
@@ -283,7 +284,7 @@ Animator:
   m_GameObject: {fileID: 1445557569711352}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 10453df3087fec242894efbc72db2770, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -291,6 +292,33 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114058968816822750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1234427984680540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0b370a0ad2f104aa055257723820c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  method:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114681697506992580}
+        m_MethodName: OnMouseUpCallback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114306746661536618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,17 +332,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95356274513065706}
   OnSelectAnimation:
-    layer: 0
-    state: 
+    layer: 1
+    state: Select
   OnUnselectAnimation:
-    layer: 0
-    state: 
+    layer: 1
+    state: Unselect
   OnConnectAnimation:
-    layer: 0
-    state: 
+    layer: 2
+    state: Connect
   OnDisconnectAnimation:
+    layer: 2
+    state: Disconnect
+  OnGetUpAnimation:
     layer: 0
-    state: 
+    state: IdleStart
+  OnGetDownAnimation:
+    layer: 0
+    state: LayDown
 --- !u!114 &114681697506992580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -349,9 +383,9 @@ MonoBehaviour:
     mask: 0
     class_: 0
   mac: 281474976710655
-  isUp: 1
   connectionRepresentation: {fileID: 0}
   connectedTo: {fileID: 0}
+  isUp: 1
   selected: 0
 --- !u!136 &136821546560759372
 CapsuleCollider:
