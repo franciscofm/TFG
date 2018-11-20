@@ -40,9 +40,23 @@ public class InterfaceVisuals : MonoBehaviour {
 
 	public AnimationInfo OnConnectAnimation;
 	protected virtual void OnConnect(Interface iface) {
+		//ring
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
 			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
+
 		//rotate looking at the other node
+		StartCoroutine(LookAt());
+	}
+	IEnumerator LookAt() {
+		Quaternion rotStart = nodeAnchor.localRotation;
+		Quaternion rotEnd = Quaternion.LookRotation(iface.connectedTo.node.transform.position - nodeAnchor.position);
+		float t = 0f;
+		while (t < 0.5f) {
+			yield return null;
+			t += Time.deltaTime;
+			nodeAnchor.localRotation = Quaternion.Lerp (rotStart, rotEnd, t / 0.5f);
+		}
+		//create line
 	}
 	public AnimationInfo OnDisconnectAnimation;
 	protected virtual void OnDisconnect(Interface iface) {

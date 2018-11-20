@@ -49,7 +49,6 @@ public class Interface : MonoBehaviour {
 	}
 
 	[Header("Debug")]
-	public GameObject connectionRepresentation;
 	public Interface connectedTo;
 	public static Interface lastDown;
 	public bool isUp = true;
@@ -97,10 +96,8 @@ public class Interface : MonoBehaviour {
 
 	public void Connect() {
 		connectedTo = lastDown;
-		connectionRepresentation = RenderLine (transform, connectedTo.transform);
 
 		connectedTo.connectedTo = this;
-		connectedTo.connectionRepresentation = connectionRepresentation;
 
 		if (OnConnect != null) OnConnect (this);
 		if (connectedTo.OnConnect != null) connectedTo.OnConnect (this);
@@ -109,20 +106,8 @@ public class Interface : MonoBehaviour {
 		if (OnDisconnect != null) OnDisconnect (this);
 		if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
 
-		connectedTo.connectionRepresentation = null;
 		connectedTo.connectedTo = null;
 		connectedTo = null;
-		Destroy (connectionRepresentation);
 	}
 
-	public GameObject RenderLine(Transform t1, Transform t2) {
-		GameObject go = new GameObject ("Line: " + t1.gameObject.name + " --> " + t2.gameObject.name);
-		go.transform.parent = t1;
-		LineRenderer line = go.AddComponent<LineRenderer> ();
-		line.positionCount = 2;
-		line.SetPosition (0, t1.position);
-		line.SetPosition (1, t2.position);
-		line.widthMultiplier = 0.1f;
-		return go;
-	}
 }
