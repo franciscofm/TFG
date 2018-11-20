@@ -248,6 +248,11 @@ Prefab:
       propertyPath: nodeAnchor
       value: 
       objectReference: {fileID: 1190449956}
+    - target: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+        type: 2}
+      propertyPath: isUp
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b598fb17b8868a744ae0e4462a7a5c56, type: 2}
   m_IsPrefabParent: 0
@@ -1059,6 +1064,11 @@ Prefab:
       propertyPath: nodeAnchor
       value: 
       objectReference: {fileID: 1726081464}
+    - target: {fileID: 114681697506992580, guid: b598fb17b8868a744ae0e4462a7a5c56,
+        type: 2}
+      propertyPath: isUp
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b598fb17b8868a744ae0e4462a7a5c56, type: 2}
   m_IsPrefabParent: 0

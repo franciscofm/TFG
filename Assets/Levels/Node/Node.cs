@@ -128,6 +128,12 @@ public class Node : MonoBehaviour {
 		return false;
 	}
 
+	/// <summary>
+	/// Determines whether the Node can reach the specified destination Node.
+	/// Raises event OnPing passing <c>PingInfo</c> as parameter.
+	/// </summary>
+	/// <returns> Returns <c>PingInfo</c> structure with results.</returns>
+	/// <param name="destination">Destination.</param>
 	public PingInfo CanReach(IP destination) {
 		PingInfo pingInfo = new PingInfo ();
 		pingInfo.origin = this;

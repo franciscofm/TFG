@@ -147,16 +147,11 @@ public class Shell : MonoBehaviour {
 		RaiseEventFull (OnOutput, currentInputText);
 
 		//tratar comando
-		if (splited [0] == "history") { //espeshial history case
-			History ();
-			history.Add ("history");
-			node.RaiseOnShellCommand ("history");
-		} else {
-			CommandStructure commandReturn = Console.ReadCommand (splited, this);
-			history.Add (currentInputText);
-			if (commandReturn.prompt) PrintOutputNoAddress (commandReturn.value);
-			node.RaiseOnShellCommand (splited [0]);
-		}
+		CommandStructure commandReturn = Console.ReadCommand (splited, this);
+		history.Add (currentInputText);
+		if (commandReturn.prompt) PrintOutputNoAddress (commandReturn.value);
+		node.RaiseOnShellCommand (commandReturn);
+
 		historyCommandIndex = history.Count;
 		currentInputText = "";
 		PrintAddress ();
@@ -188,10 +183,6 @@ public class Shell : MonoBehaviour {
 		}
 	}
 
-	public void History() {
-		foreach (string s in history)
-			PrintOutputNoAddress (s + Console.jump);
-	}
 	public void GetPreviousCommand() {
 		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
 		SetInput (history [historyCommandIndex]);

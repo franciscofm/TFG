@@ -50,6 +50,9 @@ public static class Console {
 	static void theme(string[] command, Shell shell, CommandStructure value) {
 		Theme.Command (command, shell, value);
 	}
+	static void history(string[] command, Shell shell, CommandStructure value) {
+		History.Command (command, shell, value);
+	}
 
 	//IT
 	static void ifconfig(string[] command, Shell shell, CommandStructure value) {

@@ -44,19 +44,20 @@ public class InterfaceVisuals : MonoBehaviour {
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
 			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
 
-		//rotate looking at the other node
+		//rotate looking at the other node TODO dont overlap with other ifaces
 		StartCoroutine(LookAt());
 	}
 	IEnumerator LookAt() {
-		Quaternion rotStart = nodeAnchor.localRotation;
+		Quaternion rotStart = nodeAnchor.rotation;
 		Quaternion rotEnd = Quaternion.LookRotation(iface.connectedTo.node.transform.position - nodeAnchor.position);
 		float t = 0f;
 		while (t < 0.5f) {
 			yield return null;
 			t += Time.deltaTime;
-			nodeAnchor.localRotation = Quaternion.Lerp (rotStart, rotEnd, t / 0.5f);
+			nodeAnchor.rotation = Quaternion.Lerp (rotStart, rotEnd, t / 0.5f);
 		}
 		//create line
+		print("TODO: create line or smthng");
 	}
 	public AnimationInfo OnDisconnectAnimation;
 	protected virtual void OnDisconnect(Interface iface) {
