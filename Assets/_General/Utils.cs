@@ -44,6 +44,12 @@ public static class Utils {
 		Array.Copy (data, index, result, 0, length);
 		return result;
 	}
+	public static bool Has<T>(this T[] data, T obj) {
+		foreach (T t in data)
+			if (t.Equals(obj))
+				return true;
+		return false;
+	}
 
 	public static int[] IPToInt4(this string ip) {
 		return ip.Split (new string[]{ "." }, 0x0).StringToInt4 ();

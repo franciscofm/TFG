@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+using Manager;
 
 public class SelectLevel : MonoBehaviour {
 
@@ -93,7 +95,7 @@ public class SelectLevel : MonoBehaviour {
 	}
 
 	public void CallbackReturn() {
-		SceneManager.LoadScene("Main");
+		Scenes.LoadScene ("SelectLevel");
 	}
 
 	[Header("Horizontal bar levels")]

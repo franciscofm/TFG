@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+using Manager;
 
 public class Main : MonoBehaviour {
 
 	public void CallbackSelectLevel() {
-		SceneManager.LoadScene ("SelectLevel");
+		Scenes.LoadScene ("SelectLevel");
 	}
 	public void CallbackConfiguration() {
-		SceneManager.LoadScene ("Configuration");
+		Scenes.LoadScene ("Configuration");
 	}
 	public void CallbackExit() {
-		#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
-		#else
-			Application.Quit();
-		#endif
+		Scenes.ExitGame ();
 	}
 }

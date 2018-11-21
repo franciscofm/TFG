@@ -29,7 +29,7 @@ public class Shell : MonoBehaviour {
 
 	[Header("Configuration")]
 	public bool allowResize = false;
-	public Aparence currentTheme;
+	public bool initOnStart = false;
 
 	[Header("References")]
 	public Text headerText;
@@ -42,6 +42,7 @@ public class Shell : MonoBehaviour {
 	public Node node;
 
 	[Header("Theme")]
+	public Aparence currentTheme;
 	public Image topCornerLeft;
 	public Image topCornerRight;
 	public Image topCenter;
@@ -95,6 +96,7 @@ public class Shell : MonoBehaviour {
 
 	void Start() {
 		RaiseEvent (OnCreate);
+		if(initOnStart) Init (node);
 	}
 
 	public void Init(Node node) {

@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Manager;
 
 public class EventSound : MonoBehaviour {
 
 	public AudioClip sound;
 
 	public void PlaySound() {
-		print ("Sound sounds");
+		Sound.PlayEffect (sound, transform.localPosition); //TODO precise position
 	}
 }

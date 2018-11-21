@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
+
+using Manager;
 
 public class ImagePanel : MonoBehaviour {
 
@@ -35,6 +38,6 @@ public class ImagePanel : MonoBehaviour {
 
 	public void CallbackPlay() {
 		if(enabled)
-			UnityEngine.SceneManagement.SceneManager.LoadScene (currentLevelEntry.scene);
+			Scenes.LoadScene (currentLevelEntry.scene);
 	}
 }

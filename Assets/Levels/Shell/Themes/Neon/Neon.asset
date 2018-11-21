@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89be143e618660843bc62be7b258d131, type: 3}
-  m_Name: NeonMagentaAparence
+  m_Name: Neon
   m_EditorClassIdentifier: 
-  borderColor: {r: 1, g: 0, b: 1, a: 1}
+  borderColor: {r: 1, g: 1, b: 1, a: 1}
   backgroundColor: {r: 0, g: 0, b: 0, a: 1}
-  textColor: {r: 1, g: 0, b: 1, a: 1}
+  textColor: {r: 1, g: 1, b: 1, a: 1}
   topCornerLeft: {fileID: 21300000, guid: e9abdd594ee512b45a890ffccbf3ba15, type: 3}
   topCornerRight: {fileID: 21300000, guid: c75eac3e6ec11d84391876ae57fb2e27, type: 3}
   topCenter: {fileID: 21300000, guid: 0fdecc3945f3ec4408b2ada31a3f5019, type: 3}

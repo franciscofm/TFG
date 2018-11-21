@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Manager;
 
-public class InputSceneLoaderOnInput : MonoBehaviour {
+public class SceneLoaderOnInput : MonoBehaviour {
 
 	public string scene = "Main";
 	[Space]
@@ -32,6 +32,6 @@ public class InputSceneLoaderOnInput : MonoBehaviour {
 	}
 
 	void GoToScene() {
-		SceneManager.LoadScene (scene);
+		Scenes.LoadScene (scene);
 	}
 }

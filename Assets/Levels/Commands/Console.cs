@@ -28,19 +28,37 @@ public static class Console {
 		{"mkdir", mkdir },
 		{"mkfile", mkfile },
 		{"cd", cd }
+	};
+	private static string[] AvailableCommands = new string[] {
+		"help", 
+		"man", 
+		"theme",
+		"history",
 
+		"ifconfig", 
+		"ic", 
+		"ifup", 
+		"ifdown", 
+		"route", 
+		"ping", 
+
+
+		"ls", 
+		"mkdir", 
+		"mkfile", 
+		"cd"
 	};
 
 	public static CommandStructure ReadCommand(string[] command, Shell shell) {
 		CommandStructure commandReturn = new CommandStructure();
-		if (commands.ContainsKey (command [0])) {
+		if (commands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
 			commands [command [0]] (command.SubArray (1, command.Length - 1), shell, commandReturn);
 		}
 		return commandReturn;
 	}
 	static void help(string[] command, Shell shell, CommandStructure value) {
 		value.value = "List of avaliable commands:"+jump;
-		foreach (string key in commands.Keys) 
+		foreach (string key in AvailableCommands) 
 			value.value += key + jump;
 		value.correct = true;
 		value.prompt = true;
