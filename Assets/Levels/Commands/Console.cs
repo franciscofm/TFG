@@ -14,6 +14,7 @@ public static class Console {
 		{"help", help },
 		{"man", man },
 		{"theme", theme },
+		{"history", history },
 
 		{"ifconfig", ifconfig },
 		{"ic", ifconfig },
@@ -64,7 +65,6 @@ public static class Console {
 	static void ifdown(string[] command, Shell shell, CommandStructure value) {
 		Ifconfig.IfDown (command, shell, value);
 	}
-
 
 	static void route(string[] command, Shell shell, CommandStructure value) {
 		Route.Command (command, shell, value);

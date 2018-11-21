@@ -7,25 +7,28 @@ public class Node : MonoBehaviour {
 
 	public new string name = "PC1";
 
-	//FileSystem
-	public Folder rootFolder;
+	//[Header("File system")]
+	[HideInInspector] public Folder rootFolder;
 
-	//Puertos LAN
+	[Header("Interfaces")]
 	public Interface[] Interfaces;
+	[Space] //SetUp
+	public GameObject interfacePrefab;
+	public int interfaceQuantity = 3;
+	public float interfaceOffsetToNode = 1.5f;
 
-	//Routing
+	[Header("Route Table")]
 	public List<RouteEntry> RouteTable;
 
-	//ARP
+	[Header("ARP")]
 	public List<ARPEntry> ARPTable;
 
-	//ignored atm
-	public enum Type { Pc, Switch, HUB };
-	public Type type = Type.Pc;
-
+//	public enum Type { Pc, Switch, HUB };
+//	public Type type = Type.Pc;
 
 	void Awake() {
 		LoadFileSystem ();
+		LoadInterfaces ();
 	}
 	void LoadFileSystem() {
 		Folder temporary;
@@ -81,6 +84,25 @@ public class Node : MonoBehaviour {
 		rootFolder.folders.Add (new Folder ("tmp", rootFolder));
 		rootFolder.folders.Add (new Folder ("dev", rootFolder));
 	}
+	void LoadInterfaces() {
+		Interfaces = new Interface[interfaceQuantity];
+		float rotationOffset = 360f / interfaceQuantity;
+		Vector3 ifaceLocalPos = new Vector3 (0f, 0f, interfaceOffsetToNode);
+
+		for (int i = 0; i < interfaceQuantity; ++i) {
+			//Center
+			Transform t = new GameObject ().transform;
+			t.parent = this.transform;
+			t.localPosition = Vector3.zero;
+			t.localRotation = Quaternion.AngleAxis (rotationOffset * i, Vector3.up);
+
+			Interface iface = Instantiate (interfacePrefab, t).GetComponent<Interface> ();
+			iface.node = this;
+			iface.SetStatus (i == 0);
+			iface.transform.localPosition = ifaceLocalPos;
+			iface.SetIp (new IP ("192.168.0." + (i + 1)));
+		}
+	}
 
 	public delegate void NodeEvent(Node sender);
 	public delegate void NodeEventFull(Node sender, object obj);
@@ -92,18 +114,33 @@ public class Node : MonoBehaviour {
 	public static event NodeEventFull OnPing;
 	public static event NodeEventFull OnShellCommand;
 
+	/// <summary>
+	/// Raises the event.
+	/// </summary>
+	/// <param name="e">Event to be raised.</param>
 	void RaiseEvent(NodeEvent e) {
 		if (e != null) e (this);
 	}
+	/// <summary>
+	/// Raises the event.
+	/// </summary>
+	/// <param name="e">Event to be raised.</param>
+	/// <param name="obj">Object to be passed through the event.</param>
 	void RaiseEventFull(NodeEventFull e, object obj) {
 		if (e != null) e (this, obj);
 	}
 
-	void OnMouseDown() {
+	/// <summary>
+	/// Raises the mouse down callback event.
+	/// </summary>
+	public void OnMouseDownCallback() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		if(OnClickDown != null) OnClickDown (this);
 	}
-	void OnMouseUp() {
+	/// <summary>
+	/// Raises the mouse up callback event.
+	/// </summary>
+	public void OnMouseUpCallback() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		if(OnClickUpStatic != null) OnClickUpStatic (this);
 		if(OnClickUp != null) OnClickUp (this);
@@ -113,6 +150,11 @@ public class Node : MonoBehaviour {
 		RaiseEventFull (OnShellCommand, obj);
 	}
 
+	/// <summary>
+	/// Gets the interface with specified name.
+	/// </summary>
+	/// <returns>The interface if it exists; otherwise, null.</returns>
+	/// <param name="interf">Interf.</param>
 	public Interface GetInterface(string interf) {
 		foreach (Interface i in Interfaces) {
 			if (interf == i.Name) {
@@ -121,6 +163,10 @@ public class Node : MonoBehaviour {
 		}
 		return null;
 	}
+	/// <summary>
+	/// Determines whether the Node has the specified Interface.
+	/// </summary>
+	/// <returns><c>true</c> if this instance has the specified interface; otherwise, <c>false</c>.</returns>
 	public bool HasInterface(Interface iface) {
 		foreach (Interface i in Interfaces)
 			if (i == iface)
@@ -179,6 +225,9 @@ public class Node : MonoBehaviour {
 
 }
 
+/// <summary>
+/// Ping info structure.
+/// </summary>
 public class PingInfo {
 	public bool reached;
 	public Node destiny;
