@@ -52,6 +52,9 @@ public class Shell : MonoBehaviour {
 	public Image borderRight;
 	public Image borderBottom;
 	public Image backgroundBody;
+	/// <summary>
+	/// Changes the shell theme.
+	/// </summary>
 	public void ChangeTheme(Aparence a) {
 		topCornerLeft.sprite = a.topCornerLeft;
 		topCornerRight.sprite = a.topCornerRight;
@@ -99,6 +102,10 @@ public class Shell : MonoBehaviour {
 		if(initOnStart) Init (node);
 	}
 
+	/// <summary>
+	/// Init the shell.
+	/// </summary>
+	/// <param name="node">Node this shell is referencing.</param>
 	public void Init(Node node) {
 		existingShells.Add (this);
 		expanded = true;
@@ -116,6 +123,9 @@ public class Shell : MonoBehaviour {
 		FocusShell ();
 	}
 
+	/// <summary>
+	/// Updates the address in which the shell is placed (folder and user).
+	/// </summary>
 	public void UpdateAddress(Folder folder) {
 		this.folder = folder;
 		path = folder.GetPathString ();
@@ -124,16 +134,25 @@ public class Shell : MonoBehaviour {
 		RaiseEventFull (OnUpdateAddress, folder.name);
 	}
 
+	/// <summary>
+	/// Adds text to the current input.
+	/// </summary>
 	public void AddInput(string input) { //adds characters by Keyboard.cs
 		currentInputText += input;
 		bodyText.text = currentOutputText + currentInputText;
 		UpdateTextMask ();
 	}
+	/// <summary>
+	/// Sets the current input.
+	/// </summary>
 	public void SetInput(string input) {
 		currentInputText = input;
 		bodyText.text = currentOutputText + currentInputText;
 		UpdateTextMask ();
 	}
+	/// <summary>
+	/// Removes a character from the current input.
+	/// </summary>
 	public void RemoveInput() { //press Back key by Keyboard.cs
 		if (currentInputText.Length > 0) {
 			currentInputText = currentInputText.Remove (currentInputText.Length - 1);
@@ -141,6 +160,9 @@ public class Shell : MonoBehaviour {
 			UpdateTextMask ();
 		} 
 	}
+	/// <summary>
+	/// Reads the current input, evaluates it and print its result.
+	/// </summary>
 	public void ReadInput() {
 		if (currentInputText.Length == 0) return; //nothing written
 		string[] splited = currentInputText.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -158,22 +180,36 @@ public class Shell : MonoBehaviour {
 		currentInputText = "";
 		PrintAddress ();
 	}
+	/// <summary>
+	/// Prints text with address and clears current input.
+	/// </summary>
+	/// <param name="output">Output text.</param>
 	public void PrintOutput(string output) {
 		currentOutputText += output;
 		currentOutputText += address;
 		bodyText.text = currentOutputText;
 		UpdateTextMask ();
 	}
+	/// <summary>
+	/// Prints the current address and clears current input.
+	/// </summary>
 	public void PrintAddress() {
 		currentOutputText += Console.jump + address;
 		bodyText.text = currentOutputText;
 		UpdateTextMask ();
 	}
+	/// <summary>
+	/// Prints text without address and clears current input.
+	/// </summary>
+	/// <param name="output">Output text.</param>
 	public void PrintOutputNoAddress(string output) {
 		currentOutputText += output;
 		bodyText.text = currentOutputText;
 		UpdateTextMask ();
 	}
+	/// <summary>
+	/// Updates the RectTransforms anchores to display text properly.
+	/// </summary>
 	public void UpdateTextMask() {
 		Canvas.ForceUpdateCanvases ();
 		float f = bodyText.preferredHeight;
@@ -185,21 +221,33 @@ public class Shell : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Gets the previous command.
+	/// </summary>
 	public void GetPreviousCommand() {
 		historyCommandIndex = Math.Max (0, historyCommandIndex - 1);
 		SetInput (history [historyCommandIndex]);
 	}
+	/// <summary>
+	/// Gets the next command.
+	/// </summary>
 	public void GetNextCommand() {
 		historyCommandIndex = Math.Min (history.Count - 1, historyCommandIndex + 1);
 		SetInput (history [historyCommandIndex]);
 	}
 
+	/// <summary>
+	/// Closes the shell.
+	/// </summary>
 	public void CallbackClose() {
 		RaiseEvent (OnClose);
 		existingShells.Remove (this);
 		UnfocusShell ();
 		Destroy (gameObject);
 	}
+	/// <summary>
+	/// Minimizes the shell.
+	/// </summary>
 	public void CallbackMinimize() {
 		expanded = !expanded;
 		bodyRectTransform.gameObject.SetActive (expanded);
@@ -207,6 +255,9 @@ public class Shell : MonoBehaviour {
 		if (!expanded)
 			UnfocusShell ();
 	}
+	/// <summary>
+	/// Maximizes the shell.
+	/// </summary>
 	public void CallbackMaximize() {
 		//FocusShell ();
 		print ("TODO: CallbackMaximize");
@@ -214,24 +265,39 @@ public class Shell : MonoBehaviour {
 	}
 
 	float resizeStart;
+	/// <summary>
+	/// Prepares the shell for hight resize.
+	/// </summary>
 	public void CallbackResizeVerticalStart() {
 		resizeStart = -shellRectTransform.anchoredPosition.y;
 	}
+	/// <summary>
+	/// Updates the hight while resizing. 
+	/// </summary>
 	public void CallbackResizeVertical() {
 		float height = (1080f-Input.mousePosition.y) - resizeStart;
 		if (height < 100f)
 			return;
 		shellRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, height);
 	}
+	/// <summary>
+	/// Prepares the shell for width resize.
+	/// </summary>
 	public void CallbackResizeHorizontalStart() {
 		resizeStart = shellRectTransform.anchoredPosition.x;
 	}
+	/// <summary>
+	/// Updates the width while resizing. 
+	/// </summary>
 	public void CallbackResizeHorizontal() {
 		float width = Input.mousePosition.x - resizeStart;
 		if (width < 200f)
 			return;
 		shellRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, width);
 	}
+	/// <summary>
+	/// Finishes resize calculations.
+	/// </summary>
 	public void CallbackResizeEnd() {
 		UpdateTextMask ();
 	}
@@ -242,9 +308,17 @@ public class Shell : MonoBehaviour {
 		print ("Hover resize Exit");
 	}
 
+	/// <summary>
+	/// Determines whether this instance is containing the specified position.
+	/// </summary>
+	/// <returns><c>true</c> if this instance is containing the specified position; otherwise, <c>false</c>.</returns>
 	public bool IsMouseOver(Vector2 mousePos) {
 		return (RectTransformUtility.RectangleContainsScreenPoint(shellRectTransform, mousePos));
 	}
+
+	/// <summary>
+	/// Focuses the shell, making it read keyboard input. If Ctrl key is not held down, unfocuses other shells.
+	/// </summary>
 	public void FocusShell() {
 		if(expanded) {
 			RaiseEvent (OnFocus);
@@ -257,6 +331,9 @@ public class Shell : MonoBehaviour {
 		}
 		transform.SetAsLastSibling ();
 	}
+	/// <summary>
+	/// Unfocuses the shell.
+	/// </summary>
 	public void UnfocusShell() {
 		focus = false;
 		RaiseEvent (OnUnfocus);
@@ -264,14 +341,38 @@ public class Shell : MonoBehaviour {
 			focusedShells.Remove (this);
 		}
   	}
+
+	/// <summary>
+	/// Unfocuses all shells.
+	/// </summary>
 	public static void UnfocusAll() {
 		while (focusedShells.Count > 0)
 			focusedShells [0].UnfocusShell ();
 	}
+	/// <summary>
+	/// Closes all shells.
+	/// </summary>
+	public static void CloseAll() {
+		while (existingShells.Count > 0)
+			existingShells [0].CallbackClose ();
+	}
+	/// <summary>
+	/// Minimizes all shells.
+	/// </summary>
+	public static void MinimizeAll() {
+		while (existingShells.Count > 0)
+			existingShells [0].CallbackMinimize ();
+	}
 
+	/// <summary>
+	/// Prepares the shell for being draged.
+	/// </summary>
 	public void DragHeaderStart() {
 		dragOffset = transform.position - Input.mousePosition;
 	}
+	/// <summary>
+	/// Updates position while draging.
+	/// </summary>
 	public void DragHeader() {
 		transform.position = Input.mousePosition + dragOffset;
 	}

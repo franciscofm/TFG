@@ -14,7 +14,7 @@ public class Keyboard : MonoBehaviour {
 	}
 
 	void Update () {
-		if (focusedShells.Count > 0) {
+		if (focusedShells.Count > 0) { //Shell interaction
 			Ctrl = Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl); //No shell click
 			if (!Ctrl && Input.GetMouseButton(0)) {
 				bool found = false;

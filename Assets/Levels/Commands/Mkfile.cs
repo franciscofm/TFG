@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Mkfile : MonoBehaviour {
+public static class Mkfile {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public static void Command(string[] command, Shell shell, CommandStructure value) {
+		switch (command.Length) {
+		default:
+			value.prompt = true;
+			value.value = "Not implemented yet.";
+			value.correct = true;
+			break;
+		}
 	}
 }

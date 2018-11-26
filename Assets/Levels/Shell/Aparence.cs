@@ -13,4 +13,23 @@ public class Aparence : ScriptableObject {
 	public Sprite border;
 	[Header("Font")]
 	public Font font;
+
+	public Aparence(Aparence toClone) {
+		topCornerLeft = toClone.topCornerLeft;
+		topCornerRight = toClone.topCornerRight;
+		topCenter = toClone.topCenter;
+		border = toClone.border;
+		font = toClone.font;
+	}
+	public Aparence(Aparence toClone, Color frame, Color text, Color background) {
+		topCornerLeft = toClone.topCornerLeft;
+		topCornerRight = toClone.topCornerRight;
+		topCenter = toClone.topCenter;
+		border = toClone.border;
+		font = toClone.font;
+
+		borderColor = frame;
+		textColor = text;
+		backgroundColor = background;
+	}
 }

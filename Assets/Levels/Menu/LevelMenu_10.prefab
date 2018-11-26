@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114023442359250930}
   - component: {fileID: 114386993519045076}
   m_Layer: 5
-  m_Name: LevelMenu
+  m_Name: LevelMenu_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -605,7 +605,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &224027869727680670
 RectTransform:
