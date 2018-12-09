@@ -11,7 +11,6 @@ public class IP {
 	public uint numeric;
 	public uint[] array;
 	public string word;
-	public uint mask; //TODO
 
 	public enum Class { A, B, C, D, E };
 	public Class class_;
@@ -35,8 +34,8 @@ public class IP {
 
 	}
 
-	public bool IsSubnet(IP net, uint mask) {
-		return (numeric & mask) == (net.numeric & mask);
+	public bool IsSubnet(IP otherIP, IP mask) {
+		return (numeric & mask.numeric) == (otherIP.numeric & mask.numeric);
 	}
 
 	string ArrayToWord(uint[] array) {

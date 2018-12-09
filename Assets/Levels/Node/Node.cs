@@ -204,7 +204,7 @@ public class Node : MonoBehaviour {
 
 		//si se puede llegar por route
 		foreach(RouteEntry re in RouteTable) {
-			if(destination.IsSubnet(re.destination, re.genmask.mask)) {
+			if(destination.IsSubnet(re.destination, re.genmask)) {
 				Interface iface = GetInterface (re.iface);
 				if (iface != null) {
 					PingInfo routePingInfo = iface.connectedTo.node.CanReach (destination);
