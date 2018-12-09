@@ -110,4 +110,10 @@ public class Interface : MonoBehaviour {
 		connectedTo = null;
 	}
 
+	public override string ToString () {
+		string text = "Interface " + Name + Console.jump;
+		text += "Is up? " + (isUp ? "yes" : "no");
+		text += "IP:" + ip.word + ", "+ ip.numeric;
+		return text;
+	}
 }

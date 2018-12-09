@@ -45,7 +45,6 @@ public static class Console {
 		return commandReturn;
 	}
 
-
 	static void help(string[] command, Shell shell, CommandStructure value) {
 		value.value = "List of avaliable commands:"+jump;
 		foreach (string key in AvailableCommands) 

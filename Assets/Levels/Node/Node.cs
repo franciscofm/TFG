@@ -23,13 +23,13 @@ public class Node : MonoBehaviour {
 	[Header("ARP")]
 	public List<ARPEntry> ARPTable;
 
-//	public enum Type { Pc, Switch, HUB };
-//	public Type type = Type.Pc;
-
 	void Awake() {
 		LoadFileSystem ();
 		LoadInterfaces ();
 	}
+	/// <summary>
+	/// Loads the file system.
+	/// </summary>
 	void LoadFileSystem() {
 		Folder temporary;
 		rootFolder = new Folder ("", null);
@@ -84,6 +84,9 @@ public class Node : MonoBehaviour {
 		rootFolder.folders.Add (new Folder ("tmp", rootFolder));
 		rootFolder.folders.Add (new Folder ("dev", rootFolder));
 	}
+	/// <summary>
+	/// Loads the interfaces.
+	/// </summary>
 	void LoadInterfaces() {
 		Interfaces = new Interface[interfaceQuantity];
 		float rotationOffset = 360f / interfaceQuantity;
@@ -101,6 +104,9 @@ public class Node : MonoBehaviour {
 			iface.SetStatus (i == 0);
 			iface.transform.localPosition = ifaceLocalPos;
 			iface.SetIp (new IP ("192.168.0." + (i + 1)));
+			iface.SetNetmask (new IP ("255.255.255.0"));
+			iface.SetBroadcast (new IP ("255.255.255." + (i + 1)));
+			Interfaces [i] = iface;
 		}
 	}
 
@@ -146,6 +152,9 @@ public class Node : MonoBehaviour {
 		if(OnClickUp != null) OnClickUp (this);
 	}
 
+	/// <summary>
+	/// Raises OnShellCommand with the specified object as parameter.
+	/// </summary>
 	public void RaiseOnShellCommand(object obj) {
 		RaiseEventFull (OnShellCommand, obj);
 	}
@@ -185,17 +194,18 @@ public class Node : MonoBehaviour {
 		pingInfo.origin = this;
 
 		//si es una direccion de las interficies propias
-		foreach (Interface i in Interfaces)
-			if (i.IsUp() && i.ip == destination) {
+		foreach (Interface i in Interfaces) {
+			if (i.IsUp () && i.ip.Equals(destination)) {
 				pingInfo.destiny = this;
 				pingInfo.reached = true;
 				RaiseEventFull (OnPing, pingInfo);
 				return pingInfo;
 			}
+		}
 		
 		//si esta conectado directamente TODO mirar firewall (iptable)
 		foreach (Interface i in Interfaces)
-			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp() && i.connectedTo.ip == destination) {
+			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp() && i.connectedTo.ip.Equals(destination)) {
 				pingInfo.destiny = i.connectedTo.node;
 				pingInfo.reached = true;
 				RaiseEventFull (OnPing, pingInfo);

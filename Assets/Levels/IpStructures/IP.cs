@@ -55,15 +55,11 @@ public class IP {
 		return number;
 	}
 
-
-
 	public override string ToString () {
-		return word;
+		return word + ", " + numeric;	
 	}
-
-	public override bool Equals (object obj) {
-		IP comp = obj as IP;
-		return (this.numeric == comp.numeric);
+	public bool Equals(IP other) {
+		return numeric == other.numeric;
 	}
 	public override int GetHashCode () {
 		return numeric.GetHashCode ();
