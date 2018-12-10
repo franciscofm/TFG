@@ -9,11 +9,19 @@ public class Level : MonoBehaviour {
 	public Transform canvasTransform;
 
 	Dictionary<Node,Pair> nodeMenus;
+	List<Node> allNodes;
+	List<Interface> allInterfaces;
 
 	// Use this for initialization
 	void Start () {
 		nodeMenus = new Dictionary<Node, Pair> ();
 		Node.OnClickUpStatic += OnNodeClick;
+
+		allNodes = Node.allNodes;
+		allInterfaces = new List<Interface> ();
+		foreach (Node n in allNodes)
+			foreach (Interface i in n.Interfaces)
+				allInterfaces.Add (i);
 	}
 
 	public void OnNodeClick(Node node) {
@@ -43,7 +51,7 @@ public class Level : MonoBehaviour {
 		}
 	}
 	public void CallbackColorPick(Color c, Node node) {
-		
+		nodeMenus [node].visuals.ChangeNodeColor (c);
 	}
 
 	public GameObject ifconfigPrefab;

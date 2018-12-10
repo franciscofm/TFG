@@ -26,4 +26,8 @@ public class NodeVisuals : MonoBehaviour {
 		if (!string.IsNullOrEmpty (OnClickUpAnimation.state))
 			animator.Play (OnClickUpAnimation.state, OnClickUpAnimation.layer);
 	}
+
+	public void ChangeNodeColor(Color c) {
+
+	}
 }

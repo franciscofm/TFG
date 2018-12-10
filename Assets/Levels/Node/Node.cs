@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
+	public static List<Node> allNodes;
+
 	public new string name = "PC1";
 
 	//[Header("File system")]
@@ -24,6 +26,10 @@ public class Node : MonoBehaviour {
 	public List<ARPEntry> ARPTable;
 
 	void Awake() {
+		if (allNodes == null)
+			allNodes = new List<Node> ();
+		allNodes.Add (this);
+
 		LoadFileSystem ();
 		LoadInterfaces ();
 	}

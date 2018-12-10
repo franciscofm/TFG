@@ -61,7 +61,6 @@ public class Interface : MonoBehaviour {
 		else CheckSelect ();
 	}
 
-
 	public void CheckSelect() {
 		if (lastDown != null) { //Selecting second Iface
 
