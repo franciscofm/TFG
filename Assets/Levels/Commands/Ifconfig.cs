@@ -22,51 +22,51 @@ public static class Ifconfig {
 	// ifconfig eth0 192.168.60.1
 	// ifconfig eth0 192.168.60.1 netmask 255.255.255.0
 	// ifconfig eth0 192.168.60.1 netmask 255.255.255.0 broadcast 192.169.60.255
-	public static void Command(string[] command, Shell shell, CommandStructure value) {
+	public static void Command(string[] command, Node node, CommandStructure value) {
 		switch (command.Length) {
 		case 0:
-			List (false, shell, value); //List up
+			List (false, node, value); //List up
 			break;
 		case 1:
 			switch (command [0]) {
 			case "-a":
-				List (true, shell, value); //List all
+				List (true, node, value); //List all
 				break;
 			default:
-				List (command [0], shell, value); //List family
+				List (command [0], node, value); //List family
 				break;
 			}
 			break;
 		case 2:
 			switch (command [1]) {
 			case "down":
-				IfDown (command, shell, value);
+				IfDown (command, node, value);
 				break;
 			case "up":
-				IfUp (command, shell, value);
+				IfUp (command, node, value);
 				break;
 			default:
-				Configure (command, shell, value);
+				Configure (command, node, value);
 				break;
 			}
 			break;
 		default:
-			Configure (command, shell, value);
+			Configure (command, node, value);
 			break;
 		}
 	}
 
-	static void List(bool a, Shell shell, CommandStructure value) {
+	static void List(bool a, Node node, CommandStructure value) {
 		value.prompt = true;
 		value.correct = true;
-		foreach (Interface i in shell.node.Interfaces)
+		foreach (Interface i in node.Interfaces)
 			if (a || i.IsUp())
 				PrintInterface (i, value);
 	}
-	static void List(string family, Shell shell, CommandStructure value) {
+	static void List(string family, Node node, CommandStructure value) {
 		value.prompt = true;
 		value.correct = true;
-		foreach (Interface i in shell.node.Interfaces)
+		foreach (Interface i in node.Interfaces)
 			if (i.address_family == family)
 				PrintInterface (i, value);
 	}
@@ -79,7 +79,7 @@ public static class Ifconfig {
 		;
 	}
 
-	static void Configure(string[] command, Shell shell, CommandStructure value) {
+	static void Configure(string[] command, Node node, CommandStructure value) {
 		value.prompt = true;
 
 		if (command.Length == 3 || command.Length == 5) {
@@ -94,7 +94,7 @@ public static class Ifconfig {
 			value.value = "Error: ifconfig interface direction [netmask @mask [broadcast @mask]]" + Console.jump;
 			return;
 		}
-		Interface _interface = shell.node.GetInterface(command[0]);
+		Interface _interface = node.GetInterface(command[0]);
 		if (_interface == null) { 
 			value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
 			return;
@@ -149,12 +149,12 @@ public static class Ifconfig {
 		value.correct = true;
 	}
 
-	public static void IfUp(string[] command, Shell shell, CommandStructure value) {
+	public static void IfUp(string[] command, Node node, CommandStructure value) {
 		if (command.Length < 1) {
 			value.prompt = true;
 			value.value = "Error: needed interface" + Console.jump;
 		} else {
-			Interface _interface = shell.node.GetInterface(command[0]);
+			Interface _interface = node.GetInterface(command[0]);
 			if (_interface == null) {
 				value.prompt = true;
 				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
@@ -164,12 +164,12 @@ public static class Ifconfig {
 			}
 		}
 	}
-	public static void IfDown(string[] command, Shell shell, CommandStructure value) {
+	public static void IfDown(string[] command, Node node, CommandStructure value) {
 		if (command.Length < 1) {
 			value.prompt = true;
 			value.value = "Error: needed interface" + Console.jump;
 		} else {
-			Interface _interface = shell.node.GetInterface(command[0]);
+			Interface _interface = node.GetInterface(command[0]);
 			if (_interface == null) {
 				value.prompt = true;
 				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;

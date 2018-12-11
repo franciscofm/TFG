@@ -26,30 +26,29 @@ public static class Route {
 	//	inet 172.17.0.130  netmask 255.255.0.0  broadcast 0.0.0.0                                                                                                                              
 	//	ether 02:42:ac:11:00:82  txqueuelen 0  (Ethernet)
 
-	public static void Command(string[] command, Shell shell, CommandStructure value) {
+	public static void Command(string[] command, Node node, CommandStructure value) {
 		switch (command.Length) {
 		case 0:
-			List (true, shell, value); //List up
+			List (true, node, value); //List up
 			break;
 		case 1:
 			switch (command[0]) {
 			case "-n":
-				List (false, shell, value); //List up
+				List (false, node, value); //List up
 				break;
 			}
 			break;
 		default:
-			Check (command, shell, value);
+			Check (command, node, value);
 			break;
 		}
 	}
 
 	// route
 	// route -n
-	static void List(bool arp, Shell shell, CommandStructure value) {
+	static void List(bool arp, Node node, CommandStructure value) {
 		value.value = "Kernel IP routing table" + Console.jump;
-		Node n = shell.node;
-		foreach (RouteEntry re in n.RouteTable) {
+		foreach (RouteEntry re in node.RouteTable) {
 			PrintEntry (re, arp, value);
 		}
 	}
@@ -73,7 +72,7 @@ public static class Route {
 	// add -net x.x.x.x gw 192.168.60.2
 	// add -net x.x.x.x dev eth0
 	// add -net x.x.x.x gw 192.168.60.2 dev eth0
-	static void Check(string[] command, Shell shell, CommandStructure value) {
+	static void Check(string[] command, Node node, CommandStructure value) {
 		value.prompt = true;
 		/*
 			if (command.Length < 3 || command.Length > 9) {
@@ -146,16 +145,16 @@ public static class Route {
 		if (netmask == null)
 			netmask = new IP (new uint[]{ 255, 255, 255, 0 });
 		if (iface == "") {
-			if (gw == null) iface = DeductIface (dest, shell.node);
-			else iface = DeductIface (gw, shell.node);
+			if (gw == null) iface = DeductIface (dest, node);
+			else iface = DeductIface (gw, node);
 		}
 		if (gw == null)
 			gw = IP.Empty;
 
 		if (command [0] == "add")
-			Add (dest, netmask, gw, net, iface, shell);
+			Add (dest, netmask, gw, net, iface, node);
 		else
-			Remove (dest, netmask, gw, net, iface, shell);
+			Remove (dest, netmask, gw, net, iface, node);
 
 		value.correct = true;
 		value.prompt = false;
@@ -167,14 +166,14 @@ public static class Route {
 		return "";
 	}
 
-	static void Add(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) {
+	static void Add(IP dest, IP netmask, IP gw, bool net, string iface, Node node) {
 		RouteEntry entry = null;
-		foreach (RouteEntry r in shell.node.RouteTable)
+		foreach (RouteEntry r in node.RouteTable)
 			if (r.destination.numeric == dest.numeric)
 				entry = r;
 		if (entry == null) {
 			entry = new RouteEntry (dest, gw, netmask, iface, "U", 0, 0, 0);
-			shell.node.RouteTable.Add (entry);
+			node.RouteTable.Add (entry);
 		} else {
 			entry.genmask = netmask;
 			entry.gateway = gw;
@@ -184,9 +183,9 @@ public static class Route {
 		if(entry.destination.numeric == 0)
 			entry.flags += "G";
 	}
-	static void Remove(IP dest, IP netmask, IP gw, bool net, string iface, Shell shell) { //incomplete
-		foreach (RouteEntry r in shell.node.RouteTable)
+	static void Remove(IP dest, IP netmask, IP gw, bool net, string iface, Node node) { //incomplete
+		foreach (RouteEntry r in node.RouteTable)
 			if (r.destination == dest)
-				shell.node.RouteTable.Remove (r);
+				node.RouteTable.Remove (r);
 	}
 }

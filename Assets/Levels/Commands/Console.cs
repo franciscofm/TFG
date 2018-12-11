@@ -8,39 +8,48 @@ public static class Console {
 
 	public static string jump = Environment.NewLine;
 
-	delegate void Template(string[] command, Shell shell, CommandStructure value);
+	delegate void ShellTemplate(string[] command, Shell shell, CommandStructure value);
+	delegate void NodeTemplate(string[] command, Node node, CommandStructure value);
 
-	private static readonly Dictionary<string, Template> commands = new Dictionary<string, Template>() {
+	private static readonly Dictionary<string, ShellTemplate> shellCommands = new Dictionary<string, ShellTemplate>() {
 		{"help", help },
 		{"man", man },
 		{"theme", theme },
 		{"history", history },
-
-		{"ifconfig", ifconfig },
-		{"ic", ifconfig },
-		{"ifup", ifup },
-		{"ifdown", ifdown },
-		{"route", route },
-		{"ping", ping },
-
 
 		{"ls", ls },
 		{"mkdir", mkdir },
 		{"mkfile", mkfile },
 		{"cd", cd }
 	};
+	private static readonly Dictionary<string, NodeTemplate> nodeCommands = new Dictionary<string, NodeTemplate>() {
+		{"ifconfig", ifconfig },
+		{"ic", ifconfig },
+		{"ifup", ifup },
+		{"ifdown", ifdown },
+		{"route", route },
+		{"ping", ping }
+	};
+
 	private static string[] AvailableCommands = new string[] {
 		"help", "man", "theme", "history",
-
 		"ifconfig", "ic", "ifup", "ifdown", "route", "ping", 
-
 		"ls", "mkdir", "mkfile", "cd"
 	};
 
 	public static CommandStructure ReadCommand(string[] command, Shell shell) {
 		CommandStructure commandReturn = new CommandStructure();
-		if (commands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
-			commands [command [0]] (command.SubArray (1, command.Length - 1), shell, commandReturn);
+		if (shellCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
+			shellCommands [command [0]] (command.SubArray (1, command.Length - 1), shell, commandReturn);
+		} else if(nodeCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
+			nodeCommands [command [0]] (command.SubArray (1, command.Length - 1), shell.node, commandReturn);
+		}
+		return commandReturn;
+	}
+	public static CommandStructure ReadCommand(string[] command, Node node) {
+		CommandStructure commandReturn = new CommandStructure();
+		if(nodeCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
+			nodeCommands [command [0]] (command.SubArray (1, command.Length - 1), node, commandReturn);
 		}
 		return commandReturn;
 	}
@@ -63,22 +72,22 @@ public static class Console {
 	}
 
 	//IT
-	static void ifconfig(string[] command, Shell shell, CommandStructure value) {
-		Ifconfig.Command (command, shell, value);
+	static void ifconfig(string[] command, Node node, CommandStructure value) {
+		Ifconfig.Command (command, node, value);
 	}
-	static void ifup(string[] command, Shell shell, CommandStructure value) {
-		Ifconfig.IfUp (command, shell, value);
+	static void ifup(string[] command, Node node, CommandStructure value) {
+		Ifconfig.IfUp (command, node, value);
 	}
-	static void ifdown(string[] command, Shell shell, CommandStructure value) {
-		Ifconfig.IfDown (command, shell, value);
-	}
-
-	static void route(string[] command, Shell shell, CommandStructure value) {
-		Route.Command (command, shell, value);
+	static void ifdown(string[] command, Node node, CommandStructure value) {
+		Ifconfig.IfDown (command, node, value);
 	}
 
-	static void ping(string[] command, Shell shell, CommandStructure value) {
-		Ping.Command (command, shell, value);
+	static void route(string[] command, Node node, CommandStructure value) {
+		Route.Command (command, node, value);
+	}
+
+	static void ping(string[] command, Node node, CommandStructure value) {
+		Ping.Command (command, node, value);
 	}
 
 	//File System
