@@ -32,6 +32,8 @@ public class Node : MonoBehaviour {
 
 		LoadFileSystem ();
 		LoadInterfaces ();
+		LoadRouteTable ();
+		LoadARPTable ();
 	}
 	/// <summary>
 	/// Loads the file system.
@@ -115,6 +117,24 @@ public class Node : MonoBehaviour {
 			iface.SetBroadcast (new IP ("192.168.0.255"));
 			Interfaces [i] = iface;
 		}
+	}
+	/// <summary>
+	/// Loads the route table.
+	/// </summary>
+	void LoadRouteTable() {
+		//	Kernel IP routing table
+		//	Destination     Gateway         Genmask         Flags Metric Ref    Use Iface  
+		//	0.0.0.0         192.168.0.0     0.0.0.0         UG    0      0        0 eth0      
+		//	192.168.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth0
+		RouteTable = new List<RouteEntry>();
+		RouteTable.Add (new RouteEntry (new IP ("0.0.0.0"), new IP ("192.168.0.0"), new IP ("0.0.0.0")));
+		RouteTable.Add (new RouteEntry (new IP ("192.168.0.0"), new IP ("0.0.0.0"), new IP ("255.255.255.0")));
+	}
+	/// <summary>
+	/// Loads the ARP table.
+	/// </summary>
+	void LoadARPTable() {
+		ARPTable = new List<ARPEntry> ();
 	}
 
 	public delegate void NodeEvent(Node sender);

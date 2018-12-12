@@ -80,11 +80,12 @@ public class Level : MonoBehaviour {
 	}
 	public GameObject routePrefab;
 	[HideInInspector] public GameObject routeInstance;
-	public void CallbackRoute(RectTransform rect) {
+	public void CallbackRoute(RectTransform rect, Node node) {
 		if (routePrefab != null) {
 			if (routeInstance != null)
 				Destroy (routeInstance);
 			routeInstance = Instantiate (routePrefab, canvasTransform);
+			routeInstance.GetComponent<Panel.Route> ().node = node;
 		}
 	}
 	public GameObject manualPrefab;

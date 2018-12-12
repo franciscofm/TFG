@@ -27,7 +27,7 @@ public class Center : MonoBehaviour {
 		level.CallbackPing (rect, node);
 	}
 	public void CallbackRoute(RectTransform rect) {
-		level.CallbackRoute (rect);
+		level.CallbackRoute (rect, node);
 	}
 	public void CallbackManual(RectTransform rect) {
 		level.CallbackManual (rect);
