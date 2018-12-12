@@ -21,10 +21,10 @@ public class Center : MonoBehaviour {
 	}
 
 	public void CallbackIfconfig(RectTransform rect) {
-		level.CallbackIfconfig (rect);
+		level.CallbackIfconfig (rect, node);
 	}
 	public void CallbackPing(RectTransform rect) {
-		level.CallbackPing (rect);
+		level.CallbackPing (rect, node);
 	}
 	public void CallbackRoute(RectTransform rect) {
 		level.CallbackRoute (rect);
@@ -38,6 +38,6 @@ public class Center : MonoBehaviour {
 	}
 
 	public void CallbackShell(RectTransform rect) {
-		level.CallbackCreateShell (rect);
+		level.CallbackCreateShell (rect, node);
 	}
 }

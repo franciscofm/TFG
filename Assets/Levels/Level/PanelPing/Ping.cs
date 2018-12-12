@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 namespace Panel {
 
-	public class Ifconfig : MonoBehaviour {
+	public class Ping : MonoBehaviour {
 
 		[HideInInspector] public Node node;
-		Interface[] interfaces;
-		Interface selectedInterface;
-
+		[HideInInspector] public List<Interface> allInterfaces;
 		public Text headerText;
 
 		public RectTransform shellResponseRect;
@@ -18,26 +16,18 @@ namespace Panel {
 		bool shellResponseOut;
 		Vector2 shellPosOut, shellPosIn;
 
-		public Dropdown dropdownInterfaceSelection;
-
+		public Dropdown dropdownSuggestions;
 		public InputField inputDirection;
-		public InputField inputMask;
-		public InputField inputBroadcast;
-
-		public Toggle toggleIsUp;
 
 		IEnumerator Start () { //&& on focus
-			//populate dropdown with interfaces
 			headerText.text += node.name;
 
 			List<string> options = new List<string>();
-			interfaces = node.Interfaces;
-			foreach (Interface i in interfaces)
-				options.Add (i.Name);
-			dropdownInterfaceSelection.ClearOptions ();
-			dropdownInterfaceSelection.AddOptions (options);
-			selectedInterface = interfaces [0];
-			LoadValues ();
+			foreach (Interface i in allInterfaces)
+				if(!options.Contains(i.ip.word))				
+					options.Add (i.ip.word);
+			dropdownSuggestions.ClearOptions ();
+			dropdownSuggestions.AddOptions (options);
 
 			yield return new WaitForEndOfFrame ();
 
@@ -47,32 +37,17 @@ namespace Panel {
 		}
 
 		public void OnValueChangedInterfaceSelection(int i) {
-			selectedInterface = interfaces [dropdownInterfaceSelection.value];
-			LoadValues ();
-		}
-		void LoadValues() {
-			inputDirection.text = selectedInterface.ip.word;
-			inputMask.text = selectedInterface.netmask.word;
-			inputBroadcast.text = selectedInterface.broadcast.word;
-
-			toggleIsUp.isOn = selectedInterface.isUp;
+			inputDirection.text = dropdownSuggestions.options [i].text;
 		}
 
 		public void OnClickCancel() {
 			Destroy (gameObject);
 		}
 		public void OnClickGo() {
-			// ifconfig eth0 192.168.60.1 netmask 255.255.255.0 broadcast 192.169.60.255
-			bool wasUp = selectedInterface.isUp;
-
+			//ping 192.168.0.3
 			string[] command = new string[] {
-				"ifconfig",
-				selectedInterface.Name,
-				inputDirection.text,
-				"netmask",
-				inputMask.text,
-				"broadcast",
-				inputBroadcast.text
+				"ping",
+				inputDirection.text
 			};
 			CommandStructure result = Console.ReadCommand (command, node);
 
@@ -80,16 +55,6 @@ namespace Panel {
 			foreach (string s in command) output += s + " ";
 			output += Console.jump;
 			if (result.prompt) output += result.value;
-
-			if (result.correct && wasUp != toggleIsUp.isOn) { //ifup
-				command = new string[] {
-					"ifconfig",
-					selectedInterface.Name,
-					(toggleIsUp ? "up" : "down")
-				};
-				result = Console.ReadCommand (command, node);
-				foreach (string s in command) output += s + " ";
-			}
 
 			shellResponseText.text = output;
 
@@ -101,8 +66,6 @@ namespace Panel {
 					shellResponseRect.anchoredPosition = Vector2.Lerp(shellPosIn, shellPosOut, f);
 				}));
 			}
-
-			LoadValues ();
 		}
 		public void OnClickCloseShell() {
 			if(shellResponseOut) {
@@ -113,16 +76,6 @@ namespace Panel {
 					shellResponseRect.anchoredPosition = Vector2.Lerp(shellPosOut, shellPosIn, f);
 				}));
 			}
-		}
-
-		public void OnEndEditDirection(string str) {
-			//Modificar broadcast
-		}
-		public void OnEndEditMask(string str) {
-			//Modificar broadcast
-		}
-		public void OnEndEditBroadcast(string str) {
-			print ("Broadcast edited");
 		}
 	}
 

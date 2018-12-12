@@ -45,9 +45,10 @@ public class Level : MonoBehaviour {
 
 	public GameObject shellPrefab;
 	[HideInInspector] public GameObject shellInstance;
-	public void CallbackCreateShell(RectTransform rect) {
+	public void CallbackCreateShell(RectTransform rect, Node node) {
 		if (shellPrefab != null) {
-			ifconfigInstance = Instantiate (shellPrefab, canvasTransform);
+			shellInstance = Instantiate (shellPrefab, canvasTransform);
+			shellInstance.GetComponent<Shell> ().Init (node);
 		}
 	}
 	public void CallbackColorPick(Color c, Node node) {
@@ -56,20 +57,25 @@ public class Level : MonoBehaviour {
 
 	public GameObject ifconfigPrefab;
 	[HideInInspector] public GameObject ifconfigInstance;
-	public void CallbackIfconfig(RectTransform rect) {
+	public void CallbackIfconfig(RectTransform rect, Node node) {
 		if (ifconfigPrefab != null) {
 			if (ifconfigInstance != null)
 				Destroy (ifconfigInstance);
 			ifconfigInstance = Instantiate (ifconfigPrefab, canvasTransform);
+			ifconfigInstance.GetComponent<Panel.Ifconfig> ().node = node;
 		}
 	}
 	public GameObject pingPrefab;
 	[HideInInspector] public GameObject pingInstance;
-	public void CallbackPing(RectTransform rect) {
+	public void CallbackPing(RectTransform rect, Node node) {
 		if (pingPrefab != null) {
 			if (pingInstance != null)
 				Destroy (pingInstance);
-			ifconfigInstance = Instantiate (pingPrefab, canvasTransform);
+			pingInstance = Instantiate (pingPrefab, canvasTransform);
+			pingInstance.SetActive (true);
+			Panel.Ping ping = pingInstance.GetComponent<Panel.Ping> ();
+			ping.node = node;
+			ping.allInterfaces = allInterfaces;
 		}
 	}
 	public GameObject routePrefab;
@@ -78,16 +84,16 @@ public class Level : MonoBehaviour {
 		if (routePrefab != null) {
 			if (routeInstance != null)
 				Destroy (routeInstance);
-			ifconfigInstance = Instantiate (routePrefab, canvasTransform);
+			routeInstance = Instantiate (routePrefab, canvasTransform);
 		}
 	}
 	public GameObject manualPrefab;
 	[HideInInspector] public GameObject manualInstance;
 	public void CallbackManual(RectTransform rect) {
 		if (manualPrefab != null) {
-			if (manualInstance != null)
-				Destroy (manualInstance);
-			ifconfigInstance = Instantiate (manualPrefab, canvasTransform);
+			manualInstance = Instantiate (manualPrefab, canvasTransform);
+		} else {
+			manualInstance.transform.SetAsLastSibling ();
 		}
 	}
 

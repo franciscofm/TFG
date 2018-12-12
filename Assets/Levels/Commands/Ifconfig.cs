@@ -83,20 +83,20 @@ public static class Ifconfig {
 		value.prompt = true;
 
 		if (command.Length == 3 || command.Length == 5) {
-			value.value = "Error: ifconfig interface direction [netmask @mask [broadcast @mask]]" + Console.jump;
+			value.value = "Error #101: ifconfig interface @direction [netmask @mask [broadcast @mask]]" + Console.jump;
 			return;
 		}
 		if (command.Length > 3 && command[2] != "netmask") {
-			value.value = "Error: ifconfig interface direction [netmask @mask [broadcast @mask]]" + Console.jump;
+			value.value = "Error #102: ifconfig interface @direction [netmask @mask [broadcast @mask]]" + Console.jump;
 			return;
 		}
-		if (command.Length > 5 && command[2] != "broadcast") {
-			value.value = "Error: ifconfig interface direction [netmask @mask [broadcast @mask]]" + Console.jump;
+		if (command.Length > 5 && command[4] != "broadcast") {
+			value.value = "Error #103: ifconfig interface @direction [netmask @mask [broadcast @mask]]" + Console.jump;
 			return;
 		}
 		Interface _interface = node.GetInterface(command[0]);
 		if (_interface == null) { 
-			value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
+			value.value = "Error #104: the node does not have an interface called: " + command [0] + Console.jump;
 			return;
 		}
 
@@ -111,7 +111,7 @@ public static class Ifconfig {
 							_interface.SetBroadcast(broadcast);
 						} catch {
 							//Debug.Log(e.Message);
-							value.value = "Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump;
+							value.value = "Error #105: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump;
 							return;
 						}
 					} else {
@@ -126,7 +126,7 @@ public static class Ifconfig {
 					_interface.SetNetmask(netmask);
 				} catch {
 					//Debug.Log(e.Message);
-					value.value = "Error: netmas & @mask must match x.x.x.x (with x value of 0 to 255) " + Console.jump;
+					value.value = "Error #106: netmas & @mask must match x.x.x.x (with x value of 0 to 255) " + Console.jump;
 					return;
 				}
 			} else {
@@ -141,7 +141,7 @@ public static class Ifconfig {
 			_interface.SetStatus(true);
 		} catch {
 			//Debug.Log(e.Message);
-			value.value = "Error: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump;
+			value.value = "Error #107: direction & @mask must match x.x.x.x (with x value of 0 to 255)" + Console.jump;
 			return;
 		}
 
@@ -152,12 +152,12 @@ public static class Ifconfig {
 	public static void IfUp(string[] command, Node node, CommandStructure value) {
 		if (command.Length < 1) {
 			value.prompt = true;
-			value.value = "Error: needed interface" + Console.jump;
+			value.value = "Error #108: needed interface" + Console.jump;
 		} else {
 			Interface _interface = node.GetInterface(command[0]);
 			if (_interface == null) {
 				value.prompt = true;
-				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
+				value.value = "Error #109: the node does not have an interface called: " + command [0] + Console.jump;
 			} else {
 				_interface.SetStatus(true);
 				value.correct = true;
@@ -167,12 +167,12 @@ public static class Ifconfig {
 	public static void IfDown(string[] command, Node node, CommandStructure value) {
 		if (command.Length < 1) {
 			value.prompt = true;
-			value.value = "Error: needed interface" + Console.jump;
+			value.value = "Error #110: needed interface" + Console.jump;
 		} else {
 			Interface _interface = node.GetInterface(command[0]);
 			if (_interface == null) {
 				value.prompt = true;
-				value.value = "Error: the node does not have an interface called: " + command [0] + Console.jump;
+				value.value = "Error #111: the node does not have an interface called: " + command [0] + Console.jump;
 			} else {
 				_interface.SetStatus(false);
 				value.correct = true;

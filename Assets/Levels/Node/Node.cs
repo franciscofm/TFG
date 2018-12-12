@@ -107,11 +107,12 @@ public class Node : MonoBehaviour {
 
 			Interface iface = Instantiate (interfacePrefab, t).GetComponent<Interface> ();
 			iface.node = this;
+			iface.Name = "eth" + i;
 			iface.SetStatus (i == 0);
 			iface.transform.localPosition = ifaceLocalPos;
 			iface.SetIp (new IP ("192.168.0." + (i + 1)));
 			iface.SetNetmask (new IP ("255.255.255.0"));
-			iface.SetBroadcast (new IP ("255.255.255." + (i + 1)));
+			iface.SetBroadcast (new IP ("192.168.0.255"));
 			Interfaces [i] = iface;
 		}
 	}
