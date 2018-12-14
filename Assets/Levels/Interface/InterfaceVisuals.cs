@@ -1,12 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Interface))]
 public class InterfaceVisuals : MonoBehaviour {
 
 	public Animator animator;
+	public Transform infoAnchor;
+	
 	public Transform nodeAnchor;
+	[HideInInspector] public GameObject infoObject;
+	Text infoText;
+
+	public static List<InterfaceVisuals> allVisuals = new List<InterfaceVisuals>();
 	Interface iface;
 	// Use this for initialization
 	void Awake () {
@@ -20,11 +27,25 @@ public class InterfaceVisuals : MonoBehaviour {
 		iface.OnDisconnect += OnDisconnect;
 		iface.OnGetUp += OnGetUp;
 		iface.OnGetDown += OnGetDown;
+
+		allVisuals.Add (this);
 	}
 
-	void Start() {
+	public void InitVisuals() {
 		if (iface.IsUp ()) OnGetUp (iface);
 		if (iface.connectedTo != null) OnConnect (iface);
+
+		if (infoObject.activeSelf) infoObject.SetActive (false);
+		infoText = infoObject.GetComponentInChildren<Text> ();
+
+		Vector3 localPos = transform.localPosition;
+		Vector3 start = Vector3.zero;
+		transform.localPosition = start;
+		StartCoroutine (Routines.WaitFor (transform.parent.GetSiblingIndex () * 0.15f, delegate {
+			StartCoroutine(Routines.DoWhile(0.3f, delegate(float f) {
+				transform.localPosition = Vector3.Lerp(start,localPos,f);
+			}));
+		}));
 	}
 
 	public AnimationInfo OnSelectAnimation;
@@ -39,6 +60,7 @@ public class InterfaceVisuals : MonoBehaviour {
 	}
 
 	public AnimationInfo OnConnectAnimation;
+	[HideInInspector] public GameObject connectionLine;
 	protected virtual void OnConnect(Interface iface) {
 		//ring
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
@@ -57,12 +79,20 @@ public class InterfaceVisuals : MonoBehaviour {
 			nodeAnchor.rotation = Quaternion.Lerp (rotStart, rotEnd, t / 0.5f);
 		}
 		//create line
-		print("TODO: create line or smthng");
+		if (connectionLine == null) {
+			Lines.Pair pair = Lines.RenderStraightLine (transform, iface.connectedTo.transform.position, 0.1f);
+			connectionLine = pair.gameObject;
+
+			InterfaceVisuals otherVisual = iface.connectedTo.GetComponent<InterfaceVisuals> ();
+			otherVisual.connectionLine = pair.gameObject;
+		}
 	}
 	public AnimationInfo OnDisconnectAnimation;
 	protected virtual void OnDisconnect(Interface iface) {
 		if (!string.IsNullOrEmpty (OnDisconnectAnimation.state))
 			animator.Play (OnDisconnectAnimation.state, OnDisconnectAnimation.layer);
+		if (connectionLine != null)
+			Destroy (connectionLine);
 	}
 
 	public AnimationInfo OnGetUpAnimation;
@@ -74,5 +104,16 @@ public class InterfaceVisuals : MonoBehaviour {
 	protected virtual void OnGetDown(Interface iface) {
 		if (!string.IsNullOrEmpty (OnGetDownAnimation.state))
 			animator.Play (OnGetDownAnimation.state, OnGetDownAnimation.layer);
+	}
+
+	public virtual void ShowInformation() {
+		infoObject.SetActive (true);
+		infoText.text = 
+			iface.Name + " " + iface.ip.word + Console.jump +
+			"mask " + iface.netmask.word;
+		infoObject.transform.position = Camera.main.WorldToScreenPoint(infoAnchor.position);
+	}
+	public virtual void HideInformation() {
+		infoObject.SetActive (false);
 	}
 }

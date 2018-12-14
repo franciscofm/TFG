@@ -6,17 +6,20 @@ public class Keyboard : MonoBehaviour {
 
 	List<Shell> focusedShells;
 	List<Shell> existingShells;
+	List<InterfaceVisuals> allVisuals;
 	public static bool Ctrl;
 
 	void Start() {
 		focusedShells = Shell.focusedShells;
 		existingShells = Shell.existingShells;
+		allVisuals = InterfaceVisuals.allVisuals;
 	}
 
 	void Update () {
-		if (focusedShells.Count > 0) { //Shell interaction
+		//Shell interaction
+		if (focusedShells.Count > 0) { 
 			Ctrl = Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl); //No shell click
-			if (!Ctrl && Input.GetMouseButton(0)) {
+			if (!Ctrl && Input.GetMouseButton (0)) {
 				bool found = false;
 				for (int i = 0; i < existingShells.Count; ++i) {
 					if (found = existingShells [i].IsMouseOver (Input.mousePosition))
@@ -26,11 +29,31 @@ public class Keyboard : MonoBehaviour {
 					Shell.UnfocusAll ();
 			}
 
-			if (Input.GetKeyDown (KeyCode.Return)) foreach (Shell shell in focusedShells) shell.ReadInput (); //Enter
-			else if (Input.GetKeyDown (KeyCode.Backspace)) foreach (Shell shell in focusedShells) shell.RemoveInput (); //Borrar
-			else if (Input.GetKeyDown (KeyCode.UpArrow)) foreach (Shell shell in focusedShells) shell.GetPreviousCommand (); //Arriba
-			else if (Input.GetKeyDown (KeyCode.DownArrow))  foreach (Shell shell in focusedShells) shell.GetNextCommand (); //Abajo
-			else if (Input.inputString.Length > 0) foreach (Shell shell in focusedShells) shell.AddInput (Input.inputString); //Escribir normy
+			if (Input.GetKeyDown (KeyCode.Return))
+				foreach (Shell shell in focusedShells)
+					shell.ReadInput (); //Enter
+			else if (Input.GetKeyDown (KeyCode.Backspace))
+				foreach (Shell shell in focusedShells)
+					shell.RemoveInput (); //Borrar
+			else if (Input.GetKeyDown (KeyCode.UpArrow))
+				foreach (Shell shell in focusedShells)
+					shell.GetPreviousCommand (); //Arriba
+			else if (Input.GetKeyDown (KeyCode.DownArrow))
+				foreach (Shell shell in focusedShells)
+					shell.GetNextCommand (); //Abajo
+			else if (Input.inputString.Length > 0)
+				foreach (Shell shell in focusedShells)
+					shell.AddInput (Input.inputString); //Escribir normy
+			
+		} else {
+			//Interface interaction
+			if (Input.GetKeyDown (KeyCode.LeftAlt)) {
+				foreach (InterfaceVisuals iface in allVisuals)
+					iface.ShowInformation ();
+			} else if (Input.GetKeyUp (KeyCode.LeftAlt)) {
+				foreach (InterfaceVisuals iface in allVisuals)
+					iface.HideInformation ();
+			}
 		}
 	}
 

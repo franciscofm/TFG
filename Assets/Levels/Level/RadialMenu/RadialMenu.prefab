@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 224305366340697530}
   - component: {fileID: 222642148271039692}
   - component: {fileID: 114035932381756800}
+  - component: {fileID: 114276828551484256}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -408,6 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -424,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -511,6 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childs:
   - {fileID: 1308110076642610}
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -618,6 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -656,6 +661,58 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: route
+--- !u!114 &114276828551484256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1095361292016374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114035932381756800}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114730545671374324}
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114322923930623634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -794,6 +851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -952,6 +1010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -1144,6 +1203,7 @@ MonoBehaviour:
   - {fileID: 1341343880760940}
   - {fileID: 1386107388267708}
   - {fileID: 1468153968605422}
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}
@@ -1266,6 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childs: []
+  graphicTarget: {fileID: 0}
   canvasGroup: {fileID: 0}
   siblings: []
   siblingShown: {fileID: 0}

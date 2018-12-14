@@ -55,7 +55,7 @@ namespace Panel {
 			inputMask.text = selectedInterface.netmask.word;
 			inputBroadcast.text = selectedInterface.broadcast.word;
 
-			toggleIsUp.isOn = selectedInterface.isUp;
+			toggleIsUp.isOn = selectedInterface.IsUp ();
 		}
 
 		public void OnClickCancel() {
@@ -63,7 +63,7 @@ namespace Panel {
 		}
 		public void OnClickGo() {
 			// ifconfig eth0 192.168.60.1 netmask 255.255.255.0 broadcast 192.169.60.255
-			bool wasUp = selectedInterface.isUp;
+			bool wasUp = selectedInterface.IsUp ();
 
 			string[] command = new string[] {
 				"ifconfig",

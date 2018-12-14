@@ -95,6 +95,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1888166228706742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4415212402316194}
+  m_Layer: 0
+  m_Name: InfoPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: -2349822300998112484, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1992183822680252
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,6 +138,19 @@ Transform:
   - {fileID: 4468025487460246}
   m_Father: {fileID: 4667323729129738}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4415212402316194
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1888166228706742}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.85, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4667323729129738}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4468025487460246
 Transform:
@@ -163,6 +191,7 @@ Transform:
   - {fileID: 4952738395102658}
   - {fileID: 4953540199884514}
   - {fileID: 4182124950580102}
+  - {fileID: 4415212402316194}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -331,6 +360,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95356274513065706}
+  infoAnchor: {fileID: 4415212402316194}
+  nodeAnchor: {fileID: 0}
+  infoObject: {fileID: 0}
   OnSelectAnimation:
     layer: 1
     state: Select
@@ -368,22 +400,18 @@ MonoBehaviour:
     numeric: 0
     array: 
     word: 192.168.0.1
-    mask: 0
     class_: 0
   netmask:
     numeric: 0
     array: 
     word: 
-    mask: 0
     class_: 0
   broadcast:
     numeric: 0
     array: 
     word: 
-    mask: 0
     class_: 0
   mac: 281474976710655
-  connectionRepresentation: {fileID: 0}
   connectedTo: {fileID: 0}
   isUp: 1
   selected: 0

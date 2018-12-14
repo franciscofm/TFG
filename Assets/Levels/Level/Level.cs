@@ -7,6 +7,7 @@ public class Level : MonoBehaviour {
 
 	public GameObject radialMenuPrefab;
 	public Transform canvasTransform;
+	public GameObject interfaceInfoPrefab;
 
 	Dictionary<Node,Pair> nodeMenus;
 	List<Node> allNodes;
@@ -22,6 +23,11 @@ public class Level : MonoBehaviour {
 		foreach (Node n in allNodes)
 			foreach (Interface i in n.Interfaces)
 				allInterfaces.Add (i);
+
+		foreach (InterfaceVisuals iv in InterfaceVisuals.allVisuals) {
+			iv.infoObject = Instantiate (interfaceInfoPrefab, canvasTransform);
+			iv.InitVisuals ();
+		}
 	}
 
 	public void OnNodeClick(Node node) {

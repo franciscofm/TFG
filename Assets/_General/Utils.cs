@@ -173,6 +173,31 @@ public static class Events {
 	public delegate void Obj(object o);
 }
 
+public static class Lines {
+
+	public static Pair RenderStraightLine(Transform start, Vector3 end, float width) {
+		GameObject line = GameObject.Instantiate (new GameObject (), start);
+		line.transform.localPosition = Vector3.zero;
+		LineRenderer render = line.AddComponent<LineRenderer> ();
+		render.positionCount = 2;
+		render.SetPosition (0, start.position);
+		render.SetPosition (1, end);
+		render.widthMultiplier = width;
+
+		Pair pair = new Pair ();
+		pair.gameObject = line;
+		pair.lineRenderer = render;
+		return pair;
+	}
+
+	[System.Serializable]
+	public class Pair {
+		public GameObject gameObject;
+		public LineRenderer lineRenderer;
+	}
+}
+
+
 [System.Serializable]
 public class AnimationInfo {
 	public int layer = 0;

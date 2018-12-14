@@ -24,13 +24,12 @@ public class RouteEntry {
 		this.use = use;
 	}
 
-	public override bool Equals (object obj) {
-		RouteEntry comp = obj as RouteEntry;
+	public bool Equals (RouteEntry other) {
 		return (
-			genmask == comp.genmask &&
-			destination == comp.destination &&
-			gateway == comp.gateway &&
-			iface == comp.iface
+			genmask == other.genmask &&
+			destination == other.destination &&
+			gateway == other.gateway &&
+			iface == other.iface
 		);
 	}
 	public override int GetHashCode () {
