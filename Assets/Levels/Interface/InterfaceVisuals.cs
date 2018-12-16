@@ -8,13 +8,17 @@ public class InterfaceVisuals : MonoBehaviour {
 
 	public Animator animator;
 	public Transform infoAnchor;
+	public Material lineMaterial;
 	
 	public Transform nodeAnchor;
-	[HideInInspector] public GameObject infoObject;
+	[Header("Debug")]
+	public GameObject infoObject;
 	Text infoText;
 
 	public static List<InterfaceVisuals> allVisuals = new List<InterfaceVisuals>();
-	Interface iface;
+	public Interface iface;
+	public Interface[] otherIfaces;
+
 	// Use this for initialization
 	void Awake () {
 		if (animator == null) animator = GetComponent<Animator> ();
@@ -30,13 +34,22 @@ public class InterfaceVisuals : MonoBehaviour {
 
 		allVisuals.Add (this);
 	}
-
 	public void InitVisuals() {
 		if (iface.IsUp ()) OnGetUp (iface);
 		if (iface.connectedTo != null) OnConnect (iface);
 
 		if (infoObject.activeSelf) infoObject.SetActive (false);
 		infoText = infoObject.GetComponentInChildren<Text> ();
+
+		print (iface.node);
+		Node node = iface.node;
+		otherIfaces = new Interface[node.Interfaces.Length - 1];
+		for (int i = 0, j = 0; i < node.Interfaces.Length; ++i) {
+			if (node.Interfaces [i] != iface) {
+				otherIfaces [j] = node.Interfaces [i];
+				++j;
+			}
+		}
 
 		Vector3 localPos = transform.localPosition;
 		Vector3 start = Vector3.zero;
@@ -61,13 +74,23 @@ public class InterfaceVisuals : MonoBehaviour {
 
 	public AnimationInfo OnConnectAnimation;
 	[HideInInspector] public GameObject connectionLine;
-	protected virtual void OnConnect(Interface iface) {
+	protected virtual void OnConnect(Interface other) {
 		//ring
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
 			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
 
 		//rotate looking at the other node TODO dont overlap with other ifaces
-		StartCoroutine(LookAt());
+		List<Interface> overlapingIfaces = new List<Interface>();
+		foreach (Interface i in otherIfaces) {
+			if (i.connectedTo && i.connectedTo.node == other.node) {
+				overlapingIfaces.Add (i);
+			}
+		}
+		if (overlapingIfaces.Count == 0) {
+			StartCoroutine (LookAt ());
+			return;
+		}
+
 	}
 	IEnumerator LookAt() {
 		Quaternion rotStart = nodeAnchor.rotation;
@@ -80,15 +103,16 @@ public class InterfaceVisuals : MonoBehaviour {
 		}
 		//create line
 		if (connectionLine == null) {
-			Lines.Pair pair = Lines.RenderStraightLine (transform, iface.connectedTo.transform.position, 0.1f);
+			Lines.Pair pair = Lines.RenderStraightLine (transform, iface.connectedTo.transform.position, 0.05f, 0.45f);
 			connectionLine = pair.gameObject;
+			pair.lineRenderer.material = lineMaterial;
 
 			InterfaceVisuals otherVisual = iface.connectedTo.GetComponent<InterfaceVisuals> ();
 			otherVisual.connectionLine = pair.gameObject;
 		}
 	}
 	public AnimationInfo OnDisconnectAnimation;
-	protected virtual void OnDisconnect(Interface iface) {
+	protected virtual void OnDisconnect(Interface other) {
 		if (!string.IsNullOrEmpty (OnDisconnectAnimation.state))
 			animator.Play (OnDisconnectAnimation.state, OnDisconnectAnimation.layer);
 		if (connectionLine != null)

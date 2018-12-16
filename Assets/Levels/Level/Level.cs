@@ -13,6 +13,9 @@ public class Level : MonoBehaviour {
 	List<Node> allNodes;
 	List<Interface> allInterfaces;
 
+	protected virtual void Start2() {	}
+	protected virtual void End2() {	}
+
 	// Use this for initialization
 	void Start () {
 		nodeMenus = new Dictionary<Node, Pair> ();
@@ -28,6 +31,15 @@ public class Level : MonoBehaviour {
 			iv.infoObject = Instantiate (interfaceInfoPrefab, canvasTransform);
 			iv.InitVisuals ();
 		}
+
+		Start2 ();
+	}
+
+	protected void End() {
+		StartCoroutine (Routines.WaitFor (2f, delegate {
+			Manager.Scenes.LoadScene ("SelectLevel");
+		}));
+		End2 ();
 	}
 
 	public void OnNodeClick(Node node) {

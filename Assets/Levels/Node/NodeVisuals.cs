@@ -6,6 +6,7 @@ using UnityEngine;
 public class NodeVisuals : MonoBehaviour {
 
 	public Animator animator;
+	public MeshRenderer meshRenderer;
 
 	// Use this for initialization
 	void Awake () {
@@ -28,6 +29,6 @@ public class NodeVisuals : MonoBehaviour {
 	}
 
 	public void ChangeNodeColor(Color c) {
-
+		meshRenderer.material.color = c;
 	}
 }

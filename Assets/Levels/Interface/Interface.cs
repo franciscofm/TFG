@@ -98,11 +98,11 @@ public class Interface : MonoBehaviour {
 
 		connectedTo.connectedTo = this;
 
-		if (OnConnect != null) OnConnect (this);
+		if (OnConnect != null) OnConnect (connectedTo);
 		if (connectedTo.OnConnect != null) connectedTo.OnConnect (this);
 	}
 	public void Disconnect() {
-		if (OnDisconnect != null) OnDisconnect (this);
+		if (OnDisconnect != null) OnDisconnect (connectedTo);
 		if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
 
 		connectedTo.connectedTo = null;

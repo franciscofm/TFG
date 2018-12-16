@@ -45,16 +45,17 @@ public class Keyboard : MonoBehaviour {
 				foreach (Shell shell in focusedShells)
 					shell.AddInput (Input.inputString); //Escribir normy
 			
-		} else {
-			//Interface interaction
-			if (Input.GetKeyDown (KeyCode.LeftAlt)) {
-				foreach (InterfaceVisuals iface in allVisuals)
-					iface.ShowInformation ();
-			} else if (Input.GetKeyUp (KeyCode.LeftAlt)) {
-				foreach (InterfaceVisuals iface in allVisuals)
-					iface.HideInformation ();
-			}
+		} 
+
+		//Interface interaction
+		if (Input.GetKeyDown (KeyCode.LeftAlt)) {
+			foreach (InterfaceVisuals iface in allVisuals)
+				iface.ShowInformation ();
+		} else if (Input.GetKeyUp (KeyCode.LeftAlt)) {
+			foreach (InterfaceVisuals iface in allVisuals)
+				iface.HideInformation ();
 		}
+
 	}
 
 }

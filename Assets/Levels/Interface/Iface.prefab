@@ -361,6 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95356274513065706}
   infoAnchor: {fileID: 4415212402316194}
+  lineMaterial: {fileID: 2100000, guid: 94868e77591dfc94a91d49fe08ec2e2b, type: 2}
   nodeAnchor: {fileID: 0}
   infoObject: {fileID: 0}
   OnSelectAnimation:
@@ -372,6 +373,7 @@ MonoBehaviour:
   OnConnectAnimation:
     layer: 2
     state: Connect
+  connectionLine: {fileID: 0}
   OnDisconnectAnimation:
     layer: 2
     state: Disconnect

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace RadialMenu {
 
-	public class ColorPick : Node {
+	public class ColorPick : Node, IDragHandler, IBeginDragHandler {
 
 		public Center center;
 		RectTransform rect;
@@ -16,7 +17,10 @@ namespace RadialMenu {
 			GetComponent<UnityEngine.UI.Image> ().alphaHitTestMinimumThreshold = 0.5f;
 		}
 
-		protected override void OnPointerClick2 (UnityEngine.EventSystems.PointerEventData data) {
+		public void OnBeginDrag(PointerEventData data) {
+			OnDrag (data);
+		}
+		public void OnDrag(PointerEventData data) {
 			Vector2 localCursor;
 			if (!RectTransformUtility.ScreenPointToLocalPointInRectangle (rect, data.position, null, out localCursor))
 				return;
@@ -27,7 +31,6 @@ namespace RadialMenu {
 
 
 			Color hsv = Color.HSVToRGB (ypos, 1f, 1f);
-			print (hsv);
 			center.CallbackColorPick (hsv);
 		}
 	}

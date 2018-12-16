@@ -175,14 +175,23 @@ public static class Events {
 
 public static class Lines {
 
-	public static Pair RenderStraightLine(Transform start, Vector3 end, float width) {
+	public static Pair RenderStraightLine(Transform start, Vector3 end, float width, float offsets = 0f) {
 		GameObject line = GameObject.Instantiate (new GameObject (), start);
 		line.transform.localPosition = Vector3.zero;
 		LineRenderer render = line.AddComponent<LineRenderer> ();
 		render.positionCount = 2;
-		render.SetPosition (0, start.position);
-		render.SetPosition (1, end);
-		render.widthMultiplier = width;
+
+		if (offsets != 0f) {
+			Vector3 direction = end - start.position;
+			direction.Normalize ();
+			render.SetPosition (0, start.position + direction * offsets);
+			render.SetPosition (1, end - direction * offsets);
+			render.widthMultiplier = width;
+		} else {
+			render.SetPosition (0, start.position);
+			render.SetPosition (1, end);
+			render.widthMultiplier = width;
+		}
 
 		Pair pair = new Pair ();
 		pair.gameObject = line;
