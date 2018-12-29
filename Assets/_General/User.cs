@@ -69,12 +69,14 @@ namespace Manager {
 		}
 		public static bool LoadConfiguration() {
 			string path = DataPath ();
+			Debug.Log (path);
 			if (!System.IO.File.Exists (path)) {
 				volume_master = 1f;
 				volume_effects = 1f;
 				volume_music = 1f;
 				volume_voice = 1f;
-				lenguage = Lenguage.English;
+				lenguage = GetUserLanguage();
+				SaveConfiguration ();
 				return false;
 			}
 

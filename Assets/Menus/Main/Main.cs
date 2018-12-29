@@ -7,6 +7,10 @@ using Manager;
 
 public class Main : MonoBehaviour {
 
+	void Start() {
+		User.LoadConfiguration ();
+	}
+
 	public void CallbackSelectLevel() {
 		Scenes.LoadScene ("SelectLevel");
 	}
