@@ -1,4 +1,4 @@
-﻿Shader "Custom/Floor" {
+﻿Shader "Custom/CircularGradient" {
 	Properties {
 		_Color1 ("Color 1", Color) = (1,1,1,1)
 		_Color2 ("Color 2", Color) = (0,0,0,0)

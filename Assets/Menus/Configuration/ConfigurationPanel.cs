@@ -14,6 +14,25 @@ public class ConfigurationPanel : MonoBehaviour {
 
 	public Dropdown dropdownLenguage;
 
+	void Start() {
+		sliderMaster.value = User.volume_master;
+		sliderMusic.value = User.volume_music;
+		sliderEffects.value = User.volume_effects;
+		sliderVoice.value = User.volume_voice;
+
+		switch (User.lenguage) {
+		case User.Lenguage.English:
+			dropdownLenguage.value = 0;
+			break;
+		case User.Lenguage.Spanish:
+			dropdownLenguage.value = 1;
+			break;
+		case User.Lenguage.Catalan:
+			dropdownLenguage.value = 2;
+			break;
+		}
+	}
+
 	public void CallbackExit() {
 		Scenes.LoadScene ("Main");
 	}

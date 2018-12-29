@@ -199,6 +199,24 @@ public static class Lines {
 		return pair;
 	}
 
+	public static Pair RenderStraightLine(Transform parent, Vector3 start, Vector3 end, float width, Material material) {
+		GameObject line = GameObject.Instantiate (new GameObject (), parent);
+		LineRenderer render = line.AddComponent<LineRenderer> ();
+		line.transform.localPosition = Vector3.zero;
+		render.positionCount = 2;
+		render.material = material;
+		render.useWorldSpace = false;
+
+		render.SetPosition (0, start);
+		render.SetPosition (1, end);
+		render.widthMultiplier = width;
+
+		Pair pair = new Pair ();
+		pair.gameObject = line;
+		pair.lineRenderer = render;
+		return pair;
+	}
+
 	[System.Serializable]
 	public class Pair {
 		public GameObject gameObject;
