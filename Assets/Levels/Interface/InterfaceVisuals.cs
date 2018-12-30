@@ -9,6 +9,8 @@ public class InterfaceVisuals : MonoBehaviour {
 	public Animator animator;
 	public Transform infoAnchor;
 	public Material lineMaterial;
+	public Transform modelTransform;
+	public MeshRenderer mesh;
 	
 	public Transform nodeAnchor;
 	[Header("Debug")]
@@ -74,11 +76,13 @@ public class InterfaceVisuals : MonoBehaviour {
 
 	public AnimationInfo OnConnectAnimation;
 	[HideInInspector] public GameObject connectionLine;
+	[HideInInspector] public bool blockAnimation;
 	protected virtual void OnConnect(Interface other) {
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
 			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
 
 		//rotate looking at the other node TODO dont overlap with other ifaces
+		if(blockAnimation) return;
 		List<Interface> overlapingIfaces = new List<Interface>();
 		foreach (Interface i in otherIfaces) {
 			if (i.connectedTo && i.connectedTo.node == other.node) {
@@ -99,42 +103,64 @@ public class InterfaceVisuals : MonoBehaviour {
 		Transform[] otherTransforms = new Transform[total];
 		Quaternion[] rotsStart = new Quaternion[total];
 		Quaternion[] otherRotsStart = new Quaternion[total];
+		InterfaceVisuals[] visuals = new InterfaceVisuals[total];
+		InterfaceVisuals[] otherVisuals = new InterfaceVisuals[total];
 		for (int i = 0; i < total; ++i) {
-			transforms [i] = ifaces [i].transform;
-			otherTransforms [i] = ifaces [i].connectedTo.transform;
+			visuals[i] = ifaces [i].GetComponent<InterfaceVisuals> ();
+			otherVisuals[i] = ifaces [i].connectedTo.GetComponent<InterfaceVisuals> ();
+			visuals[i].blockAnimation = true;
+			otherVisuals[i].blockAnimation = true;
+			transforms [i] = visuals[i].nodeAnchor;
+			otherTransforms [i] = otherVisuals[i].nodeAnchor;
 
 			rotsStart [i] = transforms [i].rotation;
 			otherRotsStart [i] = otherTransforms [i].rotation;
 		}
-		
+
+		//Final rotations maths
 		Quaternion[] rotsEnd = new Quaternion[total];
 		Quaternion[] otherRotsEnd = new Quaternion[total];
-		Quaternion baseRotation = Quaternion.LookRotation(iface.connectedTo.node.transform.position - nodeAnchor.position);
+		Quaternion baseRotation = Quaternion.LookRotation(nodeAnchor.position - iface.connectedTo.node.transform.position);
 		float offset = 15f;
 		float baseY = baseRotation.eulerAngles.y - offset * 0.5f * total;
-		float otherBaseY = baseRotation.eulerAngles.y + offset * 0.5f * total;
+		float otherBaseY = baseRotation.eulerAngles.y + 180f + offset * 0.5f * total;
 		for (int i = 0; i < total; ++i) {
-			rotsEnd[i] = Quaternion.Euler(0, baseY + i * offset, 0);
-			otherRotsEnd[i] = Quaternion.Euler(0, otherBaseY - i * offset, 0);
+			//print ((baseY + i * offset * 2f) + ", " + (otherBaseY - i * offset * 2f));
+			otherRotsEnd[i] = Quaternion.Euler(0, baseY + i * offset * 2f, 0);
+			rotsEnd[i] = Quaternion.Euler(0, otherBaseY - i * offset * 2f, 0);
 		}
-		
+
+		//Movement
 		float t = 0f;
 		while (t < 0.5f) {
 			yield return null;
 			t += Time.deltaTime;
+			float p = t / 0.5f;
 			for (int i = 0; i < total; ++i) {
-				transforms [i].rotation = Quaternion.Lerp (rotsStart[i], rotsEnd[i], t / 0.5f);
-				otherTransforms [i].rotation = Quaternion.Lerp (otherRotsStart[i], otherRotsEnd[i], t / 0.5f);
+				transforms [i].rotation = Quaternion.Lerp (rotsStart[i], rotsEnd[i], p);
+				otherTransforms [i].rotation = Quaternion.Lerp (otherRotsStart[i], otherRotsEnd[i], p);
 			}
 		}
 
+		//Create lines
 		for (int i = 0; i < total; ++i) {
-			Lines.Pair pair = Lines.RenderStraightLine (transforms [i], otherTransforms [i].position, 0.02f, 0.2f);
-			connectionLine = pair.gameObject;
-			pair.lineRenderer.material = lineMaterial;
+			visuals[i].blockAnimation = false;
+			if (visuals [i].connectionLine == null) {
+				Lines.Pair pair = Lines.RenderStraightLine (visuals [i].modelTransform, otherVisuals [i].modelTransform, 0.02f, 0.2f);
+				connectionLine = pair.gameObject;
+				pair.lineRenderer.material = lineMaterial;
 
-			InterfaceVisuals otherVisual = otherTransforms [i].GetComponent<InterfaceVisuals> ();
-			otherVisual.connectionLine = pair.gameObject;
+				visuals [i].StartCoroutine (LineRoutine (pair.lineRenderer, visuals [i].modelTransform, otherVisuals [i].modelTransform, 0.2f));
+				otherVisuals [i].blockAnimation = false;
+				otherVisuals [i].connectionLine = pair.gameObject;
+
+				visuals [i].line = pair.lineRenderer;
+				visuals [i].connectedTo = otherVisuals [i];
+				otherVisuals [i].line = pair.lineRenderer;
+				otherVisuals [i].connectedTo = visuals [i];
+
+				visuals [i].ChangeColor(visuals [i].mesh.material.color);
+			}
 		}
 	}
 	IEnumerator LookAt(Interface other) {
@@ -148,21 +174,62 @@ public class InterfaceVisuals : MonoBehaviour {
 		}
 		//create line
 		if (connectionLine == null) {
-			Lines.Pair pair = Lines.RenderStraightLine (transform, other.transform.position, 0.02f, 0.2f);
+			connectedTo = other.GetComponent<InterfaceVisuals> ();
+			Lines.Pair pair = Lines.RenderStraightLine (modelTransform, connectedTo.modelTransform, 0.02f, 0.2f);
+			StartCoroutine (LineRoutine (pair.lineRenderer, modelTransform, connectedTo.modelTransform, 0.2f));
 			connectionLine = pair.gameObject;
 			pair.lineRenderer.material = lineMaterial;
 
-			InterfaceVisuals otherVisual = other.GetComponent<InterfaceVisuals> ();
-			otherVisual.connectionLine = pair.gameObject;
+			connectedTo.connectionLine = pair.gameObject;
+			line = pair.lineRenderer;
+			connectedTo.connectedTo = this;
+			connectedTo.line = line;
+
+			ChangeColor(mesh.material.color);
 		}
 	}
+
+	[HideInInspector] public LineRenderer line;
+	[HideInInspector] public InterfaceVisuals connectedTo;
+	IEnumerator LineRoutine(LineRenderer line, Transform start, Transform end, float offsets) {
+		while (true) {
+			yield return null;
+			if(line == null) yield break;
+			if (offsets != 0f) {
+				Vector3 direction = end.position - start.position;
+				direction.Normalize ();
+				line.SetPosition (0, start.position + direction * offsets);
+				line.SetPosition (1, end.position - direction * offsets);
+			} else {
+				line.SetPosition (0, start.position);
+				line.SetPosition (1, end.position);
+			}
+		}
+	}
+	public void ChangeColor(Color c) {
+		mesh.material.color = c;
+		if (line != null) {
+			Gradient gradient = new Gradient ();
+			gradient.SetKeys (
+				new GradientColorKey[] { new GradientColorKey(c, 0f), new GradientColorKey(connectedTo.mesh.material.color, 1f) },
+				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
+			);
+			line.colorGradient = gradient;
+		}
+	}
+
 	public AnimationInfo OnDisconnectAnimation;
 	protected virtual void OnDisconnect(Interface other) {
 		if (!string.IsNullOrEmpty (OnDisconnectAnimation.state))
 			animator.Play (OnDisconnectAnimation.state, OnDisconnectAnimation.layer);
-		print (gameObject.name);
-		if (connectionLine != null)
+		
+		if (connectionLine != null) {
 			Destroy (connectionLine);
+			connectedTo.line = null;
+			connectedTo.connectedTo = null;
+			connectedTo = null;
+			line = null;
+		}
 	}
 
 	public AnimationInfo OnGetUpAnimation;

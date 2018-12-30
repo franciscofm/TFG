@@ -60,37 +60,6 @@ public class Interface : MonoBehaviour {
 		if (selected) Unselect ();
 		else CheckSelect ();
 	}
-
-	public void CheckSelect() {
-		if (lastSelected != null) { //Selecting second Iface
-
-			if (lastSelected.node == node) { //Selecting second Iface of same Node
-				lastSelected.Unselect ();
-				Select ();
-
-			} else { //Selecting second Iface of other Node
-				print("Selecting second Iface of other Node");
-				if (connectedTo != null) { //Changing Iface this one is connected to
-					Disconnect ();
-				}
-				if (lastSelected.connectedTo != null) {
-					if (lastSelected.connectedTo == this) {
-						lastSelected.Disconnect ();
-						Disconnect ();
-						return;
-					} else {
-						lastSelected.Disconnect ();
-					}
-				}
-
-				Connect ();
-				lastSelected.Unselect ();
-			}
-		} else { //Selecting first Iface
-			Select ();
-		}
-	}
-
 	public void Select() {
 		selected = true;
 		lastSelected = this;
@@ -104,6 +73,46 @@ public class Interface : MonoBehaviour {
 		if (OnUnselect != null) OnUnselect (this);
 	}
 
+	public void CheckSelect() {
+		//Ninguna interfaz seleccionada
+		if (lastSelected == null) {
+			Select ();
+			return;
+		}
+
+		//Ya hay interfaz seleccionada
+		//La anterior interfaz es del mismo nodo
+		if (lastSelected.node == node) {
+			lastSelected.Unselect ();
+			this.Select ();
+			return;
+		}
+
+		///La anterior interfaz es de otro nodo
+		//Ya esta conectada a la anterior interfaz
+		if (connectedTo == lastSelected) {
+			connectedTo.Unselect ();
+			connectedTo.Disconnect ();
+			this.Disconnect ();
+			return;
+		}
+
+		//A la que conectamos ya tenia conexion
+		if (lastSelected.connectedTo != null) {
+			lastSelected.connectedTo.Disconnect ();
+			lastSelected.Disconnect ();
+		}
+
+		//A la que conectamos ya tenia conexion
+		if (connectedTo != null) {
+			connectedTo.Disconnect ();
+			Disconnect ();
+		}
+
+		Connect ();
+		lastSelected.Unselect ();
+	}
+
 	public void Connect() {
 		connectedTo = lastSelected;
 
@@ -114,9 +123,7 @@ public class Interface : MonoBehaviour {
 	}
 	public void Disconnect() {
 		if (OnDisconnect != null) OnDisconnect (connectedTo);
-		//if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
 
-		connectedTo.connectedTo = null;
 		connectedTo = null;
 	}
 

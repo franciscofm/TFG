@@ -362,6 +362,8 @@ MonoBehaviour:
   animator: {fileID: 95356274513065706}
   infoAnchor: {fileID: 4415212402316194}
   lineMaterial: {fileID: 2100000, guid: 94868e77591dfc94a91d49fe08ec2e2b, type: 2}
+  modelTransform: {fileID: 4546819061630926}
+  mesh: {fileID: 23697370392832724}
   nodeAnchor: {fileID: 0}
   infoObject: {fileID: 0}
   iface: {fileID: 0}
@@ -376,6 +378,7 @@ MonoBehaviour:
     layer: 0
     state: 
   connectionLine: {fileID: 0}
+  blockAnimation: 0
   OnDisconnectAnimation:
     layer: 0
     state: 

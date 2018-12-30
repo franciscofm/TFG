@@ -16,6 +16,11 @@ public class NodeVisuals : MonoBehaviour {
 		node.OnClickUp += OnClickUp;
 	}
 
+	InterfaceVisuals[] ifaceVisuals;
+	void Start() {
+		ifaceVisuals = GetComponentsInChildren<InterfaceVisuals> (true);
+	}
+
 	public AnimationInfo OnClickDownAnimation;
 	protected virtual void OnClickDown(Node node) {
 		if (!string.IsNullOrEmpty (OnClickDownAnimation.state))
@@ -30,5 +35,7 @@ public class NodeVisuals : MonoBehaviour {
 
 	public void ChangeNodeColor(Color c) {
 		meshRenderer.material.color = c;
+		foreach (InterfaceVisuals iv in ifaceVisuals)
+			iv.ChangeColor (c);
 	}
 }

@@ -175,7 +175,7 @@ public static class Events {
 
 public static class Lines {
 
-	public static Pair RenderStraightLine(Transform start, Vector3 end, float width, float offsets = 0f) {
+	public static Pair RenderStraightLine(Transform start, Transform end, float width, float offsets = 0f) {
 		GameObject line = new GameObject ();
 		line.transform.parent = start;
 		line.transform.localPosition = Vector3.zero;
@@ -183,20 +183,21 @@ public static class Lines {
 		render.positionCount = 2;
 
 		if (offsets != 0f) {
-			Vector3 direction = end - start.position;
+			Vector3 direction = end.position - start.position;
 			direction.Normalize ();
 			render.SetPosition (0, start.position + direction * offsets);
-			render.SetPosition (1, end - direction * offsets);
+			render.SetPosition (1, end.position - direction * offsets);
 			render.widthMultiplier = width;
 		} else {
 			render.SetPosition (0, start.position);
-			render.SetPosition (1, end);
+			render.SetPosition (1, end.position);
 			render.widthMultiplier = width;
 		}
 
 		Pair pair = new Pair ();
 		pair.gameObject = line;
 		pair.lineRenderer = render;
+
 		return pair;
 	}
 
