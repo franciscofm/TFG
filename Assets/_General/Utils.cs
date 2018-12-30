@@ -176,7 +176,8 @@ public static class Events {
 public static class Lines {
 
 	public static Pair RenderStraightLine(Transform start, Vector3 end, float width, float offsets = 0f) {
-		GameObject line = GameObject.Instantiate (new GameObject (), start);
+		GameObject line = new GameObject ();
+		line.transform.parent = start;
 		line.transform.localPosition = Vector3.zero;
 		LineRenderer render = line.AddComponent<LineRenderer> ();
 		render.positionCount = 2;

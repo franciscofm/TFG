@@ -50,7 +50,7 @@ public class Interface : MonoBehaviour {
 
 	[Header("Debug")]
 	public Interface connectedTo;
-	public static Interface lastDown;
+	public static Interface lastSelected;
 	public bool isUp = true;
 	public bool selected;
 
@@ -62,18 +62,29 @@ public class Interface : MonoBehaviour {
 	}
 
 	public void CheckSelect() {
-		if (lastDown != null) { //Selecting second Iface
+		if (lastSelected != null) { //Selecting second Iface
 
-			if (lastDown.node == node) { //Selecting second Iface of same Node
-				lastDown.Unselect ();
+			if (lastSelected.node == node) { //Selecting second Iface of same Node
+				lastSelected.Unselect ();
 				Select ();
-			} else { //Selecting second Iface of other Node
 
-				if (connectedTo != null)  //Changing Iface this one is connected to
+			} else { //Selecting second Iface of other Node
+				print("Selecting second Iface of other Node");
+				if (connectedTo != null) { //Changing Iface this one is connected to
 					Disconnect ();
+				}
+				if (lastSelected.connectedTo != null) {
+					if (lastSelected.connectedTo == this) {
+						lastSelected.Disconnect ();
+						Disconnect ();
+						return;
+					} else {
+						lastSelected.Disconnect ();
+					}
+				}
 
 				Connect ();
-				lastDown.Unselect ();
+				lastSelected.Unselect ();
 			}
 		} else { //Selecting first Iface
 			Select ();
@@ -82,19 +93,19 @@ public class Interface : MonoBehaviour {
 
 	public void Select() {
 		selected = true;
-		lastDown = this;
+		lastSelected = this;
 
 		if (OnSelect != null) OnSelect (this);
 	}
 	public void Unselect() {
-		lastDown = null;
+		lastSelected = null;
 		selected = false;
 
 		if (OnUnselect != null) OnUnselect (this);
 	}
 
 	public void Connect() {
-		connectedTo = lastDown;
+		connectedTo = lastSelected;
 
 		connectedTo.connectedTo = this;
 
@@ -103,7 +114,7 @@ public class Interface : MonoBehaviour {
 	}
 	public void Disconnect() {
 		if (OnDisconnect != null) OnDisconnect (connectedTo);
-		if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
+		//if (connectedTo.OnDisconnect != null) connectedTo.OnDisconnect (this);
 
 		connectedTo.connectedTo = null;
 		connectedTo = null;

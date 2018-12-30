@@ -103,11 +103,13 @@ public class Node : MonoBehaviour {
 		for (int i = 0; i < interfaceQuantity; ++i) {
 			//Center
 			Transform t = new GameObject ().transform;
+			t.gameObject.name = gameObject.name + " iface " + i + " pivot";
 			t.parent = this.transform;
 			t.localPosition = Vector3.zero;
 			t.localRotation = Quaternion.AngleAxis (rotationOffset * i, Vector3.up);
 
 			Interface iface = Instantiate (interfacePrefab, t).GetComponent<Interface> ();
+			iface.gameObject.name = gameObject.name + " iface: " + i;
 			iface.node = this;
 			iface.Name = "eth" + i;
 			iface.SetStatus (i == 0);

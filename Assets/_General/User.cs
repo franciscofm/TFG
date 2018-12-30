@@ -15,6 +15,9 @@ namespace Manager {
 		public static float volume_effects;
 		public static float volume_music;
 		public static float volume_voice;
+		public static bool classic_nodes;
+		public static bool classic_ifaces;
+		public static bool first_time;
 
 		public enum Lenguage { Spanish, Catalan, English };
 		public static Lenguage lenguage;
@@ -55,6 +58,8 @@ namespace Manager {
 			saveFile.volume_music = volume_music;
 			saveFile.volume_voice = volume_voice;
 			saveFile.lenguage = lenguage;
+			saveFile.classic_nodes = classic_nodes;
+			saveFile.classic_ifaces = classic_ifaces;
 
 			string json = JsonUtility.ToJson (saveFile, true);
 			System.IO.File.WriteAllText (DataPath (), json);
@@ -75,6 +80,9 @@ namespace Manager {
 				volume_effects = 1f;
 				volume_music = 1f;
 				volume_voice = 1f;
+				classic_nodes = false;
+				classic_ifaces = false;
+				first_time = true;
 				lenguage = GetUserLanguage();
 				SaveConfiguration ();
 				return false;
@@ -86,6 +94,9 @@ namespace Manager {
 			volume_music = saveFile.volume_music;
 			volume_voice = saveFile.volume_voice;
 			lenguage = saveFile.lenguage;
+			classic_ifaces = saveFile.classic_ifaces;
+			classic_nodes = saveFile.classic_nodes;
+			first_time = false;
 			return true;
 		}
 
@@ -121,6 +132,11 @@ namespace Manager {
 		public float volume_effects;
 		public float volume_music;
 		public float volume_voice;
+
+		public bool classic_nodes;
+		public bool classic_ifaces;
+
+		public List<int> cleared_levels;
 
 		public User.Lenguage lenguage;
 	}

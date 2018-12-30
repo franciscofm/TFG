@@ -270,7 +270,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0c223d03a79ddb141b0835cadaae6a43, type: 3}
+  - {fileID: 2100000, guid: 3b91f327ef340e844a02aa3c36034376, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -364,6 +364,8 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 94868e77591dfc94a91d49fe08ec2e2b, type: 2}
   nodeAnchor: {fileID: 0}
   infoObject: {fileID: 0}
+  iface: {fileID: 0}
+  otherIfaces: []
   OnSelectAnimation:
     layer: 1
     state: Select
@@ -371,12 +373,12 @@ MonoBehaviour:
     layer: 1
     state: Unselect
   OnConnectAnimation:
-    layer: 2
-    state: Connect
+    layer: 0
+    state: 
   connectionLine: {fileID: 0}
   OnDisconnectAnimation:
-    layer: 2
-    state: Disconnect
+    layer: 0
+    state: 
   OnGetUpAnimation:
     layer: 0
     state: IdleStart

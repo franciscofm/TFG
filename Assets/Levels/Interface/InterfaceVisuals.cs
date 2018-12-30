@@ -41,7 +41,7 @@ public class InterfaceVisuals : MonoBehaviour {
 		if (infoObject.activeSelf) infoObject.SetActive (false);
 		infoText = infoObject.GetComponentInChildren<Text> ();
 
-		print (iface.node);
+		//print (iface.node);
 		Node node = iface.node;
 		otherIfaces = new Interface[node.Interfaces.Length - 1];
 		for (int i = 0, j = 0; i < node.Interfaces.Length; ++i) {
@@ -75,7 +75,6 @@ public class InterfaceVisuals : MonoBehaviour {
 	public AnimationInfo OnConnectAnimation;
 	[HideInInspector] public GameObject connectionLine;
 	protected virtual void OnConnect(Interface other) {
-		//ring
 		if (!string.IsNullOrEmpty (OnConnectAnimation.state))
 			animator.Play (OnConnectAnimation.state, OnConnectAnimation.layer);
 
@@ -86,15 +85,61 @@ public class InterfaceVisuals : MonoBehaviour {
 				overlapingIfaces.Add (i);
 			}
 		}
-		if (overlapingIfaces.Count == 0) {
-			StartCoroutine (LookAt ());
-			return;
+		if (overlapingIfaces.Count == 0)
+			StartCoroutine (LookAt (other));
+		else {
+			overlapingIfaces.Add (iface);
+			StartCoroutine (MultipleLookAt (overlapingIfaces));
+		}
+	}
+	IEnumerator MultipleLookAt(List<Interface> ifaces) {
+		int total = ifaces.Count;
+		//Get initial rotations
+		Transform[] transforms = new Transform[total];
+		Transform[] otherTransforms = new Transform[total];
+		Quaternion[] rotsStart = new Quaternion[total];
+		Quaternion[] otherRotsStart = new Quaternion[total];
+		for (int i = 0; i < total; ++i) {
+			transforms [i] = ifaces [i].transform;
+			otherTransforms [i] = ifaces [i].connectedTo.transform;
+
+			rotsStart [i] = transforms [i].rotation;
+			otherRotsStart [i] = otherTransforms [i].rotation;
+		}
+		
+		Quaternion[] rotsEnd = new Quaternion[total];
+		Quaternion[] otherRotsEnd = new Quaternion[total];
+		Quaternion baseRotation = Quaternion.LookRotation(iface.connectedTo.node.transform.position - nodeAnchor.position);
+		float offset = 15f;
+		float baseY = baseRotation.eulerAngles.y - offset * 0.5f * total;
+		float otherBaseY = baseRotation.eulerAngles.y + offset * 0.5f * total;
+		for (int i = 0; i < total; ++i) {
+			rotsEnd[i] = Quaternion.Euler(0, baseY + i * offset, 0);
+			otherRotsEnd[i] = Quaternion.Euler(0, otherBaseY - i * offset, 0);
+		}
+		
+		float t = 0f;
+		while (t < 0.5f) {
+			yield return null;
+			t += Time.deltaTime;
+			for (int i = 0; i < total; ++i) {
+				transforms [i].rotation = Quaternion.Lerp (rotsStart[i], rotsEnd[i], t / 0.5f);
+				otherTransforms [i].rotation = Quaternion.Lerp (otherRotsStart[i], otherRotsEnd[i], t / 0.5f);
+			}
 		}
 
+		for (int i = 0; i < total; ++i) {
+			Lines.Pair pair = Lines.RenderStraightLine (transforms [i], otherTransforms [i].position, 0.02f, 0.2f);
+			connectionLine = pair.gameObject;
+			pair.lineRenderer.material = lineMaterial;
+
+			InterfaceVisuals otherVisual = otherTransforms [i].GetComponent<InterfaceVisuals> ();
+			otherVisual.connectionLine = pair.gameObject;
+		}
 	}
-	IEnumerator LookAt() {
+	IEnumerator LookAt(Interface other) {
 		Quaternion rotStart = nodeAnchor.rotation;
-		Quaternion rotEnd = Quaternion.LookRotation(iface.connectedTo.node.transform.position - nodeAnchor.position);
+		Quaternion rotEnd = Quaternion.LookRotation(other.node.transform.position - nodeAnchor.position);
 		float t = 0f;
 		while (t < 0.5f) {
 			yield return null;
@@ -103,11 +148,11 @@ public class InterfaceVisuals : MonoBehaviour {
 		}
 		//create line
 		if (connectionLine == null) {
-			Lines.Pair pair = Lines.RenderStraightLine (transform, iface.connectedTo.transform.position, 0.05f, 0.45f);
+			Lines.Pair pair = Lines.RenderStraightLine (transform, other.transform.position, 0.02f, 0.2f);
 			connectionLine = pair.gameObject;
 			pair.lineRenderer.material = lineMaterial;
 
-			InterfaceVisuals otherVisual = iface.connectedTo.GetComponent<InterfaceVisuals> ();
+			InterfaceVisuals otherVisual = other.GetComponent<InterfaceVisuals> ();
 			otherVisual.connectionLine = pair.gameObject;
 		}
 	}
@@ -115,6 +160,7 @@ public class InterfaceVisuals : MonoBehaviour {
 	protected virtual void OnDisconnect(Interface other) {
 		if (!string.IsNullOrEmpty (OnDisconnectAnimation.state))
 			animator.Play (OnDisconnectAnimation.state, OnDisconnectAnimation.layer);
+		print (gameObject.name);
 		if (connectionLine != null)
 			Destroy (connectionLine);
 	}
