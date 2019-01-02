@@ -13,6 +13,8 @@ public class SelectLevel : MonoBehaviour {
 	public RectTransform levelsParent;
 	public RectTransform maskRect;
 
+	public Color clearedColor = Color.green;
+
 	public AnimationCurve movementCurve;
 	public float movementDuration = 0.2f;
 	public float fadeInDelay = 1f;
@@ -63,6 +65,9 @@ public class SelectLevel : MonoBehaviour {
 		foreach(string s in levels [i].concepts)
 			entry.conceptsText.text += s + System.Environment.NewLine;
 
+		if (User.cleared_levels.Contains (i))
+			entry.clearedImage.color = clearedColor;
+		
 		StartCoroutine (SetLevelInfoRoutine (i, entry));
 	}
 	IEnumerator SetLevelInfoRoutine(int i, LevelEntry entry) {
@@ -95,7 +100,7 @@ public class SelectLevel : MonoBehaviour {
 	}
 
 	public void CallbackReturn() {
-		Scenes.LoadScene ("SelectLevel");
+		Scenes.LoadScene ("Main");
 	}
 
 	[Header("Horizontal bar levels")]

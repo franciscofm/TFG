@@ -14,6 +14,8 @@ public class LevelEntry : MonoBehaviour, IPointerDownHandler {
 	public Image levelImage;
 	public Text conceptsText;
 	public Text objectiveText;
+	public Image clearedImage;
+
 	[HideInInspector] public int id;
 	[HideInInspector] public string scene;
 

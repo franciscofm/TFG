@@ -225,6 +225,8 @@ public class InterfaceVisuals : MonoBehaviour {
 		
 		if (connectionLine != null) {
 			Destroy (connectionLine);
+		}
+		if (connectedTo != null) {
 			connectedTo.line = null;
 			connectedTo.connectedTo = null;
 			connectedTo = null;

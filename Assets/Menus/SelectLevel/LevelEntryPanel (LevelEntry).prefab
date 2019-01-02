@@ -191,6 +191,7 @@ MonoBehaviour:
   levelImage: {fileID: 114999595795302060}
   conceptsText: {fileID: 114580640613478490}
   objectiveText: {fileID: 114756592502795914}
+  clearedImage: {fileID: 114277767759979542}
   id: 0
   scene: 
 --- !u!114 &114756592502795914
