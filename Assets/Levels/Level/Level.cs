@@ -12,12 +12,21 @@ public class Level : MonoBehaviour {
 	Dictionary<Node,Pair> nodeMenus;
 	List<Node> allNodes;
 	List<Interface> allInterfaces;
+	List<InterfaceVisuals> allIfaceVisuals;
+	class Pair {
+		public Center center;
+		public NodeVisuals visuals;
+		public Pair(Center center, NodeVisuals visuals) {
+			this.center = center;
+			this.visuals = visuals;
+		}
+	}
 
 	protected virtual void Start2() {	}
 	protected virtual void End2() {	}
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
 		nodeMenus = new Dictionary<Node, Pair> ();
 		Node.OnClickUpStatic += OnNodeClick;
 
@@ -27,7 +36,10 @@ public class Level : MonoBehaviour {
 			foreach (Interface i in n.Interfaces)
 				allInterfaces.Add (i);
 
-		foreach (InterfaceVisuals iv in InterfaceVisuals.allVisuals) {
+		yield return null;
+
+		allIfaceVisuals = InterfaceVisuals.allVisuals;
+		foreach (InterfaceVisuals iv in allIfaceVisuals) {
 			iv.infoObject = Instantiate (interfaceInfoPrefab, canvasTransform);
 			iv.InitVisuals ();
 		}
@@ -113,15 +125,6 @@ public class Level : MonoBehaviour {
 			manualInstance = Instantiate (manualPrefab, canvasTransform);
 		} else {
 			manualInstance.transform.SetAsLastSibling ();
-		}
-	}
-
-	class Pair {
-		public Center center;
-		public NodeVisuals visuals;
-		public Pair(Center center, NodeVisuals visuals) {
-			this.center = center;
-			this.visuals = visuals;
 		}
 	}
 }

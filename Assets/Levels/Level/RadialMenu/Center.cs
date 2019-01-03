@@ -6,18 +6,25 @@ using RadialMenu;
 public class Center : MonoBehaviour {
 
 	public NodeGroup startingGroup;
+	public static List<Center> allCenters = new List<Center>();
 
 	[HideInInspector] public Node node;
 	[HideInInspector] public Level level;
 	[HideInInspector] public Transform canvasTransform;
 
 	void Start() {
+		allCenters.Add (this);
 		startingGroup.ActivateNodes ();
 	}
 
 	public void Close() {
+		allCenters.Remove (this);
 		level.OnCenterClose (node);
 		Destroy (gameObject);
+	}
+	public static void CloseAll() {
+		while (allCenters.Count > 0)
+			allCenters [0].Close ();
 	}
 
 	public void CallbackIfconfig(RectTransform rect) {

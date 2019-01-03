@@ -17,7 +17,7 @@ public class InterfaceVisuals : MonoBehaviour {
 	public GameObject infoObject;
 	Text infoText;
 
-	public static List<InterfaceVisuals> allVisuals = new List<InterfaceVisuals>();
+	public static List<InterfaceVisuals> allVisuals;
 	public Interface iface;
 	public Interface[] otherIfaces;
 
@@ -34,6 +34,8 @@ public class InterfaceVisuals : MonoBehaviour {
 		iface.OnGetUp += OnGetUp;
 		iface.OnGetDown += OnGetDown;
 
+		if (allVisuals == null)
+			allVisuals = new List<InterfaceVisuals> ();
 		allVisuals.Add (this);
 	}
 	public void InitVisuals() {

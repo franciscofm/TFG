@@ -15,11 +15,14 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
 	public RectTransform panelRT;
 	public Transform viewportT;
+	public GameObject colorPanel;
 	float diffWidth;
 	ShortcutButton[] shortcutButtons;
 
 	IEnumerator timerRoutine, movementRoutine;
 
+	bool ifaceInfoShown = false;
+	List<InterfaceVisuals> allVisuals = InterfaceVisuals.allVisuals;
 
 	void Awake() {
 		shortcutButtons = new ShortcutButton[viewportT.childCount];
@@ -44,7 +47,7 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		}
 	}
 	void ExpandMethod(float f) {
-		panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, collapsedWidth + diffWidth * f);
+		panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, Mathf.Lerp(collapsedWidth, expandWidth, f));
 	}
 
 	public void OnPointerExit(PointerEventData data) {
@@ -62,15 +65,15 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		StartCoroutine (movementRoutine = Routines.DoWhile (movementDuration, CollapseMethod));
 	}
 	void CollapseMethod(float f) {
-		panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, expandWidth - diffWidth * f);
+		panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, Mathf.Lerp(expandWidth, collapsedWidth, f));
 	}
 
 	public void F1_CloseAll() {
-		//TODO close all node panels
+		Center.CloseAll ();
 		Shell.CloseAll ();
 	}
 	public void F2_CloseAllNodePanels() {
-		//TODO close all node panels
+		Center.CloseAll ();
 	}
 	public void F3_CloseAllShells() {
 		Shell.CloseAll ();
@@ -79,6 +82,17 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		Shell.MinimizeAll ();
 	}
 	public void F5_ShowInterfaceData() {
-
+		if(!ifaceInfoShown)
+			foreach (InterfaceVisuals iface in allVisuals)
+				iface.ShowInformation ();
+		else
+			foreach (InterfaceVisuals iface in allVisuals)
+				iface.HideInformation ();
+	}
+	public void F6_ShowBackgroundColorPanel() {
+		colorPanel.SetActive (!colorPanel.activeSelf);
+	}
+	public void F7_ShowMenu() {
+		Manager.Scenes.LoadSceneAdditiveMerge ("IngameMenu");
 	}
 }
