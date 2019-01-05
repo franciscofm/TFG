@@ -36,6 +36,7 @@ public class Shell : MonoBehaviour {
 	public Text bodyText;
 	public RectTransform shellRectTransform;
 	public RectTransform bodyRectTransform;
+	public RectTransform contentTextRectTransform;
 	public RectTransform maskRectTransform;
 	public GameObject resizeGameObject;
 	[Space]
@@ -213,11 +214,11 @@ public class Shell : MonoBehaviour {
 	public void UpdateTextMask() {
 		Canvas.ForceUpdateCanvases ();
 		float f = bodyText.preferredHeight;
-		bodyRectTransform.anchoredPosition = Vector2.zero;
+		contentTextRectTransform.anchoredPosition = Vector2.zero;
 		if (f > maskRectTransform.rect.height) {
-			bodyRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, f);
+			contentTextRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, f);
 		} else {
-			bodyRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, maskRectTransform.rect.height);
+			contentTextRectTransform.SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, maskRectTransform.rect.height);
 		}
 	}
 
@@ -360,8 +361,8 @@ public class Shell : MonoBehaviour {
 	/// Minimizes all shells.
 	/// </summary>
 	public static void MinimizeAll() {
-		while (existingShells.Count > 0)
-			existingShells [0].CallbackMinimize ();
+		foreach(Shell s in existingShells)
+			s.CallbackMinimize ();
 	}
 
 	/// <summary>

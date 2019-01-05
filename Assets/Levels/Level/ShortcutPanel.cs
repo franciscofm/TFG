@@ -16,13 +16,12 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 	public RectTransform panelRT;
 	public Transform viewportT;
 	public GameObject colorPanel;
-	float diffWidth;
 	ShortcutButton[] shortcutButtons;
 
 	IEnumerator timerRoutine, movementRoutine;
 
 	bool ifaceInfoShown = false;
-	List<InterfaceVisuals> allVisuals = InterfaceVisuals.allVisuals;
+	List<InterfaceVisuals> allVisuals;
 
 	void Awake() {
 		shortcutButtons = new ShortcutButton[viewportT.childCount];
@@ -30,10 +29,11 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 			shortcutButtons [i] = viewportT.GetChild (i).GetComponent<ShortcutButton> ();
 	}
 	void Start() {
-		diffWidth = expandWidth - collapsedWidth;
 		timerRoutine = null;
 		if(expanded) panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, expandWidth);
 		else panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, collapsedWidth);
+
+		allVisuals = InterfaceVisuals.allVisuals;
 	}
 
 	public void OnPointerEnter(PointerEventData data) {
@@ -88,9 +88,10 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		else
 			foreach (InterfaceVisuals iface in allVisuals)
 				iface.HideInformation ();
+		ifaceInfoShown = !ifaceInfoShown;
 	}
 	public void F6_ShowBackgroundColorPanel() {
-		colorPanel.SetActive (!colorPanel.activeSelf);
+		//colorPanel.SetActive (!colorPanel.activeSelf);
 	}
 	public void F7_ShowMenu() {
 		Manager.Scenes.LoadSceneAdditiveMerge ("IngameMenu");

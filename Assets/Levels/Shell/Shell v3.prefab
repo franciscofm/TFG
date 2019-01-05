@@ -1380,14 +1380,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowResize: 1
-  currentTheme: {fileID: 0}
+  initOnStart: 0
   headerText: {fileID: 114980633043145164}
   bodyText: {fileID: 114309065065701322}
   shellRectTransform: {fileID: 224562323343547406}
-  bodyRectTransform: {fileID: 224074865919937926}
+  bodyRectTransform: {fileID: 224185334234770982}
+  contentTextRectTransform: {fileID: 224074865919937926}
   maskRectTransform: {fileID: 224305343639330020}
   resizeGameObject: {fileID: 1336150153026404}
   node: {fileID: 0}
+  currentTheme: {fileID: 0}
   topCornerLeft: {fileID: 114155640694465682}
   topCornerRight: {fileID: 114174562722661572}
   topCenter: {fileID: 114501989235526200}
