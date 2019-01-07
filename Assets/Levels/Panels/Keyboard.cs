@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Keyboard : MonoBehaviour {
 
-	List<Shell> focusedShells;
-	List<Shell> existingShells;
-	List<InterfaceVisuals> allVisuals;
+	[HideInInspector] public List<Shell> focusedShells;
+	[HideInInspector] public List<Shell> existingShells;
+	[HideInInspector] public List<InterfaceVisuals> allVisuals;
 	public static bool Ctrl;
 
 	void Start() {
 		focusedShells = Shell.focusedShells;
 		existingShells = Shell.existingShells;
-		allVisuals = InterfaceVisuals.allVisuals;
 	}
 
 	void Update () {

@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: 57d9347fc31d0cc41a24c74a0f36c93b
+timeCreated: 1536519271
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - radialMenuPrefab: {fileID: 1604646568198700, guid: 7e3d3c01ee9923d48b19099e81cb9c5a,
+      type: 2}
+  - canvasTransform: {instanceID: 0}
+  - interfaceInfoPrefab: {fileID: 1532147420542624, guid: 0511c44977c12524a960d5786f456eb1,
+      type: 2}
+  - shellPrefab: {fileID: 1321149751452030, guid: c078e59a4ab7c0a40a92aa2bd0ac6a61,
+      type: 2}
+  - shellInstance: {instanceID: 0}
+  - ifconfigPrefab: {fileID: 1189881497911472, guid: 1718ebf3ef9275f42be4176a226067fe,
+      type: 2}
+  - ifconfigInstance: {instanceID: 0}
+  - pingPrefab: {fileID: 1271251801465864, guid: c4ab4e1b0cb294746976628728904275,
+      type: 2}
+  - pingInstance: {instanceID: 0}
+  - routePrefab: {fileID: 1303380665012428, guid: f32585e78e82d2c4386aca9551339b3f,
+      type: 2}
+  - routeInstance: {instanceID: 0}
+  - manualPrefab: {instanceID: 0}
+  - manualInstance: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

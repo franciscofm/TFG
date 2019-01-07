@@ -17,16 +17,14 @@ public class InterfaceVisuals : MonoBehaviour {
 	public GameObject infoObject;
 	Text infoText;
 
-	public static List<InterfaceVisuals> allVisuals;
 	public Interface iface;
 	public Interface[] otherIfaces;
 
 	// Use this for initialization
-	void Awake () {
+	public void InitVisuals() {
 		if (animator == null) animator = GetComponent<Animator> ();
 		if (nodeAnchor == null) nodeAnchor = transform.parent;
 
-		iface = GetComponent<Interface> ();
 		iface.OnSelect += OnSelect;
 		iface.OnUnselect += OnUnselect;
 		iface.OnConnect += OnConnect;
@@ -34,11 +32,6 @@ public class InterfaceVisuals : MonoBehaviour {
 		iface.OnGetUp += OnGetUp;
 		iface.OnGetDown += OnGetDown;
 
-		if (allVisuals == null)
-			allVisuals = new List<InterfaceVisuals> ();
-		allVisuals.Add (this);
-	}
-	public void InitVisuals() {
 		if (iface.IsUp ()) OnGetUp (iface);
 		if (iface.connectedTo != null) OnConnect (iface);
 
@@ -63,6 +56,14 @@ public class InterfaceVisuals : MonoBehaviour {
 				transform.localPosition = Vector3.Lerp(start,localPos,f);
 			}));
 		}));
+	}
+	void OnDestroy() {
+		iface.OnSelect -= OnSelect;
+		iface.OnUnselect -= OnUnselect;
+		iface.OnConnect -= OnConnect;
+		iface.OnDisconnect -= OnDisconnect;
+		iface.OnGetUp -= OnGetUp;
+		iface.OnGetDown -= OnGetDown;
 	}
 
 	public AnimationInfo OnSelectAnimation;

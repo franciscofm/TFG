@@ -1,19 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UtilsSpeech;
+using UtilsBlocker;
 
 [RequireComponent(typeof(Keyboard), typeof(AparenceHolder))]
 public class Level : MonoBehaviour {
 
-	public GameObject radialMenuPrefab;
+	public Camera cam;
+	public Speech speech;
+	public Blocker blocker;
+	public Keyboard keyboard;
+	public ShortcutPanel shortcuts;
 	public Transform canvasTransform;
 	public GameObject interfaceInfoPrefab;
+	public GameObject shellPrefab;
+	[Header("Panels")]
+	public GameObject radialMenuPrefab;
+	public GameObject ifconfigPrefab;
+	public GameObject pingPrefab;
+	public GameObject routePrefab;
+	public GameObject manualPrefab;
 
-	Dictionary<Node,Pair> nodeMenus;
-	List<Node> allNodes;
-	List<Interface> allInterfaces;
-	List<InterfaceVisuals> allIfaceVisuals;
-	class Pair {
+	[Header("Level dependent")]
+	public Node[] allNodes;
+	[Space]
+	public List<Interface> allInterfaces;
+	public List<InterfaceVisuals> allIfaceVisuals;
+	protected Dictionary<Node,Pair> nodePanels;
+	public class Pair {
 		public Center center;
 		public NodeVisuals visuals;
 		public Pair(Center center, NodeVisuals visuals) {
@@ -25,29 +40,41 @@ public class Level : MonoBehaviour {
 	protected virtual void Start2() {	}
 	protected virtual void End2() {	}
 
+	public delegate void LevelEvent(Level Level);
+	public static event LevelEvent OnEnd;
+	public static event LevelEvent OnStart;
+
 	// Use this for initialization
-	IEnumerator Start () {
-		nodeMenus = new Dictionary<Node, Pair> ();
+	void Start () {
+		nodePanels = new Dictionary<Node, Pair> ();
 		Node.OnClickUpStatic += OnNodeClick;
 
-		allNodes = Node.allNodes;
 		allInterfaces = new List<Interface> ();
-		foreach (Node n in allNodes)
-			foreach (Interface i in n.Interfaces)
+		allIfaceVisuals = new List<InterfaceVisuals> ();
+		foreach (Node n in allNodes) {
+			n.Load ();
+			foreach (Interface i in n.Interfaces) {
+				InterfaceVisuals iv = i.GetComponent<InterfaceVisuals> ();
 				allInterfaces.Add (i);
+				allIfaceVisuals.Add (iv);
 
-		yield return null;
-
-		allIfaceVisuals = InterfaceVisuals.allVisuals;
-		foreach (InterfaceVisuals iv in allIfaceVisuals) {
-			iv.infoObject = Instantiate (interfaceInfoPrefab, canvasTransform);
-			iv.InitVisuals ();
+				iv.iface = i;
+				iv.infoObject = Instantiate (interfaceInfoPrefab, canvasTransform);
+				iv.InitVisuals ();
+			}
 		}
 
+		keyboard.allVisuals = allIfaceVisuals;
+		shortcuts.allVisuals = allIfaceVisuals;
+
+		if (OnStart != null) OnStart (this);
 		Start2 ();
 	}
 
 	protected void End() {
+		Node.OnClickUpStatic -= OnNodeClick;
+		if (OnEnd != null) OnEnd (this);
+
 		StartCoroutine (Routines.WaitFor (2f, delegate {
 			Manager.Scenes.LoadScene ("SelectLevel");
 		}));
@@ -55,8 +82,8 @@ public class Level : MonoBehaviour {
 	}
 
 	public void OnNodeClick(Node node) {
-		if (nodeMenus.ContainsKey (node)) {
-			nodeMenus [node].center.transform.SetAsLastSibling ();
+		if (nodePanels.ContainsKey (node)) {
+			nodePanels [node].center.transform.SetAsLastSibling ();
 			return;
 		}
 
@@ -67,13 +94,12 @@ public class Level : MonoBehaviour {
 		center.canvasTransform = canvasTransform;
 		center.node = node;
 		center.level = this;
-		nodeMenus.Add (node, new Pair(center,visuals));
+		nodePanels.Add (node, new Pair(center,visuals));
 	}
 	public void OnCenterClose(Node node) {
-		nodeMenus.Remove (node);
+		nodePanels.Remove (node);
 	}
 
-	public GameObject shellPrefab;
 	[HideInInspector] public GameObject shellInstance;
 	public void CallbackCreateShell(RectTransform rect, Node node) {
 		if (shellPrefab != null) {
@@ -82,10 +108,9 @@ public class Level : MonoBehaviour {
 		}
 	}
 	public void CallbackColorPick(Color c, Node node) {
-		nodeMenus [node].visuals.ChangeNodeColor (c);
+		nodePanels [node].visuals.ChangeNodeColor (c);
 	}
 
-	public GameObject ifconfigPrefab;
 	[HideInInspector] public GameObject ifconfigInstance;
 	public void CallbackIfconfig(RectTransform rect, Node node) {
 		if (ifconfigPrefab != null) {
@@ -95,7 +120,6 @@ public class Level : MonoBehaviour {
 			ifconfigInstance.GetComponent<Panel.Ifconfig> ().node = node;
 		}
 	}
-	public GameObject pingPrefab;
 	[HideInInspector] public GameObject pingInstance;
 	public void CallbackPing(RectTransform rect, Node node) {
 		if (pingPrefab != null) {
@@ -108,7 +132,6 @@ public class Level : MonoBehaviour {
 			ping.allInterfaces = allInterfaces;
 		}
 	}
-	public GameObject routePrefab;
 	[HideInInspector] public GameObject routeInstance;
 	public void CallbackRoute(RectTransform rect, Node node) {
 		if (routePrefab != null) {
@@ -118,7 +141,6 @@ public class Level : MonoBehaviour {
 			routeInstance.GetComponent<Panel.Route> ().node = node;
 		}
 	}
-	public GameObject manualPrefab;
 	[HideInInspector] public GameObject manualInstance;
 	public void CallbackManual(RectTransform rect) {
 		if (manualPrefab != null) {

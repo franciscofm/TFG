@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Manager;
 
 [RequireComponent(typeof(Node))]
 public class NodeVisuals : MonoBehaviour {
 
 	public Animator animator;
-	public MeshRenderer meshRenderer;
+	public GameObject standardModel;
+	public GameObject classicModel;
+	MeshRenderer meshRenderer;
 
 	// Use this for initialization
 	void Awake () {
@@ -19,6 +22,15 @@ public class NodeVisuals : MonoBehaviour {
 	InterfaceVisuals[] ifaceVisuals;
 	void Start() {
 		ifaceVisuals = GetComponentsInChildren<InterfaceVisuals> (true);
+		if (User.classic_nodes) {
+			standardModel.SetActive (false);
+			classicModel.SetActive (true);
+			meshRenderer = classicModel.GetComponent<MeshRenderer> ();
+		} else {
+			standardModel.SetActive (true);
+			classicModel.SetActive (false);
+			meshRenderer = standardModel.GetComponent<MeshRenderer> ();
+		}
 	}
 
 	public AnimationInfo OnClickDownAnimation;

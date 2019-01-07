@@ -21,7 +21,7 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 	IEnumerator timerRoutine, movementRoutine;
 
 	bool ifaceInfoShown = false;
-	List<InterfaceVisuals> allVisuals;
+	[HideInInspector] public List<InterfaceVisuals> allVisuals;
 
 	void Awake() {
 		shortcutButtons = new ShortcutButton[viewportT.childCount];
@@ -32,8 +32,6 @@ public class ShortcutPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		timerRoutine = null;
 		if(expanded) panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, expandWidth);
 		else panelRT.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, collapsedWidth);
-
-		allVisuals = InterfaceVisuals.allVisuals;
 	}
 
 	public void OnPointerEnter(PointerEventData data) {

@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class Interface : MonoBehaviour {
 
 	public delegate void InterfaceEvent(Interface sender);
+	public event InterfaceEvent OnClick;
 	public event InterfaceEvent OnSelect;
 	public event InterfaceEvent OnUnselect;
 	public event InterfaceEvent OnConnect;
@@ -57,6 +58,8 @@ public class Interface : MonoBehaviour {
 	public void OnMouseUpCallback() {
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		
+		if (OnClick != null) OnClick (this);
+
 		if (selected) Unselect ();
 		else CheckSelect ();
 	}

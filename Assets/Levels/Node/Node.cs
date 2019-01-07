@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
-	public static List<Node> allNodes;
-
 	public new string name = "PC1";
 
 	//[Header("File system")]
@@ -25,11 +23,7 @@ public class Node : MonoBehaviour {
 	[Header("ARP")]
 	public List<ARPEntry> ARPTable;
 
-	void Awake() {
-		if (allNodes == null)
-			allNodes = new List<Node> ();
-		allNodes.Add (this);
-
+	public void Load() {
 		LoadFileSystem ();
 		LoadInterfaces ();
 		LoadRouteTable ();
@@ -118,6 +112,8 @@ public class Node : MonoBehaviour {
 			iface.SetNetmask (new IP ("255.255.255.0"));
 			iface.SetBroadcast (new IP ("192.168.0.255"));
 			Interfaces [i] = iface;
+
+			if(OnIfaceCreated != null) OnIfaceCreated (iface);
 		}
 	}
 	/// <summary>
@@ -140,10 +136,12 @@ public class Node : MonoBehaviour {
 	}
 
 	public delegate void NodeEvent(Node sender);
+	public delegate void NodeIfaceEvent(Interface sender);
 	public delegate void NodeEventFull(Node sender, object obj);
 
 	public event NodeEvent OnClickUp;
 	public event NodeEvent OnClickDown;
+	public event NodeIfaceEvent OnIfaceCreated;
 
 	public static event NodeEvent OnClickUpStatic;
 	public static event NodeEventFull OnPing;
