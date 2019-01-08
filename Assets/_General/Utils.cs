@@ -202,9 +202,13 @@ public static class Lines {
 	}
 
 	public static Pair RenderStraightLine(Transform parent, Vector3 start, Vector3 end, float width, Material material) {
-		GameObject line = GameObject.Instantiate (new GameObject (), parent);
-		LineRenderer render = line.AddComponent<LineRenderer> ();
+		GameObject line = new GameObject ();
+		line.transform.parent = parent;
 		line.transform.localPosition = Vector3.zero;
+		line.transform.localScale = Vector3.one;
+		line.transform.localRotation = Quaternion.identity;
+
+		LineRenderer render = line.AddComponent<LineRenderer> ();
 		render.positionCount = 2;
 		render.material = material;
 		render.useWorldSpace = false;

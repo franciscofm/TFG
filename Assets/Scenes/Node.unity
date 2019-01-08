@@ -3808,6 +3808,7 @@ MonoBehaviour:
   panelRT: {fileID: 1240874883}
   viewportT: {fileID: 120531904}
   colorPanel: {fileID: 1264812377}
+  allVisuals: []
 --- !u!1 &1253558349
 GameObject:
   m_ObjectHideFlags: 0
@@ -4953,6 +4954,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e188994367194d409f684fe01bd2727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusedShells: []
+  existingShells: []
+  allVisuals: []
 --- !u!114 &1661738499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4964,23 +4968,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d9347fc31d0cc41a24c74a0f36c93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radialMenuPrefab: {fileID: 1604646568198700, guid: 7e3d3c01ee9923d48b19099e81cb9c5a,
-    type: 2}
+  cam: {fileID: 0}
+  speech: {fileID: 0}
+  blocker: {fileID: 0}
+  keyboard: {fileID: 0}
+  shortcuts: {fileID: 0}
   canvasTransform: {fileID: 1661738496}
   interfaceInfoPrefab: {fileID: 1532147420542624, guid: 0511c44977c12524a960d5786f456eb1,
     type: 2}
   shellPrefab: {fileID: 1321149751452030, guid: c078e59a4ab7c0a40a92aa2bd0ac6a61,
     type: 2}
-  shellInstance: {fileID: 0}
+  radialMenuPrefab: {fileID: 1604646568198700, guid: 7e3d3c01ee9923d48b19099e81cb9c5a,
+    type: 2}
   ifconfigPrefab: {fileID: 1189881497911472, guid: 1718ebf3ef9275f42be4176a226067fe,
     type: 2}
-  ifconfigInstance: {fileID: 0}
   pingPrefab: {fileID: 346672493}
-  pingInstance: {fileID: 0}
   routePrefab: {fileID: 1303380665012428, guid: f32585e78e82d2c4386aca9551339b3f,
     type: 2}
-  routeInstance: {fileID: 0}
   manualPrefab: {fileID: 0}
+  allNodes: []
+  allInterfaces: []
+  allIfaceVisuals: []
+  shellInstance: {fileID: 0}
+  ifconfigInstance: {fileID: 0}
+  pingInstance: {fileID: 0}
+  routeInstance: {fileID: 0}
   manualInstance: {fileID: 0}
 --- !u!1 &1664371868
 GameObject:

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Manager;
 
 [RequireComponent(typeof(Interface))]
 public class InterfaceVisuals : MonoBehaviour {
@@ -9,10 +10,12 @@ public class InterfaceVisuals : MonoBehaviour {
 	public Animator animator;
 	public Transform infoAnchor;
 	public Material lineMaterial;
-	public Transform modelTransform;
-	public MeshRenderer mesh;
+	public GameObject standardModel;
+	public GameObject classicModel;
+	[HideInInspector] public Transform modelTransform;
+	[HideInInspector] public MeshRenderer meshRenderer;
 	
-	public Transform nodeAnchor;
+	[HideInInspector] public Transform nodeAnchor;
 	[Header("Debug")]
 	public GameObject infoObject;
 	Text infoText;
@@ -31,6 +34,18 @@ public class InterfaceVisuals : MonoBehaviour {
 		iface.OnDisconnect += OnDisconnect;
 		iface.OnGetUp += OnGetUp;
 		iface.OnGetDown += OnGetDown;
+
+		if (User.classic_nodes) {
+			standardModel.SetActive (false);
+			classicModel.SetActive (true);
+			meshRenderer = classicModel.GetComponent<MeshRenderer> ();
+			modelTransform = classicModel.transform;
+		} else {
+			standardModel.SetActive (true);
+			classicModel.SetActive (false);
+			meshRenderer = standardModel.GetComponent<MeshRenderer> ();
+			modelTransform = standardModel.transform;
+		}
 
 		if (iface.IsUp ()) OnGetUp (iface);
 		if (iface.connectedTo != null) OnConnect (iface);
@@ -162,7 +177,7 @@ public class InterfaceVisuals : MonoBehaviour {
 				otherVisuals [i].line = pair.lineRenderer;
 				otherVisuals [i].connectedTo = visuals [i];
 
-				visuals [i].ChangeColor(visuals [i].mesh.material.color);
+				visuals [i].ChangeColor(visuals [i].meshRenderer.material.color);
 			}
 		}
 	}
@@ -188,7 +203,7 @@ public class InterfaceVisuals : MonoBehaviour {
 			connectedTo.connectedTo = this;
 			connectedTo.line = line;
 
-			ChangeColor(mesh.material.color);
+			ChangeColor(meshRenderer.material.color);
 		}
 	}
 
@@ -210,11 +225,11 @@ public class InterfaceVisuals : MonoBehaviour {
 		}
 	}
 	public void ChangeColor(Color c) {
-		mesh.material.color = c;
+		meshRenderer.material.color = c;
 		if (line != null) {
 			Gradient gradient = new Gradient ();
 			gradient.SetKeys (
-				new GradientColorKey[] { new GradientColorKey(c, 0f), new GradientColorKey(connectedTo.mesh.material.color, 1f) },
+				new GradientColorKey[] { new GradientColorKey(c, 0f), new GradientColorKey(connectedTo.meshRenderer.material.color, 1f) },
 				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
 			);
 			line.colorGradient = gradient;

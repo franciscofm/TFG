@@ -7,8 +7,10 @@ using Manager;
 
 public class SelectLevel : MonoBehaviour {
 
-	[Header("Horizontal bar levels")]
+	[Header("Levels")]
 	public LevelInfo[] levels;
+
+	[Header("Horizontal bar")]
 	public GameObject levelPrefab;
 	public RectTransform levelsParent;
 	public RectTransform maskRect;

@@ -14,6 +14,9 @@ public class ConfigurationPanel : MonoBehaviour {
 
 	public Dropdown dropdownLenguage;
 
+	public Toggle toggleNodes;
+	public Toggle toggleIfaces;
+
 	void Start() {
 		sliderMaster.value = User.volume_master;
 		sliderMusic.value = User.volume_music;
@@ -31,15 +34,15 @@ public class ConfigurationPanel : MonoBehaviour {
 			dropdownLenguage.value = 2;
 			break;
 		}
+
+		toggleNodes.isOn = User.classic_nodes;
+		toggleIfaces.isOn = User.classic_ifaces;
 	}
 
 	public void CallbackExit() {
-		Scenes.LoadScene ("Main");
+		Destroy (gameObject);
 	}
 	public void CallbackSave() {
-		User.ChangeVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
-		Sound.SetAllVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
-
 		switch (dropdownLenguage.value) {
 			case 0:
 				User.ChangeLenguage(User.Lenguage.English);
@@ -51,5 +54,9 @@ public class ConfigurationPanel : MonoBehaviour {
 				User.ChangeLenguage(User.Lenguage.Catalan);
 				break;
 		}
+		User.classic_nodes = toggleNodes.isOn;
+		User.classic_ifaces = toggleIfaces.isOn;
+		User.ChangeVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
+		Sound.SetAllVolumes (sliderMaster.value, sliderMusic.value, sliderEffects.value, sliderVoice.value);
 	}
 }

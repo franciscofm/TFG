@@ -570,6 +570,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac56797b2417e864d83185f4c64f389f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundPrefab: {fileID: 0}
+  maxMaster: 0
+  maxMusic: 0
+  maxEffects: 0
+  maxVoice: 0
 --- !u!114 &681736394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,20 +587,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - name: Practica 1
+  - name: Introduction 1
     image: {fileID: 21300000, guid: 719dcfda00b17ef4b862745a58ef4edc, type: 3}
     concepts:
-    - Routing
-    - Tables
-    objective: Do stuff
-    scene: None
-  - name: Practica 2
+    - Game enviorment
+    objective: Learn the basics of the game
+    scene: Level0
+  - name: Let's do stuff
     image: {fileID: 21300000, guid: 719dcfda00b17ef4b862745a58ef4edc, type: 3}
     concepts:
-    - Routing
-    - Tables
-    objective: Do stuff
-    scene: None
+    - Game enviorment
+    - Route
+    - Ping
+    objective: Learn how to make PC commands and connect two Nodes
+    scene: Level1
   - name: Practica 3
     image: {fileID: 21300000, guid: 719dcfda00b17ef4b862745a58ef4edc, type: 3}
     concepts:

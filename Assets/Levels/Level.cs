@@ -24,9 +24,8 @@ public class Level : MonoBehaviour {
 
 	[Header("Level dependent")]
 	public Node[] allNodes;
-	[Space]
-	public List<Interface> allInterfaces;
-	public List<InterfaceVisuals> allIfaceVisuals;
+	[HideInInspector] public List<Interface> allInterfaces;
+	[HideInInspector] public List<InterfaceVisuals> allIfaceVisuals;
 	protected Dictionary<Node,Pair> nodePanels;
 	public class Pair {
 		public Center center;
