@@ -55,7 +55,6 @@ public class SelectLevel : MonoBehaviour {
 		levelsParent.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, levelWidth * levels.Length);
 	}
 	void SetLevelInfo(int i, LevelEntry entry) {
-		entry.id = i;
 		entry.scene = levels[i].scene;
 		entry.canvasGroup.alpha = 0f;
 
@@ -67,7 +66,7 @@ public class SelectLevel : MonoBehaviour {
 		foreach(string s in levels [i].concepts)
 			entry.conceptsText.text += s + System.Environment.NewLine;
 
-		if (User.cleared_levels.Contains (i))
+		if (User.cleared_levels.Contains (entry.scene))
 			entry.clearedImage.color = clearedColor;
 		
 		StartCoroutine (SetLevelInfoRoutine (i, entry));
@@ -101,10 +100,6 @@ public class SelectLevel : MonoBehaviour {
 		}
 	}
 
-	public void CallbackReturn() {
-		Scenes.LoadScene ("Main");
-	}
-
 	[Header("Horizontal bar levels")]
 	public ImagePanel imagePanel;
 	public void CallbackLevelEntry(LevelEntry entry) {
@@ -112,7 +107,7 @@ public class SelectLevel : MonoBehaviour {
 	}
 
 	[System.Serializable]
-	public class LevelInfo {
+	public struct LevelInfo {
 		public string name;
 		public Sprite image;
 		public string[] concepts;

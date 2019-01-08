@@ -74,9 +74,6 @@ public class Level : MonoBehaviour {
 		Node.OnClickUpStatic -= OnNodeClick;
 		if (OnEnd != null) OnEnd (this);
 
-		StartCoroutine (Routines.WaitFor (2f, delegate {
-			Manager.Scenes.LoadScene ("SelectLevel");
-		}));
 		End2 ();
 	}
 

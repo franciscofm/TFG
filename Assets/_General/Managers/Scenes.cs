@@ -17,7 +17,8 @@ namespace Manager {
 		/// <summary>
 		/// Prepares the manager events, must be called before the second scene loading.
 		/// </summary>
-		public static void Initialize() {
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		public static void Initialization() {
 			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
 
@@ -52,6 +53,7 @@ namespace Manager {
 		/// <param name="mode">Mode in which the scene is being loaded.</param>
 		static void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 			//Unity bug when launching from Editor, it is load as additive by default
+			//Debug.Log("Scene loaded: "+scene.name+", as "+mode.ToString()+" [action? "+((actionOnLoad!=null)?"yes":"no")+"]");
 			if (activeScene == null) { 
 				activeScene = scene.name;
 				activeSceneObject = scene;
@@ -82,7 +84,7 @@ namespace Manager {
 		public static void LoadSceneAdditive(string scene, bool clearOnChangeScene) {
 			SceneManager.LoadScene (scene, LoadSceneMode.Additive);
 			
-			Additive a = new Additive (scene, lastAdditive);
+			Additive a = new Additive (scene, lastAdditive, clearOnChangeScene);
 			additiveScenes.Add (a);
 		}
 		/// <summary>
@@ -90,10 +92,10 @@ namespace Manager {
 		/// </summary>
 		/// <param name="scene">Scene.</param>
 		public static void LoadSceneAdditiveMerge(string scene) {
-			SceneManager.LoadScene(scene, LoadSceneMode.Additive);
 			actionOnLoad = delegate {
 				SceneManager.MergeScenes (lastAdditive, activeSceneObject);
 			};
+			SceneManager.LoadScene(scene, LoadSceneMode.Additive);
 		}
 		/// <summary>
 		/// Unloads the additive scene matching name to 'scene'.
@@ -120,12 +122,14 @@ namespace Manager {
 			return list;
 		}
 
-		class Additive {
+		struct Additive {
 			public string name;
 			public Scene scene;
-			public Additive(string name, Scene scene) {
+			public bool clear;
+			public Additive(string name, Scene scene, bool clear) {
 				this.name = name;
 				this.scene = scene;
+				this.clear = clear;
 			}
 		}
 

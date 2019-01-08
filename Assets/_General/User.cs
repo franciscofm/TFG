@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using UnityEngine;
 
 using System;
 using System.IO;
@@ -11,6 +14,11 @@ namespace Manager {
 
 	public static class User {
 
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		public static void Initialization() {
+			LoadConfiguration ();
+		}
+
 		public static float volume_master;
 		public static float volume_effects;
 		public static float volume_music;
@@ -20,7 +28,7 @@ namespace Manager {
 		public static bool classic_ifaces;
 		public static bool first_time;
 
-		public static List<int> cleared_levels;
+		public static List<string> cleared_levels;
 
 		public enum Lenguage { Spanish, Catalan, English };
 		public static Lenguage lenguage;
@@ -70,6 +78,7 @@ namespace Manager {
 
 			return true;
 		}
+		[MenuItem("Custom/EraseConfiguration")]
 		public static void EraseConfiguration() {
 			if (System.IO.File.Exists (DataPath())) {
 				System.IO.File.Delete (DataPath());
@@ -87,7 +96,7 @@ namespace Manager {
 				classic_nodes = false;
 				classic_ifaces = false;
 				first_time = true;
-				cleared_levels = new List<int> ();
+				cleared_levels = new List<string> ();
 				lenguage = GetUserLanguage();
 				SaveConfiguration ();
 				return false;
@@ -129,6 +138,11 @@ namespace Manager {
 			Debug.Log("Final language: " + languageString);
 			return languageString;
 		}
+
+		public static void ClearLevel(string level_scene) {
+			if (!cleared_levels.Contains (level_scene))
+				cleared_levels.Add (level_scene);
+		}
 	}
 
 	[System.Serializable]
@@ -142,7 +156,7 @@ namespace Manager {
 		public bool classic_nodes;
 		public bool classic_ifaces;
 
-		public List<int> cleared_levels;
+		public List<string> cleared_levels;
 
 		public User.Lenguage lenguage;
 	}

@@ -8,10 +8,12 @@ public class Keyboard : MonoBehaviour {
 	[HideInInspector] public List<Shell> existingShells;
 	[HideInInspector] public List<InterfaceVisuals> allVisuals;
 	public static bool Ctrl;
+	public ShortcutPanel shortcutPanel;
 
 	void Start() {
 		focusedShells = Shell.focusedShells;
 		existingShells = Shell.existingShells;
+		if (shortcutPanel == null) shortcutPanel = GetComponent<ShortcutPanel> ();
 	}
 
 	void Update () {
@@ -55,6 +57,14 @@ public class Keyboard : MonoBehaviour {
 				iface.HideInformation ();
 		}
 
+		//Shortcut panel
+		if (Input.GetKeyDown (KeyCode.F1)) shortcutPanel.F1_CloseAll();
+		if (Input.GetKeyDown (KeyCode.F2)) shortcutPanel.F2_CloseAllNodePanels ();
+		if (Input.GetKeyDown (KeyCode.F3)) shortcutPanel.F3_CloseAllShells ();
+		if (Input.GetKeyDown (KeyCode.F4)) shortcutPanel.F4_MinimizeAllShells ();
+		if (Input.GetKeyDown (KeyCode.F5)) shortcutPanel.F5_ShowInterfaceData ();
+		if (Input.GetKeyDown (KeyCode.F6)) shortcutPanel.F6_ShowBackgroundColorPanel ();
+		if (Input.GetKeyDown (KeyCode.F7)) shortcutPanel.F7_ShowMenu ();
 	}
 
 }
