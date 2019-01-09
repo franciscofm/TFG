@@ -18,6 +18,7 @@ public class InterfaceVisuals : MonoBehaviour {
 	[HideInInspector] public Transform nodeAnchor;
 	[Header("Debug")]
 	public GameObject infoObject;
+	GameObject outlineObject;
 	Text infoText;
 
 	public Interface iface;
@@ -46,6 +47,7 @@ public class InterfaceVisuals : MonoBehaviour {
 			meshRenderer = standardModel.GetComponent<MeshRenderer> ();
 			modelTransform = standardModel.transform;
 		}
+		outlineObject = modelTransform.GetChild (0).gameObject;
 
 		if (iface.IsUp ()) OnGetUp (iface);
 		if (iface.connectedTo != null) OnConnect (iface);
@@ -79,6 +81,13 @@ public class InterfaceVisuals : MonoBehaviour {
 		iface.OnDisconnect -= OnDisconnect;
 		iface.OnGetUp -= OnGetUp;
 		iface.OnGetDown -= OnGetDown;
+	}
+
+	public void OnMouseEnter() {
+		outlineObject.SetActive (true);
+	}
+	public void OnMouseExit() {
+		outlineObject.SetActive (false);
 	}
 
 	public AnimationInfo OnSelectAnimation;

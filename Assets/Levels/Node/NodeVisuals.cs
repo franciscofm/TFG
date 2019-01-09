@@ -10,6 +10,7 @@ public class NodeVisuals : MonoBehaviour {
 	public GameObject standardModel;
 	public GameObject classicModel;
 	MeshRenderer meshRenderer;
+	GameObject outlineObject;
 
 	// Use this for initialization
 	void Awake () {
@@ -26,11 +27,20 @@ public class NodeVisuals : MonoBehaviour {
 			standardModel.SetActive (false);
 			classicModel.SetActive (true);
 			meshRenderer = classicModel.GetComponent<MeshRenderer> ();
+			outlineObject = classicModel.transform.GetChild (0).gameObject;
 		} else {
 			standardModel.SetActive (true);
 			classicModel.SetActive (false);
 			meshRenderer = standardModel.GetComponent<MeshRenderer> ();
+			outlineObject = standardModel.transform.GetChild (0).gameObject;
 		}
+	}
+
+	public void OnMouseEnter() {
+		outlineObject.SetActive (true);
+	}
+	public void OnMouseExit() {
+		outlineObject.SetActive (false);
 	}
 
 	public AnimationInfo OnClickDownAnimation;

@@ -20,11 +20,11 @@ public class Permanent : MonoBehaviour {
 		Level.OnEnd += OnEndLevel;
 	}
 
-	public static void OnEndLevel(Level level) {
+	public void OnEndLevel(Level level) {
 		User.ClearLevel(Scenes.activeScene);
 
-		level.StartCoroutine (Routines.WaitFor (2f, delegate {
-			Scenes.LoadScene ("SelectLevel");
+		StartCoroutine (Routines.WaitFor (1f, delegate {
+			Scenes.LoadSceneAdditiveMerge ("FinishScreen");
 		}));
 	}
 
