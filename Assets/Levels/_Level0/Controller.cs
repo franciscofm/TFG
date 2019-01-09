@@ -77,7 +77,8 @@ namespace Level0 {
 		}
 
 		protected override void End2 () {
-			
+			blocker.gameObject.SetActive (false);
+			speech.gameObject.SetActive (false);
 		}
 	}
 
