@@ -11,7 +11,7 @@ public class Level : MonoBehaviour {
 	public Speech speech;
 	public Blocker blocker;
 	public Keyboard keyboard;
-	public ShortcutPanel shortcuts;
+	public ShortcutPanel shortcutPanel;
 	public Transform canvasTransform;
 	public GameObject interfaceInfoPrefab;
 	public GameObject shellPrefab;
@@ -63,8 +63,9 @@ public class Level : MonoBehaviour {
 			}
 		}
 
+		keyboard.shortcutPanel = shortcutPanel;
 		keyboard.allVisuals = allIfaceVisuals;
-		shortcuts.allVisuals = allIfaceVisuals;
+		shortcutPanel.allVisuals = allIfaceVisuals;
 
 		if (OnStart != null) OnStart (this);
 		Start2 ();
@@ -139,6 +140,7 @@ public class Level : MonoBehaviour {
 	}
 	[HideInInspector] public GameObject manualInstance;
 	public void CallbackManual(RectTransform rect) {
+		return;
 		if (manualPrefab != null) {
 			manualInstance = Instantiate (manualPrefab, canvasTransform);
 		} else {

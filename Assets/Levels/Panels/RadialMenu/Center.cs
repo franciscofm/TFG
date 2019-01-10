@@ -40,7 +40,14 @@ public class Center : MonoBehaviour {
 		level.CallbackManual (rect);
 	}
 
+	public void CallbackColorWhite() {
+		CallbackColorPick (Color.white);
+	}
+	public void CallbackColorBlack() {
+		CallbackColorPick (Color.black);
+	}
 	public void CallbackColorPick(Color c) {
+		print ("Callback color: " + c);
 		level.CallbackColorPick (c, node);
 	}
 

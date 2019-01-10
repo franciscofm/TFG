@@ -27,15 +27,18 @@ namespace RadialMenu {
 		public void OnPointerEnter(PointerEventData data) {
 			if (siblingShown == this)
 				return;
-			else if (siblingShown != null)
+			if (siblingShown != null)
 				siblingShown.OnSiblingEntered ();
 
 			foreach(Node n in siblings)
 				n.siblingShown = this;
 			siblingShown = this;
+
+			//Activar hijos
 			foreach (GameObject g in childs)
 				g.SetActive (true);
 
+			//Resaltar
 			StartCoroutine (Routines.DoWhile (0.1f, delegate(float f) {
 				canvasGroup.alpha = 0.7f + f * 0.3f;
 			}));
@@ -44,7 +47,6 @@ namespace RadialMenu {
 		public void OnSiblingEntered() {
 			foreach (GameObject g in childs)
 				g.SetActive (false);
-
 			StartCoroutine (Routines.DoWhile (0.1f, delegate(float f) {
 				canvasGroup.alpha = 1f - f * 0.3f;
 			}));

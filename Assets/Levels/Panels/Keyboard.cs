@@ -7,13 +7,13 @@ public class Keyboard : MonoBehaviour {
 	[HideInInspector] public List<Shell> focusedShells;
 	[HideInInspector] public List<Shell> existingShells;
 	[HideInInspector] public List<InterfaceVisuals> allVisuals;
+	[HideInInspector] public ShortcutPanel shortcutPanel;
 	public static bool Ctrl;
-	public ShortcutPanel shortcutPanel;
 
 	void Start() {
 		focusedShells = Shell.focusedShells;
 		existingShells = Shell.existingShells;
-		if (shortcutPanel == null) shortcutPanel = GetComponent<ShortcutPanel> ();
+		shortcutPanel = GetComponent<ShortcutPanel> ();
 	}
 
 	void Update () {

@@ -5,16 +5,16 @@ using UnityEngine;
 using UtilsSpeech;
 using UtilsBlocker;
 
-namespace Level0 {
+namespace Level1 {
 		
 	public class Controller : Level {
 
-		[Header("Level0")]
+		[Header("Level1")]
 		public GameObject focusPrefab;
 		public RectTransform shortcutPanelFocusPos;
 
 		Sentence[] speech1 = new Sentence[] {
-			new Sentence ("Welcome!!!" + Console.jump + "In this level you will learn the basics of the enviorment."), //mover foco a nodo
+			new Sentence ("Welcome back." + Console.jump + "Now we are learning about using <b>Node panel</b>s' commands."), //mover foco a nodo
 			new Sentence ("First of all, look at this, it is the representation of a computer, we also call them <b>Node</b>s."), //mover foco a ifaz
 			new Sentence ("This smaller figures are the <b>interface</b>s of the <b>Node</b>s. Basically where you can connect a good old RJ45 LAN (internet cable you know...)."),
 			new Sentence ("Two interfaces of different nodes can be connected, select the first <b>interface</b>, while selected (it gets bigger) select another one from the second <b>Node</b>. " +
@@ -34,8 +34,6 @@ namespace Level0 {
 		};
 
 		protected override void Start2 () {
-			blocker.gameObject.SetActive (true);
-			speech.gameObject.SetActive (true);
 			blocker.Block (true);
 
 			speech.SetSpeech (speech1);
