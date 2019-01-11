@@ -12,6 +12,15 @@ public class Center : MonoBehaviour {
 	[HideInInspector] public Level level;
 	[HideInInspector] public Transform canvasTransform;
 
+	public delegate void RadialMenuEvent(Center Center);
+	public event RadialMenuEvent OnClose;
+	public event RadialMenuEvent OnIfconfig;
+	public event RadialMenuEvent OnPing;
+	public event RadialMenuEvent OnRoute;
+	public event RadialMenuEvent OnManual;
+	public event RadialMenuEvent OnColor;
+	public event RadialMenuEvent OnShell;
+
 	void Start() {
 		allCenters.Add (this);
 		startingGroup.ActivateNodes ();
@@ -47,7 +56,6 @@ public class Center : MonoBehaviour {
 		CallbackColorPick (Color.black);
 	}
 	public void CallbackColorPick(Color c) {
-		print ("Callback color: " + c);
 		level.CallbackColorPick (c, node);
 	}
 
