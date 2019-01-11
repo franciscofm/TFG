@@ -4,8 +4,12 @@ using Manager;
 
 public class Main : MonoBehaviour {
 
+	public CanvasGroup mainCanvas;
+
+	bool inSelectLevel = false;
 	public void CallbackSelectLevel() {
-		Scenes.LoadScene ("SelectLevel");
+		inSelectLevel = true;
+		Scenes.LoadSceneAdditiveMerge ("SelectLevel");
 	}
 	public void CallbackConfiguration() {
 		Scenes.LoadSceneAdditiveMerge ("Configuration");
