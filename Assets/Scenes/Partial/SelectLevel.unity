@@ -210,6 +210,27 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: selectLevelCanvas
+      value: 
+      objectReference: {fileID: 851614755}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e32dc2a9a07582d42a85593cf35aa090, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &851614754 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1100541236766736, guid: e32dc2a9a07582d42a85593cf35aa090,
+    type: 2}
+  m_PrefabInternal: {fileID: 851614753}
+--- !u!225 &851614755
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 851614754}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

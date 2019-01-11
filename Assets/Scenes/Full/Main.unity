@@ -423,6 +423,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac56797b2417e864d83185f4c64f389f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCanvas: {fileID: 208082592}
+  nodeTransform: {fileID: 1163426058}
+  nodeSelectLevelPos: {x: -2.5, y: 0, z: 0}
 --- !u!114 &681736395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,6 +851,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 998526722}
+--- !u!4 &1163426058 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4573298936773258, guid: 0087db0d613d286479618e4b381c49b6,
+    type: 2}
+  m_PrefabInternal: {fileID: 448556786}
 --- !u!1 &1169138136
 GameObject:
   m_ObjectHideFlags: 0

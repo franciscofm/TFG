@@ -8,6 +8,7 @@ namespace SelectLevel_v2 {
 
 	public class SelectLevel : MonoBehaviour {
 
+		public static SelectLevel instance;
 
 		[System.Serializable]
 		public struct LevelInfo {
@@ -30,22 +31,25 @@ namespace SelectLevel_v2 {
 		public Color clearedColor = Color.green;
 		public Color normalColor = Color.white;
 		public AnimationCurve movementCurve;
+		public CanvasGroup selectLevelCanvas;
 
 		RectTransform[] entriesRect;
 		RectTransform pointerRect;
-		CanvasGroup[] entriesGroup;
 
 		float entryHeight, totalHeight, maskHeight;
 		int entriesInView;
 
 		void Awake() {
 			Entry.controller = this;
+			instance = this;
+		}
+		void OnDestroy() {
+			instance = null;
 		}
 
 		void Start() {
 			upObject.SetActive (false);
 			entriesRect = new RectTransform[levels.Length];
-			entriesGroup = new CanvasGroup[levels.Length + 2];
 
 			for (int i = 0; i < levels.Length; ++i) {
 				GameObject entryObject = Instantiate (entryPrefab, entriesParent);
@@ -56,7 +60,6 @@ namespace SelectLevel_v2 {
 				entrySctipt.Mark(c);
 				CanvasGroup cg = entryObject.AddComponent<CanvasGroup> ();
 				cg.alpha = 0f;
-				entriesGroup [i] = cg;
 				StartCoroutine(FadeRoutine(cg, i));
 			}
 
@@ -78,14 +81,12 @@ namespace SelectLevel_v2 {
 				downObject.SetActive (true);
 			}
 			arrowsContainer.SetActive (false);
-			entriesGroup [entriesGroup.Length - 2] = arrowsContainer.AddComponent<CanvasGroup> ();
 			StartCoroutine (Routines.WaitFor (1f + 0.2f * entriesInView, delegate {
 				arrowsContainer.SetActive(true);
 			}));
 
 			lastId = -1;
 			pointerRect = pointerObject.transform as RectTransform;
-			entriesGroup [entriesGroup.Length - 1] = pointerObject.AddComponent<CanvasGroup> ();
 			pointerObject.SetActive (false);
 			travelling = false;
 		}
@@ -111,17 +112,26 @@ namespace SelectLevel_v2 {
 			pointerRect.position = entriesRect [id].position;
 		}
 		public void CallbackPlay() {
-			if (travelling) return;
+			Fade (true, delegate {
+				Scenes.LoadScene (levels [lastId].scene);
+			});
+		}
 
+		public void Fade(bool Out, System.Action a) {
+			if (travelling) return;
 			travelling = true;
-			foreach (CanvasGroup cg in entriesGroup) {
+
+			if (Out) {
 				StartCoroutine (Routines.DoWhile (0.4f, delegate(float f) {
-					cg.alpha = 1f - f;
+					selectLevelCanvas.alpha = 1f - f;
+				}));
+			} else {
+				StartCoroutine (Routines.DoWhile (0.4f, delegate(float f) {
+					selectLevelCanvas.alpha = f;
 				}));
 			}
-			StartCoroutine (Routines.WaitFor (0.5f, delegate {
-				Scenes.LoadScene (levels [lastId].scene);
-			}));
+			if(a != null)
+				StartCoroutine (Routines.WaitFor (0.5f, a));
 		}
 
 		bool canUp, canDown;
