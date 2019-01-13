@@ -12,14 +12,13 @@ public class InterfaceVisuals : MonoBehaviour {
 	public Material lineMaterial;
 	public GameObject standardModel;
 	public GameObject classicModel;
-	[HideInInspector] public Transform modelTransform;
-	[HideInInspector] public MeshRenderer meshRenderer;
-	
-	[HideInInspector] public Transform nodeAnchor;
 	[Header("Debug")]
+	public Transform modelTransform;
+	public MeshRenderer meshRenderer;
+	public Transform nodeAnchor;
 	public GameObject infoObject;
-	GameObject outlineObject;
-	InterfaceInfo ifaceInfo;
+	public GameObject outlineObject;
+	public InterfaceInfo ifaceInfo;
 
 	public Interface iface;
 	public Interface[] otherIfaces;

@@ -17,7 +17,10 @@ namespace Manager {
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		public static void Initialization() {
 			LoadConfiguration ();
+			level_played = false;
 		}
+
+		public static bool level_played;
 
 		public static float volume_master;
 		public static float volume_effects;

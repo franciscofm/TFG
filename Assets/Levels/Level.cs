@@ -55,6 +55,7 @@ public class Level : MonoBehaviour {
 		allIfaceVisuals = new List<InterfaceVisuals> ();
 		foreach (Node n in allNodes) {
 			n.Load ();
+			n.GetComponent<NodeVisuals> ().Load ();
 			foreach (Interface i in n.Interfaces) {
 				InterfaceVisuals iv = i.GetComponent<InterfaceVisuals> ();
 				allInterfaces.Add (i);

@@ -112,6 +112,7 @@ namespace SelectLevel_v2 {
 			pointerRect.position = entriesRect [id].position;
 		}
 		public void CallbackPlay() {
+			User.level_played = true;
 			Fade (true, delegate {
 				Scenes.LoadScene (levels [lastId].scene);
 			});

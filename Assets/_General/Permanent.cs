@@ -22,6 +22,7 @@ public class Permanent : MonoBehaviour {
 
 	public void OnEndLevel(Level level) {
 		User.ClearLevel(Scenes.activeScene);
+		User.SaveConfiguration ();
 
 		StartCoroutine (Routines.WaitFor (1f, delegate {
 			Scenes.LoadSceneAdditiveMerge ("FinishScreen");

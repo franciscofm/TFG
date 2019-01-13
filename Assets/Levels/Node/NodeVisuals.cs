@@ -21,7 +21,7 @@ public class NodeVisuals : MonoBehaviour {
 	}
 
 	InterfaceVisuals[] ifaceVisuals;
-	void Start() {
+	public void Load() {
 		ifaceVisuals = GetComponentsInChildren<InterfaceVisuals> (true);
 		if (User.classic_nodes) {
 			Destroy(standardModel);

@@ -13,6 +13,15 @@ public class Main : MonoBehaviour {
 
 	void Start() {
 		nodeStartingPos = nodeTransform.position;
+		if (User.level_played)
+			SkipMain ();
+	}
+
+	void SkipMain() {
+		inSelectLevel = true;
+		nodeTransform.position = nodeSelectLevelPos;
+		mainCanvas.alpha = 0f;
+		Scenes.LoadSceneAdditiveMerge ("SelectLevel");
 	}
 
 	void Update() {

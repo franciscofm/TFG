@@ -23,12 +23,12 @@ public class FinishScreen : MonoBehaviour {
 			duration -= 1f;
 		}
 		yield return new WaitForSeconds (1f);
-		Scenes.LoadScene ("SelectLevel");
+		Scenes.LoadScene ("Main");
 	}
 
 	public void GoNowCallback() {
 		StopCoroutine (routine);
-		Scenes.LoadScene ("SelectLevel");
+		Scenes.LoadScene ("Main");
 	}
 
 	public void StayCallback() {
