@@ -56,6 +56,7 @@ namespace Level1 {
 			new Sentence("That's everything for now, see you in the next chapter.") //End game
 		};
 
+		bool ev1, ev2, ev3, ev4;
 		protected override void Start2 () {
 			blocker.gameObject.SetActive (true);
 			speech.gameObject.SetActive (true);
@@ -63,6 +64,7 @@ namespace Level1 {
 
 			speech.SetSpeech (speech1);
 			speech1 [1].callback = MoveFocusToNode;
+			ev1 = true;
 			allNodes [0].OnClickUp += StartSecondSpeech;
 
 			speech2 [0].callback = MoveToOpenShellButton;
@@ -82,16 +84,22 @@ namespace Level1 {
 			blocker.SetSize(new Vector2(200f, 300f));
 			blocker.Block (false);
 		}
+		Center center;
 		void StartSecondSpeech(Node node) {
 			speech.parent.SetActive (true);
 			speech.SetSpeech (speech2);
 			Center center = nodePanels [allNodes [0]].center;
+			this.center = center;
 			blocker.SetPosition(center.transform.position + new Vector3(95f, 0));
 			blocker.SetSize(new Vector2(105, 250));
+			ev1 = false;
 			allNodes [0].OnClickUp -= StartSecondSpeech;
 
+			ev2 = true;
 			center.OnColor += StartThirdSpeech;
+			ev3 = true;
 			center.OnShell += StartFourthSpeech;
+			ev4 = true;
 			center.OnCommand += StartFifthSpeech;
 		}
 
@@ -118,16 +126,19 @@ namespace Level1 {
 		void StartThirdSpeech(Center center) {
 			speech.parent.SetActive (true);
 			speech.SetSpeech (speech3);
+			ev2 = false;
 			center.OnColor -= StartThirdSpeech;
 		}
 		void StartFourthSpeech(Center center) {
 			speech.parent.SetActive (true);
 			speech.SetSpeech (speech4);
+			ev3 = false;
 			center.OnShell -= StartFourthSpeech;
 		}
 		void StartFifthSpeech(Center center) {
 			speech.parent.SetActive (true);
 			speech.SetSpeech (speech5);
+			ev4 = false;
 			center.OnCommand -= StartFifthSpeech;
 		}
 
@@ -135,6 +146,12 @@ namespace Level1 {
 			Shell.CloseAll ();
 		}
 
+		protected override void Clear2 () {
+			if(ev1) allNodes [0].OnClickUp -= StartSecondSpeech;
+			if(ev2) center.OnColor -= StartThirdSpeech;
+			if(ev3) center.OnShell -= StartFourthSpeech;
+			if(ev4) center.OnCommand -= StartFifthSpeech;
+		}
 		protected override void End2 () {
 			blocker.gameObject.SetActive (false);
 			speech.gameObject.SetActive (false);

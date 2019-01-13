@@ -27,6 +27,7 @@ public class Level : MonoBehaviour {
 	[HideInInspector] public List<Interface> allInterfaces;
 	[HideInInspector] public List<InterfaceVisuals> allIfaceVisuals;
 	protected Dictionary<Node,Pair> nodePanels;
+	protected bool cleared;
 	public struct Pair {
 		public Center center;
 		public NodeVisuals visuals;
@@ -38,6 +39,7 @@ public class Level : MonoBehaviour {
 
 	protected virtual void Start2() {	}
 	protected virtual void End2() {	}
+	protected virtual void Clear2() {	}
 
 	public delegate void LevelEvent(Level Level);
 	public static event LevelEvent OnEnd;
@@ -45,6 +47,7 @@ public class Level : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		cleared = false;
 		nodePanels = new Dictionary<Node, Pair> ();
 		Node.OnClickUpStatic += OnNodeClick;
 
@@ -72,12 +75,18 @@ public class Level : MonoBehaviour {
 	}
 	void OnDestroy() {
 		Node.OnClickUpStatic -= OnNodeClick;
+		if (!cleared)
+			Clear ();
 	}
-
 	protected void End() {
 		if (OnEnd != null) OnEnd (this);
-
+		if (!cleared)
+			Clear ();
 		End2 ();
+	}
+	void Clear() {
+		cleared = true;
+		Clear2 ();
 	}
 
 	public void OnNodeClick(Node node) {

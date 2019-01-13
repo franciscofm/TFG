@@ -33,6 +33,7 @@ namespace Level0 {
 			new Sentence("That's everything for now, see you in the next chapter.") //End game
 		};
 
+		bool ev1, ev2, ev3;
 		protected override void Start2 () {
 			blocker.gameObject.SetActive (true);
 			speech.gameObject.SetActive (true);
@@ -47,6 +48,8 @@ namespace Level0 {
 			allNodes [0].OnClickUp += StartThirdSpeech;
 			speech3 [0].callback = MoveFocusToShortcutPanel;
 			speech3 [2].callback = End;
+
+			ev1 = ev2 = ev3 = true;
 		}
 		void MoveFocusToNode() {
 			blocker.SetPosition(cam.WorldToScreenPoint (allNodes[0].transform.position));
@@ -60,12 +63,14 @@ namespace Level0 {
 		void MoveFocusToSecondIface(Interface iface) {
 			blocker.SetPosition(cam.WorldToScreenPoint (allIfaceVisuals[1].modelTransform.position));
 			allInterfaces [0].OnClick -= MoveFocusToSecondIface;
+			ev1 = false;
 		}
 		void StartSecondSpeech(Interface iface) {
 			speech.parent.SetActive (true);
 			speech.SetSpeech (speech2);
 			blocker.Block (true);
 			allInterfaces [1].OnClick -= StartSecondSpeech;
+			ev2 = false;
 		}
 		void StartThirdSpeech(Node node) {
 			speech.parent.SetActive (true);
@@ -73,6 +78,7 @@ namespace Level0 {
 			blocker.SetPosition(nodePanels[allNodes [0]].center.transform.position + new Vector3(20f, 5f));
 			blocker.SetSize(new Vector2(250f, 275f));
 			allNodes [0].OnClickUp -= StartThirdSpeech;
+			ev3 = false;
 		}
 		void MoveFocusToShortcutPanel() {
 			blocker.SetPosition(shortcutPanelFocusPos.position, new Vector2(85f, 1080f));
@@ -81,6 +87,12 @@ namespace Level0 {
 		protected override void End2 () {
 			blocker.gameObject.SetActive (false);
 			speech.gameObject.SetActive (false);
+		}
+
+		protected override void Clear2 () {
+			if(ev1) allInterfaces [0].OnClick -= MoveFocusToSecondIface;
+			if(ev2) allInterfaces [1].OnClick -= StartSecondSpeech;
+			if(ev3) allNodes [0].OnClickUp -= StartThirdSpeech;
 		}
 	}
 

@@ -43,9 +43,12 @@ namespace Level2 {
 
 		protected override void End2 () {
 			print ("Ended");
-			Node.OnPing -= CheckPing;
 			blocker.gameObject.SetActive (false);
 			speech.gameObject.SetActive (false);
+		}
+
+		protected override void Clear2 () {
+			Node.OnPing -= CheckPing;
 		}
 	}
 
