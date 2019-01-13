@@ -81,7 +81,9 @@ namespace Manager {
 
 			return true;
 		}
+		#if UNITY_EDITOR
 		[MenuItem("Custom/EraseConfiguration")]
+		#endif
 		public static void EraseConfiguration() {
 			if (System.IO.File.Exists (DataPath())) {
 				System.IO.File.Delete (DataPath());
