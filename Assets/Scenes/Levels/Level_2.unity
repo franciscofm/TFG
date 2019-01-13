@@ -2561,7 +2561,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1661738492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e469c00324fc2d04e890ec9d13a42f42, type: 3}
+  m_Script: {fileID: 11500000, guid: eb596d0d1d537474c8d1fe5b3d7495c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 810463788}
@@ -2644,7 +2644,7 @@ Prefab:
     - target: {fileID: 114950035897750602, guid: 1749ab13a8b5c654b84f89331aecd795,
         type: 2}
       propertyPath: interfaceQuantity
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1649220041297532, guid: 1749ab13a8b5c654b84f89331aecd795, type: 2}
       propertyPath: m_IsActive

@@ -486,7 +486,6 @@ MonoBehaviour:
   startingGroup: {fileID: 114969696345510846}
   node: {fileID: 0}
   level: {fileID: 0}
-  canvasTransform: {fileID: 0}
 --- !u!114 &114106818255500004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1068,6 +1067,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDistance: 5
   parent: {fileID: 224334339632211012}
+  center: {fileID: 114034199036671600}
 --- !u!114 &114571244007782630
 MonoBehaviour:
   m_ObjectHideFlags: 1

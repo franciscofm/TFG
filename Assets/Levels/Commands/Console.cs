@@ -8,6 +8,9 @@ public static class Console {
 
 	public static string jump = Environment.NewLine;
 
+	public delegate void ConsoleEvent(CommandStructure com);
+	public static event ConsoleEvent OnCommandRead;
+
 	delegate void ShellTemplate(string[] command, Shell shell, CommandStructure value);
 	delegate void NodeTemplate(string[] command, Node node, CommandStructure value);
 
@@ -39,18 +42,24 @@ public static class Console {
 
 	public static CommandStructure ReadCommand(string[] command, Shell shell) {
 		CommandStructure commandReturn = new CommandStructure();
+		commandReturn.command = command;
+		commandReturn.shell = shell;
 		if (shellCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
 			shellCommands [command [0]] (command.SubArray (1, command.Length - 1), shell, commandReturn);
 		} else if(nodeCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
 			nodeCommands [command [0]] (command.SubArray (1, command.Length - 1), shell.node, commandReturn);
 		}
+		if (OnCommandRead != null) OnCommandRead (commandReturn);
 		return commandReturn;
 	}
 	public static CommandStructure ReadCommand(string[] command, Node node) {
 		CommandStructure commandReturn = new CommandStructure();
+		commandReturn.command = command;
+		commandReturn.node = node;
 		if(nodeCommands.ContainsKey (command [0]) && AvailableCommands.Has(command[0])) {
 			nodeCommands [command [0]] (command.SubArray (1, command.Length - 1), node, commandReturn);
 		}
+		if (OnCommandRead != null) OnCommandRead (commandReturn);
 		return commandReturn;
 	}
 
@@ -106,7 +115,10 @@ public static class Console {
 
 }
 
-public class CommandStructure { 
+public class CommandStructure {
+	public string[] command;
+	public Shell shell;
+	public Node node;
 	public bool correct = false;
 	public bool prompt = false;
 	public string value = "";

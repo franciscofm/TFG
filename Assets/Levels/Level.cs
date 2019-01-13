@@ -27,7 +27,7 @@ public class Level : MonoBehaviour {
 	[HideInInspector] public List<Interface> allInterfaces;
 	[HideInInspector] public List<InterfaceVisuals> allIfaceVisuals;
 	protected Dictionary<Node,Pair> nodePanels;
-	public class Pair {
+	public struct Pair {
 		public Center center;
 		public NodeVisuals visuals;
 		public Pair(Center center, NodeVisuals visuals) {
@@ -70,9 +70,11 @@ public class Level : MonoBehaviour {
 		if (OnStart != null) OnStart (this);
 		Start2 ();
 	}
+	void OnDestroy() {
+		Node.OnClickUpStatic -= OnNodeClick;
+	}
 
 	protected void End() {
-		Node.OnClickUpStatic -= OnNodeClick;
 		if (OnEnd != null) OnEnd (this);
 
 		End2 ();
@@ -88,9 +90,9 @@ public class Level : MonoBehaviour {
 		Center center = radial.GetComponent<Center> ();
 		NodeVisuals visuals = node.GetComponent<NodeVisuals> ();
 
-		center.canvasTransform = canvasTransform;
 		center.node = node;
 		center.level = this;
+		center.transform.position = cam.WorldToScreenPoint(visuals.meshRenderer.transform.position) + new Vector3(0,150f);
 		nodePanels.Add (node, new Pair(center,visuals));
 	}
 	public void OnCenterClose(Node node) {
@@ -140,11 +142,12 @@ public class Level : MonoBehaviour {
 	}
 	[HideInInspector] public GameObject manualInstance;
 	public void CallbackManual(RectTransform rect) {
-		return;
 		if (manualPrefab != null) {
-			manualInstance = Instantiate (manualPrefab, canvasTransform);
-		} else {
-			manualInstance.transform.SetAsLastSibling ();
+			if (manualInstance != null) {
+				manualInstance = Instantiate (manualPrefab, canvasTransform);
+			} else {
+				manualInstance.transform.SetAsLastSibling ();
+			}
 		}
 	}
 }

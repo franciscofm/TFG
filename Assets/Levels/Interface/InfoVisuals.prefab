@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 224888470451267846}
   - component: {fileID: 222214029542329568}
   - component: {fileID: 114325585973896646}
+  - component: {fileID: 114805673632311748}
   m_Layer: 5
   m_Name: InfoVisuals
   m_TagString: Untagged
@@ -57,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.472}
+  m_Color: {r: 0.06764704, g: 0.33823532, b: 0, a: 0.472}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -107,6 +108,19 @@ MonoBehaviour:
   m_Text: 'eth0 192.168.0.1
 
     mask 255.255.255.0'
+--- !u!114 &114805673632311748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1532147420542624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 735e077c039d12f4183144d53b9f0838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 114426673471705648}
+  stateImage: {fileID: 114325585973896646}
 --- !u!222 &222214029542329568
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -120,6 +120,41 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[3].concepts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[4].concepts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[5].concepts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[6].concepts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[7].concepts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].concepts.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 224235690410810652, guid: e32dc2a9a07582d42a85593cf35aa090,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -215,7 +250,138 @@ Prefab:
       propertyPath: selectLevelCanvas
       value: 
       objectReference: {fileID: 851614755}
-    m_RemovedComponents: []
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[3].name
+      value: Introduction 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[3].scene
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[3].objective
+      value: Learn how to use the Node panel.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[3].concepts.Array.data[0]
+      value: Game enviorment
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[4].name
+      value: Introduction 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[4].scene
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[4].objective
+      value: Learn how to use the Node panel.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[4].concepts.Array.data[0]
+      value: Game enviorment
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[5].name
+      value: Introduction 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[5].scene
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[5].objective
+      value: Learn how to use the Node panel.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[5].concepts.Array.data[0]
+      value: Game enviorment
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[6].name
+      value: Introduction 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[6].scene
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[6].objective
+      value: Learn how to use the Node panel.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[6].concepts.Array.data[0]
+      value: Game enviorment
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[7].name
+      value: Introduction 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[7].scene
+      value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[7].objective
+      value: Learn how to use the Node panel.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[7].concepts.Array.data[0]
+      value: Game enviorment
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].name
+      value: Nodes & interfaces
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].scene
+      value: Level_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[1].objective
+      value: Learn how to use the Node panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].objective
+      value: Understand what interfaces are
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].concepts.Array.data[1]
+      value: Ping
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457788109866146, guid: e32dc2a9a07582d42a85593cf35aa090,
+        type: 2}
+      propertyPath: levels.Array.data[2].concepts.Array.data[0]
+      value: Interfaces
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114114711621124532, guid: e32dc2a9a07582d42a85593cf35aa090, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e32dc2a9a07582d42a85593cf35aa090, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &851614754 stripped

@@ -9,7 +9,7 @@ public class NodeVisuals : MonoBehaviour {
 	public Animator animator;
 	public GameObject standardModel;
 	public GameObject classicModel;
-	MeshRenderer meshRenderer;
+	[HideInInspector] public MeshRenderer meshRenderer;
 	GameObject outlineObject;
 
 	// Use this for initialization
@@ -24,13 +24,13 @@ public class NodeVisuals : MonoBehaviour {
 	void Start() {
 		ifaceVisuals = GetComponentsInChildren<InterfaceVisuals> (true);
 		if (User.classic_nodes) {
-			standardModel.SetActive (false);
+			Destroy(standardModel);
 			classicModel.SetActive (true);
 			meshRenderer = classicModel.GetComponent<MeshRenderer> ();
 			outlineObject = classicModel.transform.GetChild (0).gameObject;
 		} else {
+			Destroy(classicModel);
 			standardModel.SetActive (true);
-			classicModel.SetActive (false);
 			meshRenderer = standardModel.GetComponent<MeshRenderer> ();
 			outlineObject = standardModel.transform.GetChild (0).gameObject;
 		}

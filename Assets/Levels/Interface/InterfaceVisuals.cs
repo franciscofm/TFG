@@ -19,7 +19,7 @@ public class InterfaceVisuals : MonoBehaviour {
 	[Header("Debug")]
 	public GameObject infoObject;
 	GameObject outlineObject;
-	Text infoText;
+	InterfaceInfo ifaceInfo;
 
 	public Interface iface;
 	public Interface[] otherIfaces;
@@ -53,7 +53,7 @@ public class InterfaceVisuals : MonoBehaviour {
 		if (iface.connectedTo != null) OnConnect (iface);
 
 		if (infoObject.activeSelf) infoObject.SetActive (false);
-		infoText = infoObject.GetComponentInChildren<Text> ();
+		ifaceInfo = infoObject.GetComponentInChildren<InterfaceInfo> ();
 
 		//print (iface.node);
 		Node node = iface.node;
@@ -274,9 +274,10 @@ public class InterfaceVisuals : MonoBehaviour {
 
 	public virtual void ShowInformation() {
 		infoObject.SetActive (true);
-		infoText.text = 
+		ifaceInfo.Set( 
 			iface.Name + " " + iface.ip.word + Console.jump +
-			"mask " + iface.netmask.word;
+			"mask " + iface.netmask.word, iface.isUp
+		);
 		infoObject.transform.position = Camera.main.WorldToScreenPoint(infoAnchor.position);
 	}
 	public virtual void HideInformation() {

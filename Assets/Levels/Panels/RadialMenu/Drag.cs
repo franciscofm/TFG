@@ -5,6 +5,7 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerUpHa
 
 	public float minDistance = 5f;
 	public Transform parent;
+	public Center center;
 
 	Vector3 offset, start;
 	bool draged = false;
@@ -16,6 +17,8 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerUpHa
 	public void OnDrag(PointerEventData data) {
 		Vector3 mouse = Input.mousePosition;
 		if(draged || Vector3.Distance(start, mouse) > minDistance) {
+			if(!draged)
+				center.DragingStart ();
 			draged = true;
 			parent.position = mouse - offset;
 		}
@@ -24,6 +27,7 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerUpHa
 	public void OnPointerDown(PointerEventData data) {
 	}
 	public void OnPointerUp(PointerEventData data) {
-		if (!draged) Destroy (parent.gameObject);
+		if (!draged) center.Close ();
+		else center.DragingEnd ();
 	}
 }
