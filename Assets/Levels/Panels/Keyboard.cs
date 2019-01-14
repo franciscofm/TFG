@@ -13,7 +13,6 @@ public class Keyboard : MonoBehaviour {
 	void Start() {
 		focusedShells = Shell.focusedShells;
 		existingShells = Shell.existingShells;
-		shortcutPanel = GetComponent<ShortcutPanel> ();
 	}
 
 	void Update () {

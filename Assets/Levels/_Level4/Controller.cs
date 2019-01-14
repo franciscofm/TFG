@@ -103,11 +103,15 @@ namespace Level4 {
 			Console.OnCommandRead += CheckIfconfigs;
 		}
 		void CheckIfconfigs(CommandStructure comm) {
+			print (comm.command [0]);
 			if (comm.command [0] == "ifconfig") {
 				bool done = ((B.Interfaces [1].ip.word == "192.168.1.1") && (B.Interfaces [1].ip.word == "192.168.1.2")) ||
 							((B.Interfaces [1].ip.word == "192.168.1.2") && (B.Interfaces [1].ip.word == "192.168.1.1"));
+				print ("Done 1: " + done);
 				done = done && (A.Interfaces [1].ip.word == "192.168.0.1");
+				print ("Done 2: " + done);
 				done = done && (C.Interfaces [1].ip.word == "192.168.2.1");
+				print ("Done 3: " + done);
 				if (done) {
 					ev2 = false;
 					Console.OnCommandRead -= CheckIfconfigs;
