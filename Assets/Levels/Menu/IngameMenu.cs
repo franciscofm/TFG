@@ -10,7 +10,7 @@ public class IngameMenu : MonoBehaviour {
 		Destroy (gameObject);
 	}
 	public void CallbackExitLevel() {
-		Scenes.LoadScene ("SelectLevel");
+		Scenes.LoadScene ("Main");
 	}
 	public void CallbackExitGame() {
 		Scenes.ExitGame ();
