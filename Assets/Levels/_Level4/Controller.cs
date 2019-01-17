@@ -44,15 +44,16 @@ namespace Level4 {
 				Console.jump + "\t- Node checks for its direct connections for a match" +
 				Console.jump + "\t- Node asks to directly connected Nodes for Routes leading to the destination"),
 			
-			new Sentence ("What we need to do is create a Routes in Node B, so when A Node Pings C Node's interface, B forwards the Ping from A to C."),
+			new Sentence ("What we need to do is create a Route in Node B, so when A Node Pings C Node's interface, B forwards the Ping from A to C."),
 			new Sentence ("Doing so is telling B that if he gets a Ping with 192.168.2.1 @IP, it needs to send it through the interface connecting him to Node C."),
 
+			//7
 			new Sentence ("Let's check the Route command panel."),
 			new Sentence ("Mode lets us add a new Route or remove an existing Route with the same parameters."),
 			new Sentence ("When the Node gets the Ping, will check if the route destination matches the Ping destination, in that case it will be forwarded."),
-			new Sentence ("Gateway is where the Ping will be forwarded to."),
+			new Sentence ("Gateway is the interface where the Ping will be forwarded to."),
 			new Sentence ("Netmasks &  Net will still be explained later."),
-			new Sentence ("Now it's your turn, send a Ping from Node A to Node C to clear the level")
+			new Sentence ("Now it's your turn, set the A->C Route in Node B and send a Ping from Node A to Node C to clear the level")
 		};
 		bool ev1, ev2;
 		Node A, B, C;
@@ -66,8 +67,10 @@ namespace Level4 {
 
 			speech1 [6].callback = WaitForConnections;
 			speech2 [2].callback = WaitForIfconfigs;
-			speech3 [7].callback = OpenRoutePanel;
-			speech3 [8].callback = FocusMode;
+
+			speech3 [6].callback = OpenRoutePanel;
+			speech3 [7].callback = FocusMode;
+			speech3 [8].callback = FocusDestination;
 			speech3 [9].callback = FocusGateway;
 			speech3 [10].callback = FocusMask;
 			speech3 [11].callback = CloseRoutePanel;
@@ -105,13 +108,10 @@ namespace Level4 {
 		void CheckIfconfigs(CommandStructure comm) {
 			print (comm.command [0]);
 			if (comm.command [0] == "ifconfig") {
-				bool done = ((B.Interfaces [1].ip.word == "192.168.1.1") && (B.Interfaces [1].ip.word == "192.168.1.2")) ||
-							((B.Interfaces [1].ip.word == "192.168.1.2") && (B.Interfaces [1].ip.word == "192.168.1.1"));
-				print ("Done 1: " + done);
-				done = done && (A.Interfaces [1].ip.word == "192.168.0.1");
-				print ("Done 2: " + done);
-				done = done && (C.Interfaces [1].ip.word == "192.168.2.1");
-				print ("Done 3: " + done);
+				bool done = ((B.Interfaces [0].ip.word == "192.168.1.1") && (B.Interfaces [1].ip.word == "192.168.1.2")) ||
+							((B.Interfaces [0].ip.word == "192.168.1.2") && (B.Interfaces [1].ip.word == "192.168.1.1"));
+				done = done && (A.Interfaces [0].ip.word == "192.168.0.1");
+				done = done && (C.Interfaces [0].ip.word == "192.168.2.1");
 				if (done) {
 					ev2 = false;
 					Console.OnCommandRead -= CheckIfconfigs;

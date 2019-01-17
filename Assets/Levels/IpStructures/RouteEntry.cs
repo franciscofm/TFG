@@ -35,4 +35,9 @@ public class RouteEntry {
 	public override int GetHashCode () {
 		return base.GetHashCode ();
 	}
+
+	public override string ToString () {
+		return iface + " [genmask:" + genmask.ToString () + "]" + Console.jump +
+			"[destination:" + destination.ToString () + " [gateway:" + gateway.ToString () + "]";
+	}
 }

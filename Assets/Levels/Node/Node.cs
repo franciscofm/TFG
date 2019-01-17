@@ -125,8 +125,8 @@ public class Node : MonoBehaviour {
 		//	0.0.0.0         192.168.0.0     0.0.0.0         UG    0      0        0 eth0      
 		//	192.168.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth0
 		RouteTable = new List<RouteEntry>();
-		RouteTable.Add (new RouteEntry (new IP ("0.0.0.0"), new IP ("192.168.0.0"), new IP ("0.0.0.0")));
-		RouteTable.Add (new RouteEntry (new IP ("192.168.0.0"), new IP ("0.0.0.0"), new IP ("255.255.255.0")));
+		//RouteTable.Add (new RouteEntry (new IP ("0.0.0.0"), new IP ("192.168.0.0"), new IP ("0.0.0.0")));
+		//RouteTable.Add (new RouteEntry (new IP ("192.168.0.0"), new IP ("0.0.0.0"), new IP ("255.255.255.0")));
 	}
 	/// <summary>
 	/// Loads the ARP table.
@@ -210,54 +210,83 @@ public class Node : MonoBehaviour {
 		return false;
 	}
 
+	public bool HasMatchingRoute(Interface i) {
+		foreach (RouteEntry re in RouteTable)
+			if (re.destination == i.ip)
+				return true;
+		return false;
+	}
+
 	/// <summary>
 	/// Determines whether the Node can reach the specified destination Node.
 	/// Raises event OnPing passing <c>PingInfo</c> as parameter.
 	/// </summary>
 	/// <returns> Returns <c>PingInfo</c> structure with results.</returns>
 	/// <param name="destination">Destination.</param>
-	public PingInfo CanReach(IP destination) {
-		PingInfo pingInfo = new PingInfo ();
-		pingInfo.origin = this;
-
+	public PingInfo CanReach(IP destination, PingInfo incomeInfo = null) {
+		if (incomeInfo == null) {
+			incomeInfo = new PingInfo ();
+			incomeInfo.target = destination;
+			incomeInfo.origin = this;
+			incomeInfo.reachedNodes = new List<Node> ();
+			incomeInfo.reachedNodes.Add (this);
+		} else {
+			if(incomeInfo.reachedNodes.Contains(this)) return null;
+		}
+		print ("New evaluated node: " + gameObject.name);
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces) {
 			if (i.IsUp () && i.ip.Equals(destination)) {
-				pingInfo.destiny = this;
-				pingInfo.reached = true;
-				RaiseEventFull (OnPing, pingInfo);
-				return pingInfo;
+				incomeInfo.destiny = this;
+				incomeInfo.reached = true;
+				RaiseEventFull (OnPing, incomeInfo);
+				return incomeInfo;
 			}
 		}
-		
-		//si esta conectado directamente TODO mirar firewall (iptable)
+		//TODO mirar firewall (iptable)
+		print ("No own interfaces matching");
 		foreach (Interface i in Interfaces)
-			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp() && i.connectedTo.ip.Equals(destination)) {
-				pingInfo.destiny = i.connectedTo.node;
-				pingInfo.reached = true;
-				RaiseEventFull (OnPing, pingInfo);
-				return pingInfo;
-			}
+			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp()) { 
+				//si esta conectado directamente
+				if (i.connectedTo.ip.Equals (destination)) {
+					incomeInfo.destiny = i.connectedTo.node;
+					incomeInfo.reached = true;
+					RaiseEventFull (OnPing, incomeInfo);
+					return incomeInfo;
+				} else {
+					if (i.connectedTo.node.HasMatchingRoute (i)) {
+						
+						i.connectedTo.node.CanReach (destination, incomeInfo);
+						if (incomeInfo.reached) {
+							RaiseEventFull (OnPing, incomeInfo);
+							return incomeInfo;
+						}
 
-		//si se puede llegar por route
-		foreach(RouteEntry re in RouteTable) {
-			if(destination.IsSubnet(re.destination, re.genmask)) {
-				Interface iface = GetInterface (re.iface);
-				if (iface != null) {
-					PingInfo routePingInfo = iface.connectedTo.node.CanReach (destination);
-					if (routePingInfo.reached) {
-						pingInfo.destiny = routePingInfo.destiny;
-						RaiseEventFull (OnPing, pingInfo);
-						return pingInfo;
 					}
 				}
 			}
-		}
 
-		pingInfo.reached = false;
-		pingInfo.destiny = null;
-		RaiseEventFull (OnPing, pingInfo);
-		return pingInfo;
+//		//si se puede llegar por route
+//		foreach(RouteEntry re in RouteTable) {
+//			print (re);
+//			print (destination.IsSubnet (re.destination, re.genmask));
+//			//if(destination.IsSubnet(re.destination, re.genmask)) {
+//				Interface iface = GetInterface (re.iface);
+//				if (iface != null && iface.connectedTo != null) {
+//					PingInfo routePingInfo = iface.connectedTo.node.CanReach (destination);
+//					if (routePingInfo!= null && routePingInfo.reached) {
+//						incomeInfo.destiny = routePingInfo.destiny;
+//						RaiseEventFull (OnPing, incomeInfo);
+//						return incomeInfo;
+//					}
+//				}
+//			//}
+//		}
+
+		incomeInfo.reached = false;
+		incomeInfo.destiny = null;
+		RaiseEventFull (OnPing, incomeInfo);
+		return incomeInfo;
 	}
 
 }
@@ -267,6 +296,8 @@ public class Node : MonoBehaviour {
 /// </summary>
 public class PingInfo {
 	public bool reached;
+	public IP target;
 	public Node destiny;
 	public Node origin;
+	public List<Node> reachedNodes;
 }
