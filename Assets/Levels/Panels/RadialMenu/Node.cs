@@ -56,7 +56,7 @@ namespace RadialMenu {
 			OnPointerClick2 (data);
 		}
 		protected virtual void OnPointerClick2(PointerEventData data) {
-			print ("Click on" + gameObject.name);
+			//print ("Click on" + gameObject.name);
 		}
 	}
 

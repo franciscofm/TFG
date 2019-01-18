@@ -11,6 +11,7 @@ public class NodeVisuals : MonoBehaviour {
 	public GameObject classicModel;
 	[HideInInspector] public MeshRenderer meshRenderer;
 	GameObject outlineObject;
+	bool init;
 
 	// Use this for initialization
 	void Awake () {
@@ -23,6 +24,7 @@ public class NodeVisuals : MonoBehaviour {
 	InterfaceVisuals[] ifaceVisuals;
 	public void Load() {
 		ifaceVisuals = GetComponentsInChildren<InterfaceVisuals> (true);
+		init = true;
 		if (User.classic_nodes) {
 			Destroy(standardModel);
 			classicModel.SetActive (true);
@@ -37,9 +39,11 @@ public class NodeVisuals : MonoBehaviour {
 	}
 
 	public void OnMouseEnter() {
+		if (!init) return;
 		outlineObject.SetActive (true);
 	}
 	public void OnMouseExit() {
+		if (!init) return;
 		outlineObject.SetActive (false);
 	}
 

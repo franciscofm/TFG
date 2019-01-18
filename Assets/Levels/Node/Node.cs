@@ -210,10 +210,11 @@ public class Node : MonoBehaviour {
 		return false;
 	}
 
-	public bool HasMatchingRoute(Interface i) {
-		foreach (RouteEntry re in RouteTable)
-			if (re.destination == i.ip)
+	public bool HasMatchingRoute(IP ip) {
+		foreach (RouteEntry re in RouteTable) {
+			if (re.destination.Equals(ip))
 				return true;
+		}
 		return false;
 	}
 
@@ -233,7 +234,7 @@ public class Node : MonoBehaviour {
 		} else {
 			if(incomeInfo.reachedNodes.Contains(this)) return null;
 		}
-		print ("New evaluated node: " + gameObject.name);
+
 		//si es una direccion de las interficies propias
 		foreach (Interface i in Interfaces) {
 			if (i.IsUp () && i.ip.Equals(destination)) {
@@ -243,10 +244,10 @@ public class Node : MonoBehaviour {
 				return incomeInfo;
 			}
 		}
+
 		//TODO mirar firewall (iptable)
-		print ("No own interfaces matching");
-		foreach (Interface i in Interfaces)
-			if (i.IsUp() && i.connectedTo != null && i.connectedTo.IsUp()) { 
+		foreach (Interface i in Interfaces) {
+			if (i.IsUp () && i.connectedTo != null && i.connectedTo.IsUp ()) { 
 				//si esta conectado directamente
 				if (i.connectedTo.ip.Equals (destination)) {
 					incomeInfo.destiny = i.connectedTo.node;
@@ -254,17 +255,15 @@ public class Node : MonoBehaviour {
 					RaiseEventFull (OnPing, incomeInfo);
 					return incomeInfo;
 				} else {
-					if (i.connectedTo.node.HasMatchingRoute (i)) {
-						
+					if (i.connectedTo.node.HasMatchingRoute (destination)) 
 						i.connectedTo.node.CanReach (destination, incomeInfo);
 						if (incomeInfo.reached) {
 							RaiseEventFull (OnPing, incomeInfo);
 							return incomeInfo;
 						}
-
-					}
 				}
 			}
+		}
 
 //		//si se puede llegar por route
 //		foreach(RouteEntry re in RouteTable) {
@@ -283,8 +282,8 @@ public class Node : MonoBehaviour {
 //			//}
 //		}
 
-		incomeInfo.reached = false;
-		incomeInfo.destiny = null;
+		//incomeInfo.reached = false;
+		//incomeInfo.destiny = null;
 		RaiseEventFull (OnPing, incomeInfo);
 		return incomeInfo;
 	}
