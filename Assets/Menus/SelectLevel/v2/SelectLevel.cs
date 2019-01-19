@@ -115,6 +115,9 @@ namespace SelectLevel_v2 {
 			User.level_played = true;
 			Fade (true, delegate {
 				Scenes.LoadScene (levels [lastId].scene);
+				if(Main.backgroundSound != null) {
+					Main.backgroundSound.Stop(0.3f);
+				}
 			});
 		}
 

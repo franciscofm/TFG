@@ -8,6 +8,7 @@ using Manager;
 
 public class FinishScreen : MonoBehaviour {
 
+	public string url;
 	public Text timerText;
 	public float duration = 5f;
 	IEnumerator routine;
@@ -34,5 +35,10 @@ public class FinishScreen : MonoBehaviour {
 	public void StayCallback() {
 		StopCoroutine (routine);
 		Destroy (gameObject);
+	}
+
+	public void SurveyCallback() {
+		StopCoroutine (routine);
+		Application.OpenURL (url);
 	}
 }

@@ -265,25 +265,6 @@ public class Node : MonoBehaviour {
 			}
 		}
 
-//		//si se puede llegar por route
-//		foreach(RouteEntry re in RouteTable) {
-//			print (re);
-//			print (destination.IsSubnet (re.destination, re.genmask));
-//			//if(destination.IsSubnet(re.destination, re.genmask)) {
-//				Interface iface = GetInterface (re.iface);
-//				if (iface != null && iface.connectedTo != null) {
-//					PingInfo routePingInfo = iface.connectedTo.node.CanReach (destination);
-//					if (routePingInfo!= null && routePingInfo.reached) {
-//						incomeInfo.destiny = routePingInfo.destiny;
-//						RaiseEventFull (OnPing, incomeInfo);
-//						return incomeInfo;
-//					}
-//				}
-//			//}
-//		}
-
-		//incomeInfo.reached = false;
-		//incomeInfo.destiny = null;
 		RaiseEventFull (OnPing, incomeInfo);
 		return incomeInfo;
 	}

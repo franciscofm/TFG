@@ -117,21 +117,10 @@ namespace Manager {
 			NarrationsL = new List<SoundSource> ();
 			BackgroundsL = new List<SoundSource> ();
 
-	//		LoadNarrations ();
 		}
-
-	//	public static void UnloadNarrations(){
-	//        for (int i = 0; i < Narrations.Length; ++i)
-	//			Resources.UnloadAsset (Narrations [i]);
-	//	}
-	//	public static void LoadNarrations(){
-	//        string language = ManagerUser.UserInfo.Language;
-	//		Narrations = Resources.LoadAll<AudioClip>("Narrations" + System.IO.Path.DirectorySeparatorChar + language);
-	//    }
 
 
 		public static SoundSource PlayNarration(AudioClip narration, Vector3 position) {
-	//        AudioClip ac = FindNarration(narration);
 			return PlaySound (narration, position, false, 2, FLAG_PRIORITY_LOW, TYPE_NARRATION);
 		}
 		public static SoundSource PlayEffect(AudioClip effect, Vector3 position) {
@@ -245,15 +234,6 @@ namespace Manager {
 				}
 			CH_FIRST_FREE = 1;
 		}
-	//	public static AudioClip FindNarration(AudioClip clip) {
-	//        //Debug.Log("Looking for: " + clip.name);
-	//		for (int i = 0; i < Narrations.Length; ++i) {
-	//            if (Narrations[i].name.Equals(clip.name))
-	//				return Narrations [i];
-	//		}
-	//        //Debug.Log("Narration not found");
-	//        return null;
-	//	}
 
 	    static SoundSource Error(string msg) {
 			Debug.Log ("ManagerSound error: " + msg);

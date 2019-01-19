@@ -924,6 +924,7 @@ MonoBehaviour:
   routePrefab: {fileID: 1303380665012428, guid: f32585e78e82d2c4386aca9551339b3f,
     type: 2}
   manualPrefab: {fileID: 0}
+  backgroundMusic: {fileID: 8300000, guid: 26d8f9b89b3fa6843b0d6c4551a4484b, type: 3}
   allNodes:
   - {fileID: 200110840}
   - {fileID: 1128043302}

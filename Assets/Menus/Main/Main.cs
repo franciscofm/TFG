@@ -8,11 +8,16 @@ public class Main : MonoBehaviour {
 	public CanvasGroup mainCanvas;
 	public Transform nodeTransform;
 	public Vector3 nodeSelectLevelPos = new Vector3 (-2.5f, 0);
+	public AudioClip backgroundMusic;
 
 	Vector3 nodeStartingPos;
+	public static SoundSource backgroundSound;
 
 	void Start() {
 		nodeStartingPos = nodeTransform.position;
+		backgroundSound = Sound.PlayBackground (backgroundMusic, Vector3.zero);
+		backgroundSound.transform.localPosition = Camera.main.transform.position;
+
 		if (User.level_played)
 			SkipMain ();
 	}

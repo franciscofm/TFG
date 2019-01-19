@@ -106,7 +106,7 @@ namespace Level4 {
 			Console.OnCommandRead += CheckIfconfigs;
 		}
 		void CheckIfconfigs(CommandStructure comm) {
-			print (comm.command [0]);
+			//print (comm.command [0]);
 			if (comm.command [0] == "ifconfig") {
 				bool done = ((B.Interfaces [0].ip.word == "192.168.1.1") && (B.Interfaces [1].ip.word == "192.168.1.2")) ||
 							((B.Interfaces [0].ip.word == "192.168.1.2") && (B.Interfaces [1].ip.word == "192.168.1.1"));

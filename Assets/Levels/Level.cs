@@ -23,6 +23,7 @@ public class Level : MonoBehaviour {
 	public GameObject manualPrefab;
 
 	[Header("Level dependent")]
+	public AudioClip backgroundMusic;
 	public Node[] allNodes;
 	[HideInInspector] public List<Interface> allInterfaces;
 	[HideInInspector] public List<InterfaceVisuals> allIfaceVisuals;
