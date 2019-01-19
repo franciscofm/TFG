@@ -28,17 +28,23 @@ public class FinishScreen : MonoBehaviour {
 	}
 
 	public void GoNowCallback() {
-		StopCoroutine (routine);
+		if(routine != null)
+			StopCoroutine (routine);
+		routine = null;
 		Scenes.LoadScene ("Main");
 	}
 
 	public void StayCallback() {
-		StopCoroutine (routine);
+		if(routine != null)
+			StopCoroutine (routine);
+		routine = null;
 		Destroy (gameObject);
 	}
 
 	public void SurveyCallback() {
-		StopCoroutine (routine);
+		if(routine != null)
+			StopCoroutine (routine);
+		routine = null;
 		Application.OpenURL (url);
 	}
 }
