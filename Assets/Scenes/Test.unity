@@ -1459,10 +1459,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1750159765334500, guid: 764eacc3ad38c074ab0a8642604a5473, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 764eacc3ad38c074ab0a8642604a5473, type: 2}
   m_IsPrefabParent: 0
@@ -2183,6 +2179,7 @@ MonoBehaviour:
   routePrefab: {fileID: 1303380665012428, guid: f32585e78e82d2c4386aca9551339b3f,
     type: 2}
   manualPrefab: {fileID: 0}
+  backgroundMusic: {fileID: 0}
   allNodes:
   - {fileID: 1014314105}
   - {fileID: 274336033}
